@@ -175,7 +175,7 @@ struct HintTests {
 
     /// Every hint of a hard puzzle starts with a nudge, ends with the result, and has wording on
     /// every page with all placeholders filled in.
-    @Test(arguments: [(Difficulty.hard, UInt64(1)), (.hard, 2), (.hard, 3)])
+    @Test(arguments: [(Difficulty.hard, UInt64(1)), (.hard, 2), (.hard, 3), (.expert, 3), (.expert, 12)])
     func everyStepOfAHardPuzzleHasAWalkthrough(difficulty: Difficulty, seed: UInt64) {
         var game = generatedGame(difficulty, seed: seed)
         var seen = Set<TechniqueKind>()
@@ -191,7 +191,7 @@ struct HintTests {
             }
             game.apply(step)
         }
-        #expect(seen.contains { $0.level == 3 })
+        #expect(seen.contains { $0.level == difficulty.level })
     }
 
     @Test func wingNudgePointsAtThePivot() {

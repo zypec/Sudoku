@@ -22,6 +22,16 @@ enum TechniqueKind: String, CaseIterable, Codable, Sendable {
     case xyWing
     case xyzWing
     case wWing
+    case uniqueRectangleType1
+    case swordfish
+    case emptyRectangle
+    case simpleColoring
+    case finnedXWing
+    case uniqueRectangleType2
+    case uniqueRectangleType4
+    case bug
+    case finnedSwordfish
+    case jellyfish
 
     /// Difficulty tier `1...5` (basic to master). A puzzle's difficulty is the highest
     /// level among the techniques it requires.
@@ -33,6 +43,9 @@ enum TechniqueKind: String, CaseIterable, Codable, Sendable {
             2
         case .nakedQuad, .hiddenQuad, .xWing, .skyscraper, .twoStringKite, .xyWing, .xyzWing, .wWing:
             3
+        case .uniqueRectangleType1, .swordfish, .emptyRectangle, .simpleColoring, .finnedXWing,
+             .uniqueRectangleType2, .uniqueRectangleType4, .bug, .finnedSwordfish, .jellyfish:
+            4
         }
     }
 }

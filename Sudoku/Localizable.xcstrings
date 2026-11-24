@@ -86,6 +86,23 @@
         }
       }
     },
+    "All cells two-valued but one": {
+      "comment": "Technique subtitle: BUG+1",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All cells two-valued but one"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Biri Hariç Tüm Hücreler İki Adaylı"
+          }
+        }
+      }
+    },
     "Appearance": {
       "comment": "Settings section",
       "localizations": {
@@ -188,6 +205,23 @@
         }
       }
     },
+    "Avoiding a second solution": {
+      "comment": "Technique subtitle: Unique Rectangle",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avoiding a second solution"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tekil Dikdörtgen"
+          }
+        }
+      }
+    },
     "Back": {
       "comment": "Hint panel: go to the previous page",
       "localizations": {
@@ -201,6 +235,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Geri"
+          }
+        }
+      }
+    },
+    "Box corner and a strong link": {
+      "comment": "Technique subtitle: Empty Rectangle",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Box corner and a strong link"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boş Dikdörtgen"
           }
         }
       }
@@ -324,6 +375,40 @@
         }
       }
     },
+    "Digit locked in four lines": {
+      "comment": "Technique subtitle: Jellyfish",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Digit locked in four lines"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Denizanası"
+          }
+        }
+      }
+    },
+    "Digit locked in three lines": {
+      "comment": "Technique subtitle: Swordfish",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Digit locked in three lines"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kılıç Balığı"
+          }
+        }
+      }
+    },
     "Dim Completed Digits": {
       "comment": "Settings toggle for the number pad",
       "localizations": {
@@ -337,6 +422,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tamamlanan Rakamları Soldur"
+          }
+        }
+      }
+    },
+    "Each of these %lld lines needs a %lld, each in a different one of %@. So those lines get their %lld here, and it can be removed from the rest of them.": {
+      "comment": "Hint walkthrough page: Swordfish and Jellyfish conclusion",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Each of these %1$lld lines needs a %2$lld, each in a different one of %3$@. So those lines get their %4$lld here, and it can be removed from the rest of them."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu %1$lld çizginin her biri bir %2$lld almalı ve her biri %3$@ arasından farklı birine düşer. Böylece o çizgiler %4$lld rakamlarını burada alır; geri kalan hücrelerinden silinebilir."
           }
         }
       }
@@ -460,6 +562,23 @@
         }
       }
     },
+    "Every empty cell has exactly two candidates except the cell at %@, which has three.": {
+      "comment": "Hint walkthrough page: BUG+1 position",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Every empty cell has exactly two candidates except the cell at %@, which has three."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ hücresi dışındaki tüm boş hücrelerin tam iki adayı var; bu hücrenin üç adayı var."
+          }
+        }
+      }
+    },
     "Expert": {
       "comment": "Difficulty level",
       "localizations": {
@@ -507,6 +626,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Balıklar ve boyama"
+          }
+        }
+      }
+    },
+    "Follow the strong links of %lld: in each linked house it fits in only two cells, so exactly one of them is %lld. Coloring the cells alternately gives two groups, and exactly one group holds %lld.": {
+      "comment": "Hint walkthrough page: Simple Coloring chain",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Follow the strong links of %1$lld: in each linked house it fits in only two cells, so exactly one of them is %2$lld. Coloring the cells alternately gives two groups, and exactly one group holds %3$lld."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld için güçlü bağları izle: bağlı her birimde yalnızca iki hücreye girebiliyor, yani bunlardan tam biri %2$lld. Hücreleri sırayla iki renge boyayınca iki grup çıkar ve %3$lld bu gruplardan yalnızca birinde olur."
           }
         }
       }
@@ -715,6 +851,74 @@
         }
       }
     },
+    "If that cell weren't %lld, every candidate would appear exactly twice in each house and the puzzle would have two solutions. %lld appears three times in %@, so the cell must be %lld.": {
+      "comment": "Hint walkthrough page: BUG+1 conclusion",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "If that cell weren't %1$lld, every candidate would appear exactly twice in each house and the puzzle would have two solutions. %2$lld appears three times in %3$@, so the cell must be %4$lld."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu hücre %1$lld olmasaydı her aday her birimde tam iki kez görünür ve bulmacanın iki çözümü olurdu. %2$lld, %3$@ içinde üç kez görünüyor; bu yüzden hücre %4$lld olmalı."
+          }
+        }
+      }
+    },
+    "If the cell at %@ is %lld, the %lld in %@ can't be on %@, so it is on %@. If not, the cell at %@ is %lld. Either way the cell at %@ can't be %lld.": {
+      "comment": "Hint walkthrough page: Empty Rectangle conclusion",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "If the cell at %1$@ is %2$lld, the %3$lld in %4$@ can't be on %5$@, so it is on %6$@. If not, the cell at %7$@ is %8$lld. Either way the cell at %9$@ can't be %10$lld."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ hücresi %2$lld ise %3$@ içindeki %4$lld, %5$@ üzerinde olamaz; yani %6$@ üzerindedir. Değilse %7$@ hücresi %8$lld olur. Her iki durumda da %9$@ hücresi %10$lld olamaz."
+          }
+        }
+      }
+    },
+    "If the cell at %@ were also only %lld or %lld, the two digits could be swapped in all four cells and the puzzle would have two solutions. So %lld and %lld can be removed from it.": {
+      "comment": "Hint walkthrough page: Unique Rectangle Type 1",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "If the cell at %1$@ were also only %2$lld or %3$lld, the two digits could be swapped in all four cells and the puzzle would have two solutions. So %4$lld and %5$lld can be removed from it."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ hücresi de yalnızca %2$lld ya da %3$lld olsaydı, dört hücrede bu iki rakam yer değiştirebilir ve bulmacanın iki çözümü olurdu. Bu yüzden %4$lld ve %5$lld bu hücreden silinebilir."
+          }
+        }
+      }
+    },
+    "If the fin isn't %lld, this is an ordinary %@ and %lld leaves the rest of %@. If the fin is %lld, %lld leaves the cells of %@ that it sees. Cells hit both ways can't be %lld.": {
+      "comment": "Hint walkthrough page: finned fish conclusion; %2$@ is X-Wing or Swordfish",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "If the fin isn't %1$lld, this is an ordinary %2$@ and %3$lld leaves the rest of %4$@. If the fin is %5$lld, %6$lld leaves the cells of %7$@ that it sees. Cells hit both ways can't be %8$lld."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yüzgeç %1$lld değilse bu sıradan bir %2$@ olur ve %3$lld, %4$@ boyunca diğer hücrelerden silinir. Yüzgeç %5$lld ise %6$lld, %7$@ içinde yüzgecin gördüğü hücrelerden silinir. Her iki durumda da etkilenen hücreler %8$lld olamaz."
+          }
+        }
+      }
+    },
     "In %@ and %@, %lld fits in only two cells each.": {
       "comment": "Hint walkthrough page: Skyscraper and 2-String Kite, the two strong links",
       "localizations": {
@@ -813,6 +1017,74 @@
           "stringUnit": {
             "state": "translated",
             "value": "%1$@ içinde %2$lld yalnızca iki hücreye girebilir."
+          }
+        }
+      }
+    },
+    "In %@, %lld fits only in %@, except for the fin in %@.": {
+      "comment": "Hint walkthrough page: finned fish, base lines, digit, cover lines, fin box",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In %1$@, %2$lld fits only in %3$@, except for the fin in %4$@."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ içinde %2$lld yalnızca %3$@ üzerine girebilir; tek istisna %4$@ içindeki yüzgeç."
+          }
+        }
+      }
+    },
+    "In %@, %lld fits only in cells that lie in %@.": {
+      "comment": "Hint walkthrough page: Swordfish and Jellyfish, base lines, digit, cover lines",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In %1$@, %2$lld fits only in cells that lie in %3$@."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ içinde %2$lld yalnızca %3$@ üzerindeki hücrelere girebilir."
+          }
+        }
+      }
+    },
+    "In %@, %lld fits only in the two other corners, so one of them is %lld. If the other were %lld, the two digits could be swapped and the puzzle would have two solutions. So neither of them can be %lld.": {
+      "comment": "Hint walkthrough page: Unique Rectangle Type 4",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In %1$@, %2$lld fits only in the two other corners, so one of them is %3$lld. If the other were %4$lld, the two digits could be swapped and the puzzle would have two solutions. So neither of them can be %5$lld."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ içinde %2$lld yalnızca diğer iki köşeye girebilir, yani biri %3$lld. Diğeri %4$lld olsaydı iki rakam yer değiştirebilir ve bulmacanın iki çözümü olurdu. Bu yüzden ikisi de %5$lld olamaz."
+          }
+        }
+      }
+    },
+    "In %@, every %lld lies on %@ or %@.": {
+      "comment": "Hint walkthrough page: Empty Rectangle box",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In %1$@, every %2$lld lies on %3$@ or %4$@."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ içinde tüm %2$lld adayları %3$@ ya da %4$@ üzerinde."
           }
         }
       }
@@ -1582,6 +1854,23 @@
         }
       }
     },
+    "Some cells outside the chain see a cell of each color. Whichever color holds %lld, they see it, so they can't be %lld.": {
+      "comment": "Hint walkthrough page: Simple Coloring, color trap",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Some cells outside the chain see a cell of each color. Whichever color holds %1$lld, they see it, so they can't be %2$lld."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zincirin dışındaki bazı hücreler her iki renkten birer hücre görüyor. %1$lld hangi renkte olursa olsun onu görürler; bu yüzden %2$lld olamazlar."
+          }
+        }
+      }
+    },
     "Some digits on the board are incorrect. Fix them before looking for the next step.": {
       "comment": "Hint message when the board has wrong digits",
       "localizations": {
@@ -1735,6 +2024,23 @@
         }
       }
     },
+    "Swordfish with a fin": {
+      "comment": "Technique subtitle: Finned Swordfish",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Swordfish with a fin"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yüzgeçli Swordfish"
+          }
+        }
+      }
+    },
     "System": {
       "comment": "Theme option following the system appearance",
       "localizations": {
@@ -1803,6 +2109,23 @@
         }
       }
     },
+    "The four highlighted cells form a rectangle across two rows, two columns and two boxes, and each of them can be %lld or %lld.": {
+      "comment": "Hint walkthrough page: Unique Rectangle pattern",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The four highlighted cells form a rectangle across two rows, two columns and two boxes, and each of them can be %1$lld or %2$lld."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İşaretli dört hücre iki satır, iki sütun ve iki kutuya yayılan bir dikdörtgen oluşturuyor ve her biri %1$lld ya da %2$lld olabilir."
+          }
+        }
+      }
+    },
     "The incorrect digits will be erased.": {
       "comment": "Auto solve: the next step clears wrong entries",
       "localizations": {
@@ -1850,6 +2173,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sonraki adım henüz bilinmeyen bir yöntem gerektiriyor. Bunun yerine bir hücreyi açabilirsin."
+          }
+        }
+      }
+    },
+    "The other two corners can also be %lld. If neither of them were %lld, the two digits could be swapped and the puzzle would have two solutions. So one of them is %lld, and a cell that sees both can't be %lld.": {
+      "comment": "Hint walkthrough page: Unique Rectangle Type 2",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The other two corners can also be %1$lld. If neither of them were %2$lld, the two digits could be swapped and the puzzle would have two solutions. So one of them is %3$lld, and a cell that sees both can't be %4$lld."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diğer iki köşe %1$lld de olabilir. İkisi de %2$lld olmasaydı iki rakam yer değiştirebilir ve bulmacanın iki çözümü olurdu. Yani biri %3$lld; ikisini birden gören bir hücre %4$lld olamaz."
           }
         }
       }
@@ -1973,6 +2313,23 @@
         }
       }
     },
+    "Two cells of the same color see each other, so that color can't hold %lld. %lld can be removed from all its cells.": {
+      "comment": "Hint walkthrough page: Simple Coloring, color wrap",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Two cells of the same color see each other, so that color can't hold %1$lld. %2$lld can be removed from all its cells."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aynı renkteki iki hücre birbirini görüyor, yani o renk %1$lld olamaz. %2$lld o rengin tüm hücrelerinden silinebilir."
+          }
+        }
+      }
+    },
     "Two cells, two digits": {
       "comment": "Subtitle for the Naked Pair technique",
       "localizations": {
@@ -1986,6 +2343,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Açık İkili"
+          }
+        }
+      }
+    },
+    "Two colors along strong links": {
+      "comment": "Technique subtitle: Simple Coloring",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Two colors along strong links"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Basit Boyama"
           }
         }
       }
@@ -2088,6 +2462,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "X-Wing ve kanatlar"
+          }
+        }
+      }
+    },
+    "X-Wing with a fin": {
+      "comment": "Technique subtitle: Finned X-Wing",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "X-Wing with a fin"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yüzgeçli X-Wing"
           }
         }
       }

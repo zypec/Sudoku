@@ -3,7 +3,7 @@
 //  Sudoku
 //
 
-/// Basic fish: X-Wing (size 2). Swordfish (3) and Jellyfish (4) reuse this with a larger size.
+/// Basic fish: X-Wing (size 2), Swordfish (3) and Jellyfish (4).
 ///
 /// Take `size` *base* lines (rows, say) in which a digit's candidates all fall into the same `size`
 /// *cover* lines (columns). Each base line must hold the digit exactly once, and they can't share a
@@ -11,6 +11,8 @@
 /// from the cover lines everywhere else. The same works with columns as base lines.
 struct BasicFish: Technique {
     static let xWing = BasicFish(size: 2, kind: .xWing)
+    static let swordfish = BasicFish(size: 3, kind: .swordfish)
+    static let jellyfish = BasicFish(size: 4, kind: .jellyfish)
 
     let size: Int
     let kind: TechniqueKind

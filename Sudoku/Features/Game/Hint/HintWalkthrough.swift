@@ -110,6 +110,12 @@ private struct WalkthroughBuilder {
         case .skyscraper, .twoStringKite: twoStrongLinks()
         case .xyWing, .xyzWing: wing()
         case .wWing: wWing()
+        case .swordfish, .jellyfish: largeFish()
+        case .finnedXWing, .finnedSwordfish: finnedFish()
+        case .emptyRectangle: emptyRectangle()
+        case .simpleColoring: simpleColoring()
+        case .uniqueRectangleType1, .uniqueRectangleType2, .uniqueRectangleType4: uniqueRectangle()
+        case .bug: bug()
         }
     }
 
@@ -335,5 +341,140 @@ private struct WalkthroughBuilder {
         highlights.mark([y], in: cell1, as: .alternativeA)
         highlights.mark([y], in: cell2, as: .alternativeA)
         add(String(localized: "Whichever of them is \(x), the cell it sees can't be \(x) and must be \(y). So one of the two cells is \(y), and a cell that sees both can't be \(y)."))
+    }
+
+    // MARK: Fish
+
+    /// Swordfish and Jellyfish: houses are `[base lines…, cover lines…]`.
+    private mutating func largeFish() {
+        let size = step.focusHouses.count / 2
+        let bases = Array(step.focusHouses.prefix(size))
+        let covers = Array(step.focusHouses.suffix(size))
+
+        highlights.fill(bases)
+        showPattern(step.patternCells)
+        add(String(localized: "In \(HintText.houseList(bases)), \(digit) fits only in cells that lie in \(HintText.houseList(covers))."))
+
+        highlights.fill(covers)
+        add(String(localized: "Each of these \(size) lines needs a \(digit), each in a different one of \(HintText.houseList(covers)). So those lines get their \(digit) here, and it can be removed from the rest of them."))
+    }
+
+    /// Finned X-Wing and Swordfish: houses are `[base lines…, cover lines…, fin box]`.
+    private mutating func finnedFish() {
+        let size = (step.focusHouses.count - 1) / 2
+        let bases = Array(step.focusHouses.prefix(size))
+        let covers = Array(step.focusHouses.dropFirst(size).prefix(size))
+        let box = house(step.focusHouses.count - 1)
+        let fins = step.patternCells.filter { cell in !covers.contains { $0.contains(cell) } }
+        let fishName = size == 2 ? TechniqueKind.xWing.title : TechniqueKind.swordfish.title
+
+        highlights.fill(bases)
+        showPattern(step.patternCells.filter { !fins.contains($0) })
+        highlights.fill(fins, .pattern)
+        for fin in fins {
+            highlights.mark([digit], in: fin, as: .alternativeB)
+        }
+        add(String(localized: "In \(HintText.houseList(bases)), \(digit) fits only in \(HintText.houseList(covers)), except for the fin in \(name(box))."))
+
+        highlights.fill(covers)
+        highlights.fill([box])
+        add(String(localized: "If the fin isn't \(digit), this is an ordinary \(fishName) and \(digit) leaves the rest of \(HintText.houseList(covers)). If the fin is \(digit), \(digit) leaves the cells of \(name(box)) that it sees. Cells hit both ways can't be \(digit)."))
+    }
+
+    // MARK: Level 4 patterns
+
+    /// Cells `[x, y, box cells…]`, houses `[box, linkLine, crossedLine, keptLine]`.
+    private mutating func emptyRectangle() {
+        let (box, link, crossed, kept) = (house(0), house(1), house(2), house(3))
+        let (x, y) = (cell(0), cell(1))
+        let boxCells = Array(step.patternCells.dropFirst(2))
+        let target = step.eliminations.first?.cell ?? y
+
+        highlights.fill([box])
+        showPattern(boxCells)
+        add(String(localized: "In \(name(box)), every \(digit) lies on \(name(crossed)) or \(name(kept))."))
+
+        highlights.fill([link])
+        showPattern([x, y])
+        highlights.link(x, y, digit: digit, isStrong: true)
+        add(String(localized: "In \(name(link)), \(digit) fits in only two cells."))
+
+        // Blue: x holds the digit, pushing the box's digit onto the kept line. Green: y holds it.
+        highlights.fill([kept])
+        highlights.mark([digit], in: x, as: .alternativeB)
+        for cell in boxCells where kept.contains(cell) {
+            highlights.mark([digit], in: cell, as: .alternativeB)
+        }
+        highlights.mark([digit], in: y, as: .alternativeA)
+        add(String(localized: "If the cell at \(name(x)) is \(digit), the \(digit) in \(name(box)) can't be on \(name(crossed)), so it is on \(name(kept)). If not, the cell at \(name(y)) is \(digit). Either way the cell at \(name(target)) can't be \(digit)."))
+    }
+
+    private mutating func simpleColoring() {
+        let chain = SimpleColoring.chain(of: digit, startingAt: cell(0), in: board)
+        highlights.fill(chain.cells.map(\.cell), .pattern)
+        for (cell, isColorA) in chain.cells {
+            highlights.mark([digit], in: cell, as: isColorA ? .alternativeA : .alternativeB)
+        }
+        for (from, to) in chain.links {
+            highlights.link(from, to, digit: digit, isStrong: true)
+        }
+        add(String(localized: "Follow the strong links of \(digit): in each linked house it fits in only two cells, so exactly one of them is \(digit). Coloring the cells alternately gives two groups, and exactly one group holds \(digit)."))
+
+        let eliminated = step.eliminations.map(\.cell)
+        if eliminated.allSatisfy(chain.cells.map(\.cell).contains) {
+            // Color wrap: show the two cells of the same color that see each other.
+            if let pair = eliminated.combinations(ofSize: 2).first(where: { Geometry.sees($0[0], $0[1]) }) {
+                highlights.link(pair[0], pair[1], digit: digit, isStrong: false)
+            }
+            add(String(localized: "Two cells of the same color see each other, so that color can't hold \(digit). \(digit) can be removed from all its cells."))
+        } else {
+            highlights.fill(eliminated, .target)
+            add(String(localized: "Some cells outside the chain see a cell of each color. Whichever color holds \(digit), they see it, so they can't be \(digit)."))
+        }
+    }
+
+    /// Type 1 cells `[corner, corner, corner, target]`; types 2 and 4 `[floor1, floor2, roof1, roof2]`.
+    private mutating func uniqueRectangle() {
+        let corners = Array(step.patternCells.prefix(4))
+        let a = step.patternDigits.min() ?? 0
+        let b = step.patternDigits.max() ?? 0
+        showPattern(corners)
+        add(String(localized: "The four highlighted cells form a rectangle across two rows, two columns and two boxes, and each of them can be \(a) or \(b)."))
+
+        switch step.technique {
+        case .uniqueRectangleType1:
+            let target = cell(3)
+            highlights.fill([target], .target)
+            add(String(localized: "If the cell at \(name(target)) were also only \(a) or \(b), the two digits could be swapped in all four cells and the puzzle would have two solutions. So \(a) and \(b) can be removed from it."))
+
+        case .uniqueRectangleType2:
+            let x = removedDigits.min() ?? 0
+            for roof in corners.suffix(2) {
+                highlights.mark([x], in: roof, as: .alternativeA)
+            }
+            add(String(localized: "The other two corners can also be \(x). If neither of them were \(x), the two digits could be swapped and the puzzle would have two solutions. So one of them is \(x), and a cell that sees both can't be \(x)."))
+
+        default:
+            let weak = removedDigits.min() ?? 0
+            let strong = step.patternDigits.subtracting([weak]).min() ?? 0
+            let house = house(0)
+            highlights.fill([house])
+            highlights.link(cell(2), cell(3), digit: strong, isStrong: true)
+            add(String(localized: "In \(name(house)), \(strong) fits only in the two other corners, so one of them is \(strong). If the other were \(weak), the two digits could be swapped and the puzzle would have two solutions. So neither of them can be \(weak)."))
+        }
+    }
+
+    private mutating func bug() {
+        let target = cell(0)
+        let house = house(0)
+        highlights.fill(board.emptyCells.filter { $0 != target }, .house)
+        highlights.fill([target], .pattern)
+        add(String(localized: "Every empty cell has exactly two candidates except the cell at \(name(target)), which has three."))
+
+        highlights.fill([house])
+        for cell in board.cells(in: house, withCandidate: digit) {
+            highlights.mark([digit], in: cell, as: .emphasized)
+        }
+        add(String(localized: "If that cell weren't \(digit), every candidate would appear exactly twice in each house and the puzzle would have two solutions. \(digit) appears three times in \(name(house)), so the cell must be \(digit)."))
     }
 }

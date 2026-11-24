@@ -41,6 +41,11 @@ enum HintText {
         String(localized: "row \(Geometry.row(of: cell) + 1), column \(Geometry.column(of: cell) + 1)")
     }
 
+    /// "row 1, row 4 and row 7" in the current language.
+    static func houseList(_ houses: [House]) -> String {
+        houses.map(houseName).formatted(.list(type: .and))
+    }
+
     /// "1, 2 and 3" (or "1, 2 or 3") in the current language.
     static func digitList(_ digits: CandidateSet, type: ListFormatStyle<StringStyle, [String]>.ListType = .and) -> String {
         digits.map(String.init).formatted(.list(type: type))
@@ -68,6 +73,16 @@ extension TechniqueKind {
         case .xyWing: "XY-Wing"
         case .xyzWing: "XYZ-Wing"
         case .wWing: "W-Wing"
+        case .uniqueRectangleType1: "Unique Rectangle Type 1"
+        case .uniqueRectangleType2: "Unique Rectangle Type 2"
+        case .uniqueRectangleType4: "Unique Rectangle Type 4"
+        case .swordfish: "Swordfish"
+        case .jellyfish: "Jellyfish"
+        case .emptyRectangle: "Empty Rectangle"
+        case .simpleColoring: "Simple Coloring"
+        case .finnedXWing: "Finned X-Wing"
+        case .finnedSwordfish: "Finned Swordfish"
+        case .bug: "BUG+1"
         }
     }
 
@@ -91,6 +106,14 @@ extension TechniqueKind {
         case .xyWing: "Pivot with two pincers"
         case .xyzWing: "Three-digit pivot with two pincers"
         case .wWing: "Twin pairs joined by a link"
+        case .uniqueRectangleType1, .uniqueRectangleType2, .uniqueRectangleType4: "Avoiding a second solution"
+        case .swordfish: "Digit locked in three lines"
+        case .jellyfish: "Digit locked in four lines"
+        case .emptyRectangle: "Box corner and a strong link"
+        case .simpleColoring: "Two colors along strong links"
+        case .finnedXWing: "X-Wing with a fin"
+        case .finnedSwordfish: "Swordfish with a fin"
+        case .bug: "All cells two-valued but one"
         }
     }
 }

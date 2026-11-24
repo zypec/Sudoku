@@ -29,6 +29,17 @@ struct LogicalSolver: Sendable {
         XYWing(),
         XYZWing(),
         WWing(),
+        // Level 4
+        UniqueRectangle(variant: .type1),
+        BasicFish.swordfish,
+        EmptyRectangle(),
+        SimpleColoring(),
+        FinnedFish.xWing,
+        UniqueRectangle(variant: .type2),
+        UniqueRectangle(variant: .type4),
+        BUG(),
+        FinnedFish.swordfish,
+        BasicFish.jellyfish,
     ]
 
     let techniques: [any Technique]
