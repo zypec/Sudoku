@@ -1,0 +1,1638 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "%@ · %@": {
+      "comment": "Saved game summary under Continue: difficulty and elapsed time",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ · %2$@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ · %2$@"
+          }
+        }
+      }
+    },
+    "%lld remaining": {
+      "comment": "Accessibility value of a number pad key: how many of this digit are still missing",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld remaining"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld kaldı"
+          }
+        }
+      }
+    },
+    "%lld, given": {
+      "comment": "Accessibility value of a cell holding a starting digit",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld, given"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld, başlangıç rakamı"
+          }
+        }
+      }
+    },
+    "%lld, incorrect": {
+      "comment": "Accessibility value of a cell holding a wrong digit",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld, incorrect"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld, hatalı"
+          }
+        }
+      }
+    },
+    "3 Mistakes": {
+      "comment": "Mistake limit option",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3 Mistakes"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3 Hata"
+          }
+        }
+      }
+    },
+    "5 Mistakes": {
+      "comment": "Mistake limit option",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "5 Mistakes"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "5 Hata"
+          }
+        }
+      }
+    },
+    "Appearance": {
+      "comment": "Settings section",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appearance"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Görünüm"
+          }
+        }
+      }
+    },
+    "Apply": {
+      "comment": "Hint panel button: apply the hint to the board",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apply"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uygula"
+          }
+        }
+      }
+    },
+    "Assists": {
+      "comment": "Settings section",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Assists"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yardımcılar"
+          }
+        }
+      }
+    },
+    "Auto Notes": {
+      "comment": "Button that fills every empty cell with its possible digits",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auto Notes"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Otomatik Not"
+          }
+        }
+      }
+    },
+    "Auto Notes Button": {
+      "comment": "Settings toggle",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auto Notes Button"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Otomatik Not Düğmesi"
+          }
+        }
+      }
+    },
+    "Chains": {
+      "comment": "Master difficulty description",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chains"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zincirler"
+          }
+        }
+      }
+    },
+    "Close": {
+      "comment": "Accessibility label for the button that closes the hint panel",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Close"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kapat"
+          }
+        }
+      }
+    },
+    "Coming soon": {
+      "comment": "Accessibility value for difficulties that aren't available yet",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Coming soon"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yakında geliyor"
+          }
+        }
+      }
+    },
+    "Continue": {
+      "comment": "Home button that resumes the saved game",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continue"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Devam Et"
+          }
+        }
+      }
+    },
+    "Dark": {
+      "comment": "Dark theme option",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dark"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Koyu"
+          }
+        }
+      }
+    },
+    "Digit locked in a box line": {
+      "comment": "Subtitle for the Pointing technique",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Digit locked in a box line"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kutuda Kilitli Aday"
+          }
+        }
+      }
+    },
+    "Digit locked in a line's box": {
+      "comment": "Subtitle for the Claiming technique",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Digit locked in a line's box"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Satır/Sütunda Kilitli Aday"
+          }
+        }
+      }
+    },
+    "Dim Completed Digits": {
+      "comment": "Settings toggle for the number pad",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dim Completed Digits"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tamamlanan Rakamları Soldur"
+          }
+        }
+      }
+    },
+    "Easy": {
+      "comment": "Difficulty level",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Easy"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kolay"
+          }
+        }
+      }
+    },
+    "Elapsed time": {
+      "comment": "Accessibility label of the game timer",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elapsed time"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geçen süre"
+          }
+        }
+      }
+    },
+    "Empty": {
+      "comment": "Accessibility value of an empty cell",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Empty"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boş"
+          }
+        }
+      }
+    },
+    "Empty, notes %@": {
+      "comment": "Accessibility value of an empty cell with pencil marks; %@ is a list of digits",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Empty, notes %@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boş, notlar %@"
+          }
+        }
+      }
+    },
+    "Erase": {
+      "comment": "Button that clears the selected cell",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erase"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sil"
+          }
+        }
+      }
+    },
+    "Erase Mistakes": {
+      "comment": "Button that clears every incorrect digit",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erase Mistakes"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hataları Sil"
+          }
+        }
+      }
+    },
+    "Expert": {
+      "comment": "Difficulty level",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Expert"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uzman"
+          }
+        }
+      }
+    },
+    "Feedback": {
+      "comment": "Settings section",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Feedback"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geri Bildirim"
+          }
+        }
+      }
+    },
+    "Fish, coloring and rectangles": {
+      "comment": "Expert difficulty description",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fish, coloring and rectangles"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Balıklar ve boyama"
+          }
+        }
+      }
+    },
+    "Four cells, four digits": {
+      "comment": "Subtitle for the Naked Quad technique",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Four cells, four digits"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Açık Dörtlü"
+          }
+        }
+      }
+    },
+    "Four digits, four cells": {
+      "comment": "Subtitle for the Hidden Quad technique",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Four digits, four cells"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gizli Dörtlü"
+          }
+        }
+      }
+    },
+    "Game": {
+      "comment": "Settings section",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Game"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oyun"
+          }
+        }
+      }
+    },
+    "Game Over": {
+      "comment": "Alert title when the mistake limit is reached",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Game Over"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oyun Bitti"
+          }
+        }
+      }
+    },
+    "Haptics": {
+      "comment": "Settings toggle",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haptics"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Titreşim"
+          }
+        }
+      }
+    },
+    "Hard": {
+      "comment": "Difficulty level",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hard"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zor"
+          }
+        }
+      }
+    },
+    "Highlight Row, Column and Box": {
+      "comment": "Settings toggle",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Highlight Row, Column and Box"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Satır, Sütun ve Kutuyu Vurgula"
+          }
+        }
+      }
+    },
+    "Highlight Same Digits": {
+      "comment": "Settings toggle",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Highlight Same Digits"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aynı Rakamları Vurgula"
+          }
+        }
+      }
+    },
+    "Hint": {
+      "comment": "Button that shows the next logical step",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hint"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İpucu"
+          }
+        }
+      }
+    },
+    "Home": {
+      "comment": "Button that returns to the home screen",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Home"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ana Sayfa"
+          }
+        }
+      }
+    },
+    "In %@, %@ can only go in the %lld highlighted cells. Those cells must hold exactly these digits, so their other candidates can be removed.": {
+      "comment": "Hidden pair/triple/quad explanation. Arguments: house, digit list such as '1 and 2', cell count",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In %@, %@ can only go in the %lld highlighted cells. Those cells must hold exactly these digits, so their other candidates can be removed."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ içinde %2$@ yalnızca işaretli %3$lld hücreye girebilir. Bu hücrelerde yalnızca bu rakamlar olabilir; diğer adayları silinebilir."
+          }
+        }
+      }
+    },
+    "In %@, %lld fits in only one cell.": {
+      "comment": "Hidden Single explanation. %1$@ is a house, %2$lld a digit",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In %@, %lld fits in only one cell."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ içinde %2$lld yalnızca tek bir hücreye sığıyor."
+          }
+        }
+      }
+    },
+    "In %@, every candidate for %lld lies in %@. So inside this box %lld must be in %@, and it can be removed from the rest of %@.": {
+      "comment": "Pointing explanation. Arguments: box, digit, line, digit, line, line",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In %@, every candidate for %lld lies in %@. So inside this box %lld must be in %@, and it can be removed from the rest of %@."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ içinde %2$lld için tüm adaylar %3$@ üzerinde. Yani bu kutuda %4$lld kesinlikle %5$@ üzerinde olmalı; %6$@ boyunca kutu dışındaki hücrelerden silinebilir."
+          }
+        }
+      }
+    },
+    "In %@, every candidate for %lld lies inside %@. So inside %@, %lld must be in %@, and it can be removed from the box's other cells.": {
+      "comment": "Claiming explanation. Arguments: line, digit, box, box, digit, line",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In %@, every candidate for %lld lies inside %@. So inside %@, %lld must be in %@, and it can be removed from the box's other cells."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ içinde %2$lld için tüm adaylar %3$@ içinde. Yani %4$@ içinde %5$lld kesinlikle %6$@ üzerinde olmalı; kutunun diğer hücrelerinden silinebilir."
+          }
+        }
+      }
+    },
+    "In %@, the %lld highlighted cells can only hold %@. These digits must fill those cells, so they can be removed from the rest of %@.": {
+      "comment": "Naked pair/triple/quad explanation. Arguments: house, cell count, digit list such as '1 and 2', house",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In %@, the %lld highlighted cells can only hold %@. These digits must fill those cells, so they can be removed from the rest of %@."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ içinde işaretli %2$lld hücre yalnızca %3$@ alabilir. Bu rakamlar o hücreleri doldurmak zorunda; %4$@ içindeki diğer hücrelerden silinebilir."
+          }
+        }
+      }
+    },
+    "Incorrect Digits": {
+      "comment": "Hint panel title when the board has wrong digits",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Incorrect Digits"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hatalı Rakamlar"
+          }
+        }
+      }
+    },
+    "Last empty cell in a house": {
+      "comment": "Subtitle for the Full House technique",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Last empty cell in a house"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Son Boş Hücre"
+          }
+        }
+      }
+    },
+    "Light": {
+      "comment": "Light theme option",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Light"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Açık"
+          }
+        }
+      }
+    },
+    "Locked candidates and pairs": {
+      "comment": "Medium difficulty description",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Locked candidates and pairs"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kilitli adaylar ve ikililer"
+          }
+        }
+      }
+    },
+    "Master": {
+      "comment": "Difficulty level",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Master"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usta"
+          }
+        }
+      }
+    },
+    "Medium": {
+      "comment": "Difficulty level",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Medium"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orta"
+          }
+        }
+      }
+    },
+    "Mistake Limit": {
+      "comment": "Settings picker",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mistake Limit"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hata Limiti"
+          }
+        }
+      }
+    },
+    "Mistakes: %lld": {
+      "comment": "Mistake counter when there is no mistake limit",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mistakes: %lld"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hatalar: %lld"
+          }
+        }
+      }
+    },
+    "Mistakes: %lld/%lld": {
+      "comment": "Mistake counter: mistakes made / mistake limit",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mistakes: %lld/%lld"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hatalar: %lld/%lld"
+          }
+        }
+      }
+    },
+    "New Game": {
+      "comment": "Button that starts a new puzzle",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New Game"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yeni Oyun"
+          }
+        }
+      }
+    },
+    "No Hint Available": {
+      "comment": "Hint panel title when no known technique applies",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Hint Available"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İpucu Bulunamadı"
+          }
+        }
+      }
+    },
+    "Notes": {
+      "comment": "Toggle for pencil mark mode",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notes"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notlar"
+          }
+        }
+      }
+    },
+    "Off": {
+      "comment": "Mistake limit option: unlimited",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Off"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kapalı"
+          }
+        }
+      }
+    },
+    "Only digit for a cell": {
+      "comment": "Subtitle for the Naked Single technique",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Only digit for a cell"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Açık Tekli"
+          }
+        }
+      }
+    },
+    "Only one candidate is left in the cell at %@: %lld.": {
+      "comment": "Naked Single explanation. %1$@ is a cell such as 'row 3, column 5'",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Only one candidate is left in the cell at %@: %lld."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ hücresinde tek bir aday kaldı: %2$lld."
+          }
+        }
+      }
+    },
+    "Only one cell is empty in %@, and %lld is the only digit missing there.": {
+      "comment": "Full House explanation. %1$@ is a house such as 'row 3'",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Only one cell is empty in %@, and %lld is the only digit missing there."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ içinde tek bir boş hücre kaldı ve orada eksik olan tek rakam %2$lld."
+          }
+        }
+      }
+    },
+    "Only place for a digit": {
+      "comment": "Subtitle for the Hidden Single technique",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Only place for a digit"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gizli Tekli"
+          }
+        }
+      }
+    },
+    "Only the basic techniques": {
+      "comment": "Easy difficulty description",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Only the basic techniques"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yalnızca temel yöntemler"
+          }
+        }
+      }
+    },
+    "Place %lld at %@.": {
+      "comment": "Hint result. %1$lld is a digit, %2$@ a cell such as 'row 3, column 5'",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Place %1$lld at %2$@."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%2$@ hücresine %1$lld gelir."
+          }
+        }
+      }
+    },
+    "Preparing puzzle…": {
+      "comment": "Accessibility label while a puzzle is being generated",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Preparing puzzle…"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bulmaca hazırlanıyor…"
+          }
+        }
+      }
+    },
+    "Puzzle Solved!": {
+      "comment": "Alert title when the puzzle is solved",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Puzzle Solved!"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bulmaca Çözüldü!"
+          }
+        }
+      }
+    },
+    "Redo": {
+      "comment": "Button that redoes the last undone action",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Redo"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yinele"
+          }
+        }
+      }
+    },
+    "Remove %@ from the highlighted cells.": {
+      "comment": "Hint result. %@ is a digit list such as '1 and 2'",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove %@ from the highlighted cells."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İşaretli hücrelerden %@ silinebilir."
+          }
+        }
+      }
+    },
+    "Remove Notes Automatically": {
+      "comment": "Settings toggle: placing a digit removes it from notes in the same row, column and box",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove Notes Automatically"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notları Otomatik Sil"
+          }
+        }
+      }
+    },
+    "Reveal Cell": {
+      "comment": "Button that fills a cell with its correct digit",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reveal Cell"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hücreyi Aç"
+          }
+        }
+      }
+    },
+    "Row %lld, column %lld": {
+      "comment": "Accessibility label of a board cell",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Row %lld, column %lld"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld. satır, %2$lld. sütun"
+          }
+        }
+      }
+    },
+    "Settings": {
+      "comment": "Settings screen title and button",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Settings"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ayarlar"
+          }
+        }
+      }
+    },
+    "Show Mistakes": {
+      "comment": "Settings toggle: color wrong digits and show the mistake counter",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show Mistakes"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hataları Göster"
+          }
+        }
+      }
+    },
+    "Show More": {
+      "comment": "Hint panel button: reveal the explanation",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show More"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Devamını Göster"
+          }
+        }
+      }
+    },
+    "Show Result": {
+      "comment": "Hint panel button: reveal the resulting placement or eliminations",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show Result"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sonucu Göster"
+          }
+        }
+      }
+    },
+    "Show Timer": {
+      "comment": "Settings toggle",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show Timer"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Süreyi Göster"
+          }
+        }
+      }
+    },
+    "Some digits on the board are incorrect. Fix them before looking for the next step.": {
+      "comment": "Hint message when the board has wrong digits",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Some digits on the board are incorrect. Fix them before looking for the next step."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tahtadaki bazı rakamlar hatalı. Sonraki adıma geçmeden önce bunları düzelt."
+          }
+        }
+      }
+    },
+    "Soon": {
+      "comment": "Badge on difficulties that aren't available yet",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Soon"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yakında"
+          }
+        }
+      }
+    },
+    "Starting a new game replaces the game in progress.": {
+      "comment": "Note in the New Game sheet when a saved game exists",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Starting a new game replaces the game in progress."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yeni bir oyun başlatırsan devam eden oyunun silinir."
+          }
+        }
+      }
+    },
+    "Step %lld of %lld": {
+      "comment": "Accessibility label of the hint progress bars",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Step %lld of %lld"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adım %1$lld / %2$lld"
+          }
+        }
+      }
+    },
+    "Sudoku": {
+      "comment": "App title on the home screen",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sudoku"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sudoku"
+          }
+        }
+      }
+    },
+    "System": {
+      "comment": "Theme option following the system appearance",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "System"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sistem"
+          }
+        }
+      }
+    },
+    "The mistake limit applies to new games. When mistakes are hidden, there is no limit.": {
+      "comment": "Settings footer for the Game section",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The mistake limit applies to new games. When mistakes are hidden, there is no limit."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hata limiti yeni oyunlarda geçerli olur. Hatalar gizliyken limit uygulanmaz."
+          }
+        }
+      }
+    },
+    "The next step needs a technique that isn't available yet. You can reveal a cell instead.": {
+      "comment": "Hint message when no known technique applies",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The next step needs a technique that isn't available yet. You can reveal a cell instead."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sonraki adım henüz bilinmeyen bir yöntem gerektiriyor. Bunun yerine bir hücreyi açabilirsin."
+          }
+        }
+      }
+    },
+    "Theme": {
+      "comment": "Settings: light/dark appearance",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Theme"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tema"
+          }
+        }
+      }
+    },
+    "There's a %@ in %@.": {
+      "comment": "First hint stage. %1$@ is a technique name such as 'Hidden Single', %2$@ a house such as 'row 3'",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "There's a %1$@ in %2$@."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%2$@ içinde bir %1$@ var."
+          }
+        }
+      }
+    },
+    "Three cells, three digits": {
+      "comment": "Subtitle for the Naked Triple technique",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Three cells, three digits"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Açık Üçlü"
+          }
+        }
+      }
+    },
+    "Three digits, three cells": {
+      "comment": "Subtitle for the Hidden Triple technique",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Three digits, three cells"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gizli Üçlü"
+          }
+        }
+      }
+    },
+    "Two cells, two digits": {
+      "comment": "Subtitle for the Naked Pair technique",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Two cells, two digits"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Açık İkili"
+          }
+        }
+      }
+    },
+    "Two digits, two cells": {
+      "comment": "Subtitle for the Hidden Pair technique",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Two digits, two cells"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gizli İkili"
+          }
+        }
+      }
+    },
+    "Undo": {
+      "comment": "Button that undoes the last action",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Undo"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geri Al"
+          }
+        }
+      }
+    },
+    "X-Wing and wings": {
+      "comment": "Hard difficulty description",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "X-Wing and wings"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "X-Wing ve kanatlar"
+          }
+        }
+      }
+    },
+    "You reached the mistake limit.": {
+      "comment": "Alert message when the game is lost",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You reached the mistake limit."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hata limitine ulaştın."
+          }
+        }
+      }
+    },
+    "You solved it in %@.": {
+      "comment": "Alert message when solved; %@ is the elapsed time, e.g. 4:32",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You solved it in %@."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bulmacayı %@ sürede çözdün."
+          }
+        }
+      }
+    },
+    "box %lld": {
+      "comment": "A 3x3 box inside a sentence, numbered 1-9 left to right, top to bottom",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "box %lld"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld. kutu"
+          }
+        }
+      }
+    },
+    "column %lld": {
+      "comment": "A column inside a sentence, e.g. 'column 5'",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "column %lld"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld. sütun"
+          }
+        }
+      }
+    },
+    "row %lld": {
+      "comment": "A row inside a sentence, e.g. 'row 3'",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "row %lld"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld. satır"
+          }
+        }
+      }
+    },
+    "row %lld, column %lld": {
+      "comment": "A cell inside a sentence",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "row %1$lld, column %2$lld"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld. satır, %2$lld. sütun"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}
