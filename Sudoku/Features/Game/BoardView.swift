@@ -38,6 +38,18 @@ struct BoardView: View {
             .background(.background)
             .overlay { GridLines() }
             .overlay { HintLinks(links: hintHighlights.links, cellSide: cellSide) }
+            .overlay(alignment: .topLeading) {
+                if let target = model.autoSolveTarget {
+                    AutoSolveCursor(cellSide: cellSide)
+                        .offset(
+                            x: CGFloat(Geometry.column(of: target)) * cellSide,
+                            y: CGFloat(Geometry.row(of: target)) * cellSide
+                        )
+                        // Glide to each new cell; faster speeds move faster so the cursor keeps up.
+                        .animation(.smooth(duration: min(0.45, model.settings.autoSolveSpeed.stepDuration * 0.3)), value: target)
+                        .transition(.opacity)
+                }
+            }
             // A small radius keeps corner pencil marks (like a 3 in the top-right cell) uncut.
             .clipShape(.rect(cornerRadius: 6))
             .overlay {
@@ -158,5 +170,20 @@ private struct HintLinks: View {
         let x = CGFloat(Geometry.column(of: cell)) * cellSide + inset + (CGFloat((digit - 1) % 3) + 0.5) * slot
         let y = CGFloat(Geometry.row(of: cell)) * cellSide + inset + (CGFloat((digit - 1) / 3) + 0.5) * slot
         return CGPoint(x: x, y: y)
+    }
+}
+
+/// Frame that marks the cell auto solve is about to change, so the player can follow along.
+private struct AutoSolveCursor: View {
+    let cellSide: CGFloat
+
+    var body: some View {
+        RoundedRectangle(cornerRadius: cellSide * 0.12)
+            .strokeBorder(Color.accentColor, lineWidth: 3)
+            .background(Color.accentColor.opacity(0.12), in: .rect(cornerRadius: cellSide * 0.12))
+            .frame(width: cellSide, height: cellSide)
+            .shadow(color: Color.accentColor.opacity(0.4), radius: 4)
+            .allowsHitTesting(false)
+            .accessibilityHidden(true)
     }
 }

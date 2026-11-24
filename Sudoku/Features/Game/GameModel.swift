@@ -23,6 +23,11 @@ final class GameModel {
     @ObservationIgnored private var autoSolveTask: Task<Void, Never>?
     /// Set by "Next Step" to apply the step on screen without waiting.
     @ObservationIgnored private var skipsAutoSolveWait = false
+    /// Set by "Previous Step" so the loop drops the step on screen and looks again.
+    @ObservationIgnored private var refreshesAutoSolveStep = false
+    /// The game before each applied auto solve step, so steps can be taken back exactly (including
+    /// eliminations remembered by the hint system, which the regular undo doesn't track).
+    @ObservationIgnored private var autoSolveHistory: [SudokuGame] = []
 
     /// A hint being shown and the page the player is on.
     struct ActiveHint: Equatable {
@@ -187,6 +192,7 @@ final class GameModel {
         guard !game.isFinished, autoSolve == nil else { return }
         activeHint = nil
         isNotesMode = false
+        autoSolveHistory = []
         autoSolve = AutoSolveState()
         autoSolveTask = Task { await runAutoSolve() }
     }
@@ -195,6 +201,42 @@ final class GameModel {
         autoSolveTask?.cancel()
         autoSolveTask = nil
         autoSolve = nil
+        autoSolveHistory = []
+    }
+
+    /// The cell the step on screen is about: where a digit goes, or the first cell losing candidates.
+    var autoSolveTarget: CellIndex? {
+        switch autoSolve?.hint {
+        case .step(let step, _)?:
+            step.placements.first?.cell ?? step.eliminations.first?.cell
+        case .incorrectEntries(let cells)?:
+            cells.first
+        default:
+            nil
+        }
+    }
+
+    var canStepAutoSolveBack: Bool {
+        autoSolve != nil && !autoSolveHistory.isEmpty
+    }
+
+    /// Takes back the last applied step and pauses, showing that step again.
+    func autoSolvePreviousStep() {
+        guard autoSolve != nil, var previous = autoSolveHistory.popLast() else { return }
+        previous.elapsedSeconds = game.elapsedSeconds
+        game = previous
+        save()
+        if var state = autoSolve {
+            state.isPaused = true
+            state.isStuck = false
+            state.appliedSteps = max(0, state.appliedSteps - 1)
+            autoSolve = state
+        }
+        refreshesAutoSolveStep = true
+        // The loop ends when it gets stuck; start it again so it shows the restored step.
+        if autoSolveTask == nil {
+            autoSolveTask = Task { await runAutoSolve() }
+        }
     }
 
     func toggleAutoSolvePause() {
@@ -213,6 +255,11 @@ final class GameModel {
     }
 
     private func runAutoSolve() async {
+        defer {
+            if !Task.isCancelled {
+                autoSolveTask = nil
+            }
+        }
         while !Task.isCancelled, autoSolve != nil, !game.isFinished {
             let hint = HintFinder.hint(for: game)
             var page = HintWalkthrough.pages(for: hint).last
@@ -227,8 +274,16 @@ final class GameModel {
                 autoSolve?.isPaused = true
                 return
             }
-            guard await waitForAutoSolveStep() else { return }
+            switch await waitForAutoSolveStep() {
+            case .stop: return
+            case .refresh: continue
+            case .apply: break
+            }
 
+            autoSolveHistory.append(game)
+            if autoSolveHistory.count > Self.autoSolveHistoryLimit {
+                autoSolveHistory.removeFirst()
+            }
             switch hint {
             case .step(let step, _):
                 update {
@@ -248,25 +303,35 @@ final class GameModel {
         }
     }
 
+    private static let autoSolveHistoryLimit = 300
+
+    private enum AutoSolveWait {
+        case apply, refresh, stop
+    }
+
     /// Waits until the step on screen has been shown long enough. Only unpaused time counts, and the
     /// speed is read on every tick, so pausing or changing speed takes effect mid-step.
-    /// Returns `false` if auto solve was stopped.
-    private func waitForAutoSolveStep() async -> Bool {
+    private func waitForAutoSolveStep() async -> AutoSolveWait {
         let tick = 0.05
         var progress = 0.0
         skipsAutoSolveWait = false
+        refreshesAutoSolveStep = false
         while progress < 1 {
-            guard !Task.isCancelled, let state = autoSolve else { return false }
+            guard !Task.isCancelled, let state = autoSolve else { return .stop }
+            if refreshesAutoSolveStep {
+                refreshesAutoSolveStep = false
+                return .refresh
+            }
             if skipsAutoSolveWait {
                 skipsAutoSolveWait = false
-                return true
+                return .apply
             }
             try? await Task.sleep(for: .seconds(tick))
             if !state.isPaused {
                 progress += tick / settings.autoSolveSpeed.stepDuration
             }
         }
-        return !Task.isCancelled && autoSolve != nil
+        return !Task.isCancelled && autoSolve != nil ? .apply : .stop
     }
 
     // MARK: Lifecycle

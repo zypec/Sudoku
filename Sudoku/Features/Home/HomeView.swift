@@ -5,8 +5,10 @@
 
 import SwiftUI
 
-/// Home screen: continue the saved game or start a new one. New Game and Settings open as
-/// Liquid Glass sheets that zoom out of the buttons that present them.
+/// Home screen: the daily puzzle with its streak, training and statistics, and at the bottom the
+/// buttons to continue or start a game. New Game and Settings open as Liquid Glass sheets that
+/// zoom out of the buttons that present them. Daily, Training and Statistics are placeholders for
+/// now and say so when tapped.
 struct HomeView: View {
     @Environment(AppSettings.self) private var settings
     @Namespace private var namespace
@@ -20,13 +22,38 @@ struct HomeView: View {
 
     private let store = GameStore.shared
 
+    @State private var isShowingComingSoon = false
+
     var body: some View {
         NavigationStack {
-            VStack(spacing: 12) {
-                Spacer()
-                Text("Sudoku")
-                    .font(.system(size: 48, weight: .bold, design: .rounded))
-                Spacer()
+            ScrollView {
+                VStack(alignment: .leading, spacing: 20) {
+                    header
+                    DailyCard(onPlay: showComingSoon)
+                    HStack(spacing: 12) {
+                        FeatureTile(
+                            title: "Training",
+                            subtitle: "Learn every technique",
+                            systemImage: "graduationcap.fill",
+                            tint: .purple,
+                            action: showComingSoon
+                        )
+                        FeatureTile(
+                            title: "Statistics",
+                            subtitle: "Your progress",
+                            systemImage: "chart.bar.fill",
+                            tint: .teal,
+                            action: showComingSoon
+                        )
+                    }
+                }
+                .padding()
+                // A comfortable reading width on iPad.
+                .frame(maxWidth: 560)
+                .frame(maxWidth: .infinity)
+            }
+            .scrollBounceBehavior(.basedOnSize)
+            .safeAreaInset(edge: .bottom) {
                 GlassEffectContainer(spacing: 12) {
                     VStack(spacing: 12) {
                         if let savedGame {
@@ -35,10 +62,10 @@ struct HomeView: View {
                         newGameButton
                     }
                 }
-                // Full width on iPhone; a comfortable column on iPad.
                 .frame(maxWidth: 440)
+                .padding(.horizontal)
+                .padding(.bottom, 8)
             }
-            .padding()
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Settings", systemImage: "gearshape") {
@@ -60,6 +87,11 @@ struct HomeView: View {
                 SettingsView()
                     .navigationTransition(.zoom(sourceID: TransitionID.settings, in: namespace))
             }
+            .alert("Coming Soon", isPresented: $isShowingComingSoon) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text("This part of the app isn't ready yet.")
+            }
             .task {
                 savedGame = store.load()
             }
@@ -70,6 +102,21 @@ struct HomeView: View {
                 }
             }
         }
+    }
+
+    private var header: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(Date.now, format: .dateTime.weekday(.wide).day().month(.wide))
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(.secondary)
+                .textCase(.uppercase)
+            Text("Sudoku")
+                .font(.system(.largeTitle, design: .rounded, weight: .bold))
+        }
+    }
+
+    private func showComingSoon() {
+        isShowingComingSoon = true
     }
 
     private func continueButton(for game: SudokuGame) -> some View {
@@ -140,4 +187,112 @@ struct HomeView: View {
 #Preview {
     HomeView()
         .environment(AppSettings())
+}
+
+/// The daily puzzle: today's date, the streak and this week's days. Placeholder until the daily
+/// mode exists: the streak and week are empty.
+private struct DailyCard: View {
+    let onPlay: () -> Void
+
+    private let streak = 0
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack {
+                Label("Daily Sudoku", systemImage: "calendar")
+                    .font(.headline)
+                Spacer()
+                HStack(spacing: 4) {
+                    Image(systemName: "flame.fill")
+                        .foregroundStyle(.orange)
+                    Text("\(streak) day streak")
+                        .monospacedDigit()
+                }
+                .font(.subheadline.weight(.semibold))
+                .padding(.horizontal, 10)
+                .padding(.vertical, 5)
+                .background(.orange.opacity(0.15), in: .capsule)
+            }
+
+            WeekStrip()
+
+            Button(action: onPlay) {
+                Text("Play Today's Puzzle")
+                    .font(.headline)
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.glassProminent)
+            .controlSize(.large)
+        }
+        .padding(18)
+        .background(.fill.quaternary, in: .rect(cornerRadius: 24))
+    }
+}
+
+/// The current week, one circle per day, with today ringed. Days follow the user's calendar
+/// (first weekday and names).
+private struct WeekStrip: View {
+    private var days: [Date] {
+        let calendar = Calendar.current
+        guard let week = calendar.dateInterval(of: .weekOfYear, for: .now) else { return [] }
+        return (0..<7).compactMap { calendar.date(byAdding: .day, value: $0, to: week.start) }
+    }
+
+    var body: some View {
+        HStack {
+            ForEach(days, id: \.self) { day in
+                let isToday = Calendar.current.isDateInToday(day)
+                VStack(spacing: 6) {
+                    Text(day, format: .dateTime.weekday(.narrow))
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(isToday ? AnyShapeStyle(.tint) : AnyShapeStyle(.secondary))
+                    Text(day, format: .dateTime.day())
+                        .font(.subheadline.weight(isToday ? .bold : .regular))
+                        .monospacedDigit()
+                        .frame(width: 34, height: 34)
+                        .background {
+                            Circle()
+                                .strokeBorder(isToday ? AnyShapeStyle(.tint) : AnyShapeStyle(.quaternary), lineWidth: isToday ? 2 : 1)
+                        }
+                }
+                .frame(maxWidth: .infinity)
+            }
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text("This week"))
+    }
+}
+
+/// A square-ish entry point to a section of the app.
+private struct FeatureTile: View {
+    let title: LocalizedStringKey
+    let subtitle: LocalizedStringKey
+    let systemImage: String
+    let tint: Color
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            VStack(alignment: .leading, spacing: 10) {
+                Image(systemName: systemImage)
+                    .font(.title2)
+                    .foregroundStyle(.white)
+                    .frame(width: 44, height: 44)
+                    .background(tint.gradient, in: .rect(cornerRadius: 12))
+                Spacer(minLength: 0)
+                Text(title)
+                    .font(.headline)
+                    .foregroundStyle(.primary)
+                Text(subtitle)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(2)
+            }
+            .frame(maxWidth: .infinity, minHeight: 130, alignment: .leading)
+            .padding(16)
+            .background(.fill.quaternary, in: .rect(cornerRadius: 24))
+            .contentShape(.rect(cornerRadius: 24))
+        }
+        .buttonStyle(.pressable)
+    }
 }

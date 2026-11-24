@@ -111,6 +111,38 @@ struct AutoSolveTests {
         #expect(model.game.values == values)
     }
 
+    @Test func previousStepRestoresTheGameAndShowsTheStepAgain() async throws {
+        let model = model()
+        let original = model.game
+        model.startAutoSolve()
+        try await Task.sleep(for: .milliseconds(50))
+        let firstHint = model.autoSolve?.hint
+        let firstTarget = model.autoSolveTarget
+        #expect(firstTarget != nil)
+        #expect(!model.canStepAutoSolveBack)
+
+        // Apply two steps, then take both back.
+        for _ in 0..<2 {
+            model.autoSolveNextStep()
+            try await Task.sleep(for: .milliseconds(100))
+        }
+        #expect(model.autoSolve?.appliedSteps == 2)
+        #expect(model.canStepAutoSolveBack)
+
+        model.autoSolvePreviousStep()
+        model.autoSolvePreviousStep()
+        try await Task.sleep(for: .milliseconds(100))
+        #expect(model.game.values == original.values)
+        #expect(model.game.notes == original.notes)
+        #expect(model.game.deducedEliminations == original.deducedEliminations)
+        #expect(model.autoSolve?.isPaused == true)
+        #expect(model.autoSolve?.appliedSteps == 0)
+        #expect(model.autoSolve?.hint == firstHint)
+        #expect(model.autoSolveTarget == firstTarget)
+        #expect(!model.canStepAutoSolveBack)
+        model.stopAutoSolve()
+    }
+
     @Test func speedIsRemembered() throws {
         let defaults = try #require(UserDefaults(suiteName: "AutoSolveTests.\(UUID().uuidString)"))
         AppSettings(defaults: defaults).autoSolveSpeed = .double

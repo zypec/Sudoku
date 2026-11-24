@@ -1,6 +1,23 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "%lld day streak": {
+      "comment": "Home: daily streak in days",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld day streak"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld günlük seri"
+          }
+        }
+      }
+    },
     "%lld remaining": {
       "comment": "Accessibility value of a number pad key: how many of this digit are still missing",
       "localizations": {
@@ -290,6 +307,23 @@
         }
       }
     },
+    "Coming Soon": {
+      "comment": "Alert title for sections that aren't built yet",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Coming Soon"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yakında"
+          }
+        }
+      }
+    },
     "Coming soon": {
       "comment": "Accessibility value for difficulties that aren't available yet",
       "localizations": {
@@ -320,6 +354,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Devam Et"
+          }
+        }
+      }
+    },
+    "Daily Sudoku": {
+      "comment": "Home: title of the daily puzzle card",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daily Sudoku"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Günlük Sudoku"
           }
         }
       }
@@ -1174,6 +1225,23 @@
         }
       }
     },
+    "Learn every technique": {
+      "comment": "Home: training tile subtitle",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Learn every technique"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tüm yöntemleri öğren"
+          }
+        }
+      }
+    },
     "Light": {
       "comment": "Light theme option",
       "localizations": {
@@ -1429,6 +1497,23 @@
         }
       }
     },
+    "OK": {
+      "comment": "Dismisses an alert",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tamam"
+          }
+        }
+      }
+    },
     "Off": {
       "comment": "Mistake limit option: unlimited",
       "localizations": {
@@ -1582,6 +1667,23 @@
         }
       }
     },
+    "Play Today's Puzzle": {
+      "comment": "Home: starts the daily puzzle",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Play Today's Puzzle"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bugünün Bulmacasını Oyna"
+          }
+        }
+      }
+    },
     "Preparing puzzle…": {
       "comment": "Accessibility label while a puzzle is being generated",
       "localizations": {
@@ -1595,6 +1697,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bulmaca hazırlanıyor…"
+          }
+        }
+      }
+    },
+    "Previous Step": {
+      "comment": "Auto solve: take back the last step",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Previous Step"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Önceki Adım"
           }
         }
       }
@@ -1939,6 +2058,23 @@
         }
       }
     },
+    "Statistics": {
+      "comment": "Home: statistics section",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Statistics"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İstatistikler"
+          }
+        }
+      }
+    },
     "Step %lld": {
       "comment": "Auto solve status: number of the step on screen",
       "localizations": {
@@ -2245,6 +2381,40 @@
         }
       }
     },
+    "This part of the app isn't ready yet.": {
+      "comment": "Alert message for sections that aren't built yet",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This part of the app isn't ready yet."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uygulamanın bu bölümü henüz hazır değil."
+          }
+        }
+      }
+    },
+    "This week": {
+      "comment": "Accessibility label of the week strip on the daily card",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This week"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu hafta"
+          }
+        }
+      }
+    },
     "Three cells, three digits": {
       "comment": "Subtitle for the Naked Triple technique",
       "localizations": {
@@ -2292,6 +2462,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Üç Adaylı Eksen ve İki Kıskaç"
+          }
+        }
+      }
+    },
+    "Training": {
+      "comment": "Home: training section",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Training"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eğitim"
           }
         }
       }
@@ -2513,6 +2700,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bulmacayı %@ sürede çözdün."
+          }
+        }
+      }
+    },
+    "Your progress": {
+      "comment": "Home: statistics tile subtitle",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your progress"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gelişimin"
           }
         }
       }

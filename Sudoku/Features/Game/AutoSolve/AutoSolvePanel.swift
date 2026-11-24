@@ -6,7 +6,7 @@
 import SwiftUI
 
 /// Liquid Glass panel shown while auto solve runs, in place of the controls and number pad.
-/// Shows the step about to be applied, overall progress, play/pause, a single-step button and
+/// Shows the step about to be applied, overall progress, step back, play/pause, step forward and
 /// the speed.
 struct AutoSolvePanel: View {
     let model: GameModel
@@ -29,8 +29,6 @@ struct AutoSolvePanel: View {
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .id(state.appliedSteps)
-                .transition(.opacity)
             }
             .scrollBounceBehavior(.basedOnSize)
             .frame(maxHeight: .infinity, alignment: .top)
@@ -39,6 +37,17 @@ struct AutoSolvePanel: View {
                 .accessibilityLabel(Text("Progress"))
 
             HStack(spacing: 12) {
+                Button {
+                    model.autoSolvePreviousStep()
+                } label: {
+                    Label("Previous Step", systemImage: "backward.frame.fill")
+                        .labelStyle(.iconOnly)
+                        .frame(width: 24, height: 24)
+                }
+                .buttonStyle(.glass)
+                .buttonBorderShape(.circle)
+                .disabled(!model.canStepAutoSolveBack)
+
                 Button {
                     model.toggleAutoSolvePause()
                 } label: {
@@ -64,13 +73,25 @@ struct AutoSolvePanel: View {
 
                 Spacer(minLength: 0)
 
-                Picker("Speed", selection: $settings.autoSolveSpeed) {
-                    ForEach(AutoSolveSpeed.allCases) { speed in
-                        Text(verbatim: speed.label).tag(speed)
+                // A compact menu showing the current speed; a segmented control doesn't fit "0.5x".
+                Menu {
+                    Picker("Speed", selection: $settings.autoSolveSpeed) {
+                        ForEach(AutoSolveSpeed.allCases) { speed in
+                            Text(verbatim: speed.label).tag(speed)
+                        }
                     }
+                } label: {
+                    Label {
+                        Text(verbatim: settings.autoSolveSpeed.label)
+                            .monospacedDigit()
+                    } icon: {
+                        Image(systemName: "gauge.with.dots.needle.67percent")
+                    }
+                    .font(.body.weight(.semibold))
                 }
-                .pickerStyle(.segmented)
-                .frame(maxWidth: 200)
+                .buttonStyle(.glass)
+                .accessibilityLabel(Text("Speed"))
+                .accessibilityValue(Text(verbatim: settings.autoSolveSpeed.label))
             }
             .controlSize(.large)
         }
