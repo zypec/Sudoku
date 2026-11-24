@@ -21,7 +21,9 @@ final class GameStore {
 
     /// The saved game, or `nil` if there is none or it can't be read.
     func load() -> SudokuGame? {
-        guard FileManager.default.fileExists(atPath: url.path()) else { return nil }
+        // `path()` percent-encodes by default ("Application%20Support"), which FileManager
+        // would treat as a different, nonexistent path.
+        guard FileManager.default.fileExists(atPath: url.path(percentEncoded: false)) else { return nil }
         do {
             let game = try JSONDecoder().decode(SudokuGame.self, from: Data(contentsOf: url))
             return game.isFinished ? nil : game

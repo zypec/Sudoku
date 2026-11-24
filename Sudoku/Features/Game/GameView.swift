@@ -13,6 +13,7 @@ struct GameView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.scenePhase) private var scenePhase
     @State private var outcome: Outcome?
+    @State private var isShowingSettings = false
 
     private enum Outcome {
         case solved
@@ -53,6 +54,14 @@ struct GameView: View {
         }
         .navigationTitle(Text(model.game.puzzle.difficulty.title))
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                optionsMenu
+            }
+        }
+        .sheet(isPresented: $isShowingSettings) {
+            SettingsView()
+        }
         .task(id: isClockRunning) {
             guard isClockRunning else { return }
             while !Task.isCancelled {
@@ -100,6 +109,23 @@ struct GameView: View {
         }
     }
 
+    /// Actions used rarely enough to sit behind a menu: Auto Notes (which replaces every pencil
+    /// mark) and Settings.
+    private var optionsMenu: some View {
+        Menu("More", systemImage: "ellipsis") {
+            if model.settings.showsAutoNotesButton {
+                Button("Auto Notes", systemImage: "square.grid.3x3") {
+                    model.fillNotes()
+                }
+                .disabled(model.game.isFinished)
+                Divider()
+            }
+            Button("Settings", systemImage: "gearshape") {
+                isShowingSettings = true
+            }
+        }
+    }
+
     private var haptics: Bool {
         model.settings.hapticsEnabled
     }
@@ -123,9 +149,10 @@ struct GameView: View {
         outcome == .lost ? "Game Over" : "Puzzle Solved!"
     }
 
-    /// The clock only runs while the app is in the foreground and the game is in progress.
+    /// The clock only runs while the app is in the foreground, the game is in progress and the
+    /// board is visible (not covered by Settings).
     private var isClockRunning: Bool {
-        scenePhase == .active && !model.game.isFinished && !model.isPreparingNewGame
+        scenePhase == .active && !model.game.isFinished && !model.isPreparingNewGame && !isShowingSettings
     }
 }
 

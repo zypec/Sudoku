@@ -16,7 +16,8 @@ struct PersistenceAndSettingsTests {
     init() throws {
         let suite = "SudokuTests.\(UUID().uuidString)"
         defaults = try #require(UserDefaults(suiteName: suite))
-        storeURL = URL.temporaryDirectory.appending(path: "\(UUID().uuidString)/CurrentGame.json")
+        // Mirrors the real location ("Application Support"): the path contains a space.
+        storeURL = URL.temporaryDirectory.appending(path: "\(UUID().uuidString)/Application Support/CurrentGame.json")
     }
 
     private func easyGame(mistakeLimit: Int? = 3) throws -> SudokuGame {
@@ -99,7 +100,7 @@ struct PersistenceAndSettingsTests {
         try FileManager.default.createDirectory(at: storeURL.deletingLastPathComponent(), withIntermediateDirectories: true)
         try Data("not json".utf8).write(to: storeURL)
         #expect(store.load() == nil)
-        #expect(!FileManager.default.fileExists(atPath: storeURL.path()))
+        #expect(!FileManager.default.fileExists(atPath: storeURL.path(percentEncoded: false)))
     }
 
     // MARK: Game model

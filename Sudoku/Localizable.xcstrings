@@ -885,6 +885,23 @@
         }
       }
     },
+    "More": {
+      "comment": "Game screen toolbar menu holding Auto Notes and Settings",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "More"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diğer"
+          }
+        }
+      }
+    },
     "New Game": {
       "comment": "Button that starts a new puzzle",
       "localizations": {

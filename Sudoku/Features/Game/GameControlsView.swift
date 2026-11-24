@@ -5,7 +5,9 @@
 
 import SwiftUI
 
-/// Undo, redo, erase, notes mode, auto notes and hint as round icon buttons with a caption.
+/// Undo, redo, erase, notes mode and hint as round icon buttons with a caption.
+/// Auto Notes overwrites every pencil mark, so it lives in the toolbar menu instead, away from
+/// the keys the player taps constantly.
 struct GameControlsView: View {
     let model: GameModel
 
@@ -27,12 +29,6 @@ struct GameControlsView: View {
 
             ControlButton(title: "Notes", systemImage: "pencil", isOn: model.isNotesMode) {
                 model.toggleNotesMode()
-            }
-
-            if model.settings.showsAutoNotesButton {
-                ControlButton(title: "Auto Notes", systemImage: "square.grid.3x3") {
-                    model.fillNotes()
-                }
             }
 
             ControlButton(title: "Hint", systemImage: "lightbulb") {
