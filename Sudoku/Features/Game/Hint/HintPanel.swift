@@ -5,47 +5,37 @@
 
 import SwiftUI
 
-/// Floating Liquid Glass panel that walks through a hint stage by stage. Replaces the controls and
-/// number pad while open so the board stays fully visible.
+/// Floating Liquid Glass panel that walks through a hint page by page, forwards and backwards.
+/// It takes the place of the controls and number pad and fills their space, so the board never
+/// moves while the player reads.
 struct HintPanel: View {
     let model: GameModel
     let activeHint: GameModel.ActiveHint
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 14) {
+        VStack(alignment: .leading, spacing: 12) {
             header
 
-            if case .step = activeHint.hint {
-                StageIndicator(stage: activeHint.stage)
+            ScrollView {
+                Text(verbatim: activeHint.page.text)
+                    .font(.body)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .id(activeHint.pageIndex)
+                    .transition(.opacity)
             }
+            .scrollBounceBehavior(.basedOnSize)
+            .frame(maxHeight: .infinity, alignment: .top)
 
-            Text(verbatim: HintText.message(for: activeHint.hint, stage: activeHint.stage))
-                .font(.body)
-                .fixedSize(horizontal: false, vertical: true)
-                .id(activeHint.stage)
-                .transition(.opacity)
-
-            HStack(spacing: 12) {
-                Button("Reveal Cell", systemImage: "eye") {
-                    model.revealCell()
-                }
-                .buttonStyle(.glass)
-                .disabled(model.revealTarget == nil)
-
-                Spacer(minLength: 0)
-
-                primaryButton
-            }
-            .controlSize(.large)
+            navigation
         }
         .padding(20)
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .glassEffect(in: .rect(cornerRadius: 28))
-        .animation(.snappy, value: activeHint.stage)
+        .animation(.snappy, value: activeHint.pageIndex)
     }
 
     private var header: some View {
-        HStack(alignment: .top) {
+        HStack(alignment: .top, spacing: 8) {
             VStack(alignment: .leading, spacing: 2) {
                 Text(verbatim: HintText.title(for: activeHint.hint))
                     .font(.title3.bold())
@@ -56,65 +46,104 @@ struct HintPanel: View {
                 }
             }
             Spacer()
-            Button {
-                model.closeHint()
-            } label: {
-                Image(systemName: "xmark")
-                    .font(.body.weight(.semibold))
-                    .foregroundStyle(.secondary)
-                    .frame(width: 32, height: 32)
-                    .background(.fill.tertiary, in: .circle)
+            HeaderButton(title: "Reveal Cell", systemImage: "eye") {
+                model.revealCell()
             }
-            .buttonStyle(.pressable)
-            .accessibilityLabel(Text("Close"))
+            .disabled(model.revealTarget == nil)
+            HeaderButton(title: "Close", systemImage: "xmark") {
+                model.closeHint()
+            }
         }
     }
 
     @ViewBuilder
-    private var primaryButton: some View {
+    private var navigation: some View {
         switch activeHint.hint {
         case .incorrectEntries:
             Button("Erase Mistakes") {
                 model.eraseMistakes()
             }
             .buttonStyle(.glassProminent)
+            .controlSize(.large)
+            .frame(maxWidth: .infinity, alignment: .trailing)
         case .unavailable:
             EmptyView()
         case .step:
-            switch activeHint.stage {
-            case .nudge:
-                Button("Show More") {
-                    model.advanceHint()
+            HStack(spacing: 12) {
+                Button {
+                    model.showPreviousHintPage()
+                } label: {
+                    Label("Back", systemImage: "chevron.left")
+                        .labelStyle(.iconOnly)
+                        .frame(width: 24, height: 24)
                 }
-                .buttonStyle(.glassProminent)
-            case .explanation:
-                Button("Show Result") {
-                    model.advanceHint()
+                .buttonStyle(.glass)
+                .buttonBorderShape(.circle)
+                .disabled(!activeHint.canGoBack)
+
+                Spacer(minLength: 0)
+                PageIndicator(index: activeHint.pageIndex, count: activeHint.pages.count)
+                Spacer(minLength: 0)
+
+                if activeHint.canGoForward {
+                    Button {
+                        model.showNextHintPage()
+                    } label: {
+                        HStack(spacing: 4) {
+                            Text("Next")
+                            Image(systemName: "chevron.right")
+                                .font(.body.weight(.semibold))
+                        }
+                    }
+                    .buttonStyle(.glassProminent)
+                } else {
+                    Button("Apply") {
+                        model.applyHint()
+                    }
+                    .buttonStyle(.glassProminent)
                 }
-                .buttonStyle(.glassProminent)
-            case .result:
-                Button("Apply") {
-                    model.applyHint()
-                }
-                .buttonStyle(.glassProminent)
             }
+            .controlSize(.large)
         }
     }
 }
 
-/// Three short bars showing how far the hint has been revealed.
-private struct StageIndicator: View {
-    let stage: HintStage
+/// Small round icon button used in the panel's header.
+private struct HeaderButton: View {
+    let title: LocalizedStringKey
+    let systemImage: String
+    let action: () -> Void
+
+    @Environment(\.isEnabled) private var isEnabled
 
     var body: some View {
-        HStack(spacing: 6) {
-            ForEach(HintStage.allCases, id: \.self) { item in
+        Button(action: action) {
+            Image(systemName: systemImage)
+                .font(.body.weight(.semibold))
+                .foregroundStyle(.secondary)
+                .frame(width: 32, height: 32)
+                .background(.fill.tertiary, in: .circle)
+                .opacity(isEnabled ? 1 : 0.4)
+        }
+        .buttonStyle(.pressable)
+        .accessibilityLabel(Text(title))
+    }
+}
+
+/// One short bar per page; the current and earlier pages are filled.
+private struct PageIndicator: View {
+    let index: Int
+    let count: Int
+
+    var body: some View {
+        HStack(spacing: 5) {
+            ForEach(0..<count, id: \.self) { item in
                 Capsule()
-                    .fill(item <= stage ? AnyShapeStyle(.tint) : AnyShapeStyle(.fill.tertiary))
-                    .frame(width: 24, height: 4)
+                    .fill(item <= index ? AnyShapeStyle(.tint) : AnyShapeStyle(.fill.tertiary))
+                    .frame(width: item == index ? 18 : 8, height: 4)
             }
         }
         .accessibilityElement()
-        .accessibilityLabel(Text("Step \(stage.rawValue + 1) of \(HintStage.allCases.count)"))
+        .accessibilityLabel(Text("Step \(index + 1) of \(count)"))
     }
 }

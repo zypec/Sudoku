@@ -27,7 +27,6 @@ struct GameView: View {
                     BoardView(model: model)
                     VStack(spacing: 16) {
                         GameStatusView(game: model.game, settings: model.settings)
-                        Spacer(minLength: 0)
                         inputArea(keypadColumns: 3)
                     }
                     .frame(maxWidth: 360)
@@ -37,7 +36,7 @@ struct GameView: View {
                 VStack(spacing: 16) {
                     GameStatusView(game: model.game, settings: model.settings)
                     BoardView(model: model)
-                    Spacer(minLength: 0)
+                        .layoutPriority(1)
                     inputArea(keypadColumns: 9)
                 }
                 .padding()
@@ -130,19 +129,26 @@ struct GameView: View {
         model.settings.hapticsEnabled
     }
 
-    /// Controls and number pad, or the hint panel in their place while a hint is open.
-    @ViewBuilder
+    /// Controls and number pad, with the hint panel covering them while a hint is open. The controls
+    /// stay in the layout (hidden) so the board keeps its size, and the panel fills all the space
+    /// below the board.
     private func inputArea(keypadColumns: Int) -> some View {
-        if let activeHint = model.activeHint {
-            HintPanel(model: model, activeHint: activeHint)
-                .transition(.move(edge: .bottom).combined(with: .opacity))
-        } else {
+        let isShowingHint = model.activeHint != nil
+        return ZStack(alignment: .bottom) {
             VStack(spacing: 16) {
                 GameControlsView(model: model)
                 NumberPadView(model: model, columns: keypadColumns)
             }
-            .transition(.opacity)
+            .opacity(isShowingHint ? 0 : 1)
+            .allowsHitTesting(!isShowingHint)
+            .accessibilityHidden(isShowingHint)
+
+            if let activeHint = model.activeHint {
+                HintPanel(model: model, activeHint: activeHint)
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+            }
         }
+        .frame(maxHeight: .infinity, alignment: .bottom)
     }
 
     private var outcomeTitle: LocalizedStringKey {
@@ -156,7 +162,8 @@ struct GameView: View {
     }
 }
 
-/// Mistake counter and elapsed time above the board.
+/// Mistake counter and elapsed time above the board, each in a small capsule. With a mistake limit
+/// the counter shows the remaining tries as hearts.
 struct GameStatusView: View {
     let game: SudokuGame
     let settings: AppSettings
@@ -167,27 +174,63 @@ struct GameStatusView: View {
             // after it started, so the player is never surprised by a loss.
             if settings.showsMistakes || game.mistakeLimit != nil {
                 mistakes
-                    .foregroundStyle(game.mistakeCount > 0 ? AnyShapeStyle(Color.red) : AnyShapeStyle(.secondary))
             }
             Spacer()
             if settings.showsTimer {
-                Text(verbatim: Self.formattedTime(game.elapsedSeconds))
-                    .monospacedDigit()
-                    .foregroundStyle(.secondary)
-                    .accessibilityLabel(Text("Elapsed time"))
-                    .accessibilityValue(Text(Duration.seconds(game.elapsedSeconds).formatted(.units(allowed: [.hours, .minutes, .seconds], width: .wide))))
+                timer
             }
         }
-        .font(.subheadline.weight(.medium))
-        .frame(minHeight: 20)
+        .font(.subheadline.weight(.semibold))
+        .frame(minHeight: 32)
     }
 
-    private var mistakes: Text {
-        if let limit = game.mistakeLimit {
-            Text("Mistakes: \(game.mistakeCount)/\(limit)")
-        } else {
-            Text("Mistakes: \(game.mistakeCount)")
+    @ViewBuilder
+    private var mistakes: some View {
+        Group {
+            if let limit = game.mistakeLimit {
+                HStack(spacing: 3) {
+                    ForEach(0..<limit, id: \.self) { index in
+                        let isLost = index >= limit - game.mistakeCount
+                        Image(systemName: isLost ? "heart" : "heart.fill")
+                            .foregroundStyle(isLost ? AnyShapeStyle(.tertiary) : AnyShapeStyle(Color.red))
+                            .symbolEffect(.bounce, value: isLost)
+                    }
+                }
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(Text("Mistakes: \(game.mistakeCount)/\(limit)"))
+            } else {
+                HStack(spacing: 5) {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundStyle(game.mistakeCount > 0 ? AnyShapeStyle(Color.red) : AnyShapeStyle(.tertiary))
+                    Text(verbatim: "\(game.mistakeCount)")
+                        .fontDesign(.rounded)
+                        .monospacedDigit()
+                        .contentTransition(.numericText())
+                }
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(Text("Mistakes: \(game.mistakeCount)"))
+            }
         }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 6)
+        .background(.fill.tertiary, in: .capsule)
+        .animation(.snappy, value: game.mistakeCount)
+    }
+
+    private var timer: some View {
+        HStack(spacing: 5) {
+            Image(systemName: "stopwatch")
+                .foregroundStyle(.secondary)
+            Text(verbatim: Self.formattedTime(game.elapsedSeconds))
+                .fontDesign(.rounded)
+                .monospacedDigit()
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 6)
+        .background(.fill.tertiary, in: .capsule)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text("Elapsed time"))
+        .accessibilityValue(Text(Duration.seconds(game.elapsedSeconds).formatted(.units(allowed: [.hours, .minutes, .seconds], width: .wide))))
     }
 
     static func formattedTime(_ seconds: Int) -> String {
@@ -226,8 +269,8 @@ struct GameStatusView: View {
     }
     let model = GameModel(game: game, settings: AppSettings())
     model.requestHint()
-    model.advanceHint()
-    model.advanceHint()
+    model.showNextHintPage()
+    model.showNextHintPage()
     return NavigationStack {
         GameView(model: model)
     }

@@ -58,14 +58,18 @@ struct CellView: View {
     /// The player's notes plus any candidates a hint wants to show.
     private var displayedNotes: CandidateSet {
         guard let hintStyle else { return notes }
-        return notes.union(hintStyle.emphasizedNotes).union(hintStyle.eliminatedNotes)
+        return notes.union(hintStyle.markedDigits)
     }
 
     private var background: Color {
-        if let hintStyle {
-            if hintStyle.isIncorrect { return Color.red.opacity(0.3) }
-            if hintStyle.isPattern { return Color.orange.opacity(0.3) }
-            if hintStyle.isFocus { return Color.yellow.opacity(0.2) }
+        if let fill = hintStyle?.fill {
+            return switch fill {
+            case .house: Color.yellow.opacity(0.2)
+            case .target: Color.red.opacity(0.12)
+            case .blocker: Color.blue.opacity(0.2)
+            case .pattern: Color.orange.opacity(0.3)
+            case .incorrect: Color.red.opacity(0.3)
+            }
         }
         switch highlight {
         case .selected:
@@ -89,16 +93,18 @@ struct CellView: View {
         }
     }
 
-    /// Pencil marks laid out like a phone keypad: 1-2-3 on top, 7-8-9 at the bottom.
+    /// Pencil marks laid out like a phone keypad: 1-2-3 on top, 7-8-9 at the bottom. A small inset
+    /// keeps corner marks clear of the cell edges and the board's rounded corners.
     private var notesGrid: some View {
         let shown = displayedNotes
+        let slot = side * 0.92 / 3
         return VStack(spacing: 0) {
             ForEach(0..<3) { row in
                 HStack(spacing: 0) {
                     ForEach(1..<4) { column in
                         let digit = row * 3 + column
                         noteText(digit, isShown: shown.contains(digit))
-                            .frame(width: side / 3, height: side / 3)
+                            .frame(width: slot, height: slot)
                     }
                 }
             }
@@ -106,24 +112,38 @@ struct CellView: View {
     }
 
     private func noteText(_ digit: Digit, isShown: Bool) -> some View {
-        let isEliminated = hintStyle?.eliminatedNotes.contains(digit) ?? false
-        let isEmphasized = hintStyle?.emphasizedNotes.contains(digit) ?? false
+        let mark = hintStyle?.marks[digit]
         let isHighlighted = hintStyle == nil && digit == highlightedDigit
 
-        let style: AnyShapeStyle = if isEliminated {
-            AnyShapeStyle(Color.red)
-        } else if isEmphasized {
-            AnyShapeStyle(.primary)
-        } else if isHighlighted {
-            AnyShapeStyle(.tint)
-        } else {
-            AnyShapeStyle(.secondary)
+        let style: AnyShapeStyle = switch mark {
+        case .eliminated: AnyShapeStyle(Color.red)
+        case .alternativeA, .alternativeB: AnyShapeStyle(Color.white)
+        case .emphasized: AnyShapeStyle(.primary)
+        case nil: isHighlighted ? AnyShapeStyle(.tint) : AnyShapeStyle(.secondary)
+        }
+        // The two alternatives of a pattern sit on colored discs so they read apart at a glance.
+        let disc: Color? = switch mark {
+        case .alternativeA: Color.green
+        case .alternativeB: Color.blue
+        default: nil
         }
 
         return Text(verbatim: isShown ? "\(digit)" : " ")
-            .font(.system(size: side * 0.24, weight: isEliminated || isEmphasized || isHighlighted ? .bold : .regular, design: .rounded))
-            .strikethrough(isEliminated, color: .red)
+            .font(.system(size: side * 0.24, weight: mark != nil || isHighlighted ? .bold : .regular, design: .rounded))
+            .strikethrough(mark == .eliminated, color: .red)
             .foregroundStyle(style)
+            .background {
+                if let disc {
+                    Circle()
+                        .fill(disc)
+                        .frame(width: side * 0.3, height: side * 0.3)
+                } else if mark == .eliminated {
+                    // A ring makes the small removed candidate easy to find.
+                    Circle()
+                        .strokeBorder(Color.red, lineWidth: 1)
+                        .frame(width: side * 0.3, height: side * 0.3)
+                }
+            }
     }
 
     private var accessibilityValue: Text {

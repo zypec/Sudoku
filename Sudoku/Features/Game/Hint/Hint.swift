@@ -13,24 +13,6 @@ enum Hint: Equatable, Sendable {
     case unavailable
 }
 
-/// How much of a step hint is revealed. Each stage shows more than the previous one.
-enum HintStage: Int, CaseIterable, Comparable, Sendable {
-    /// The technique's name and the house to look at.
-    case nudge
-    /// The pattern and why it works.
-    case explanation
-    /// The resulting placement or eliminations, ready to apply.
-    case result
-
-    static func < (lhs: HintStage, rhs: HintStage) -> Bool {
-        lhs.rawValue < rhs.rawValue
-    }
-
-    var next: HintStage? {
-        HintStage(rawValue: rawValue + 1)
-    }
-}
-
 /// Finds the next logical step for the player's current position.
 enum HintFinder {
     static func hint(for game: SudokuGame, solver: LogicalSolver = LogicalSolver()) -> Hint {
@@ -63,74 +45,5 @@ enum HintFinder {
         // Proven eliminations never remove the solution, but fall back to plain candidates
         // rather than reason from a broken position if that ever happens.
         return board.isContradictory ? Board(values: game.values) : board
-    }
-}
-
-/// What the board should emphasize for a hint at a given stage.
-struct HintHighlights: Equatable {
-    /// How a single cell is drawn while a hint is shown.
-    struct CellStyle: Equatable {
-        var isFocus = false
-        var isPattern = false
-        var isIncorrect = false
-        /// Candidates forming the pattern, drawn bold even if the player has no notes.
-        var emphasizedNotes = CandidateSet()
-        /// Candidates the step removes, drawn struck through.
-        var eliminatedNotes = CandidateSet()
-        /// Digit the step places, drawn as a preview.
-        var ghostDigit: Digit?
-    }
-
-    private var styles: [CellIndex: CellStyle] = [:]
-
-    init() {}
-
-    init(hint: Hint, stage: HintStage) {
-        switch hint {
-        case .incorrectEntries(let cells):
-            for cell in cells {
-                styles[cell, default: CellStyle()].isIncorrect = true
-            }
-
-        case .unavailable:
-            break
-
-        case .step(let step, let board):
-            // The nudge only points at the first house; later stages show every house involved.
-            let houses = stage == .nudge ? Array(step.focusHouses.prefix(1)) : step.focusHouses
-            for cell in houses.flatMap(\.cells) {
-                styles[cell, default: CellStyle()].isFocus = true
-            }
-            // Wings have no house to point at; point at their pivot cell instead.
-            if step.focusHouses.isEmpty, let pivot = step.patternCells.first {
-                styles[pivot, default: CellStyle()].isFocus = true
-            }
-            guard stage >= .explanation else { return }
-
-            for cell in step.patternCells {
-                styles[cell, default: CellStyle()].isPattern = true
-                // For eliminations, show the pattern's candidates. For placements this would give
-                // the answer away before the result stage.
-                if step.placements.isEmpty {
-                    styles[cell, default: CellStyle()].emphasizedNotes = board.candidates(at: cell).intersection(step.patternDigits)
-                }
-            }
-            guard stage == .result else { return }
-
-            for placement in step.placements {
-                styles[placement.cell, default: CellStyle()].ghostDigit = placement.digit
-            }
-            for elimination in step.eliminations {
-                styles[elimination.cell, default: CellStyle()].eliminatedNotes = elimination.digits
-            }
-        }
-    }
-
-    func style(for cell: CellIndex) -> CellStyle? {
-        styles[cell]
-    }
-
-    var isEmpty: Bool {
-        styles.isEmpty
     }
 }

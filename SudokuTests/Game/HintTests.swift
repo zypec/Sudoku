@@ -3,6 +3,7 @@
 //  SudokuTests
 //
 
+import Foundation
 import Testing
 @testable import Sudoku
 
@@ -170,20 +171,23 @@ struct HintTests {
         #expect(game.values[3] == 0)
     }
 
-    // MARK: Wording
+    // MARK: Walkthrough
 
-    /// Every technique has wording for every stage, with all placeholders filled in.
+    /// Every hint of a hard puzzle starts with a nudge, ends with the result, and has wording on
+    /// every page with all placeholders filled in.
     @Test(arguments: [(Difficulty.hard, UInt64(1)), (.hard, 2), (.hard, 3)])
-    func everyStepOfAHardPuzzleHasWording(difficulty: Difficulty, seed: UInt64) {
+    func everyStepOfAHardPuzzleHasAWalkthrough(difficulty: Difficulty, seed: UInt64) {
         var game = generatedGame(difficulty, seed: seed)
         var seen = Set<TechniqueKind>()
         while !game.isFinished, case .step(let step, _) = HintFinder.hint(for: game) {
-            let hint = HintFinder.hint(for: game)
+            let pages = HintWalkthrough.pages(for: HintFinder.hint(for: game))
             seen.insert(step.technique)
-            for stage in HintStage.allCases {
-                let message = HintText.message(for: hint, stage: stage)
-                #expect(!message.isEmpty, "\(step.technique) has no text for \(stage)")
-                #expect(!message.contains("%"), "\(step.technique): \(message)")
+            #expect(pages.count >= 3, "\(step.technique) has no explanation")
+            #expect(pages.first?.kind == .nudge)
+            #expect(pages.last?.kind == .result)
+            for page in pages {
+                #expect(!page.text.isEmpty, "\(step.technique) has an empty page")
+                #expect(!page.text.contains("%"), "\(step.technique): \(page.text)")
             }
             game.apply(step)
         }
@@ -197,15 +201,12 @@ struct HintTests {
             patternCells: [0, 4, 18],
             patternDigits: [1, 2, 3]
         )
-        let nudge = HintHighlights(hint: .step(step, board: Board()), stage: .nudge)
-        #expect(nudge.style(for: 0)?.isFocus == true)
+        let nudge = HintWalkthrough.pages(for: .step(step, board: Board()))[0].highlights
+        #expect(nudge.style(for: 0)?.fill == .pattern)
         #expect(nudge.style(for: 4) == nil)
     }
 
-    // MARK: Highlights
-
-    @Test func highlightsGrowWithEachStage() throws {
-        let board = Board()
+    @Test func pointingBuildsUpPageByPage() {
         let step = SolveStep(
             technique: .pointing,
             eliminations: [Elimination(cell: 3, digits: [5])],
@@ -213,24 +214,35 @@ struct HintTests {
             patternCells: [0, 1],
             patternDigits: [5]
         )
-        let hint = Hint.step(step, board: board)
+        let pages = HintWalkthrough.pages(for: .step(step, board: Board()))
+        #expect(pages.map(\.kind) == [.nudge, .explanation, .explanation, .result])
 
-        let nudge = HintHighlights(hint: hint, stage: .nudge)
-        #expect(nudge.style(for: 9)?.isFocus == true)  // in box 0
-        #expect(nudge.style(for: 3) == nil)            // row 0 only shown later
-        #expect(nudge.style(for: 0)?.isPattern == false)
+        let nudge = pages[0].highlights
+        #expect(nudge.style(for: 9)?.fill == .house)  // in box 0
+        #expect(nudge.style(for: 3) == nil)           // row 0 only shown later
+        #expect(nudge.style(for: 0)?.fill == .house)
 
-        let explanation = HintHighlights(hint: hint, stage: .explanation)
-        #expect(explanation.style(for: 3)?.isFocus == true)
-        #expect(explanation.style(for: 0)?.isPattern == true)
-        #expect(explanation.style(for: 0)?.emphasizedNotes == [5])
-        #expect(explanation.style(for: 3)?.eliminatedNotes.isEmpty == true)
+        let box = pages[1].highlights
+        #expect(box.style(for: 0)?.fill == .pattern)
+        #expect(box.style(for: 0)?.marks == [5: .emphasized])
+        #expect(box.style(for: 3) == nil)
 
-        let result = HintHighlights(hint: hint, stage: .result)
-        #expect(result.style(for: 3)?.eliminatedNotes == [5])
+        let line = pages[2].highlights
+        #expect(line.style(for: 3)?.fill == .house)
+        #expect(line.style(for: 3)?.marks.isEmpty == true)
+
+        let result = pages[3].highlights
+        #expect(result.style(for: 3)?.fill == .target)
+        #expect(result.style(for: 3)?.marks == [5: .eliminated])
     }
 
-    @Test func placementsAreOnlyPreviewedInTheResultStage() {
+    @Test func hiddenSingleShowsTheDigitsThatRuleOutTheOtherCells() throws {
+        // Row 0 is empty. The 5s at r2c4, r3c7, r5c2 and r8c3 see every cell of row 0 except r1c1.
+        var values = Array(repeating: 0, count: Geometry.cellCount)
+        let blockers = [Geometry.cell(row: 1, column: 3), Geometry.cell(row: 2, column: 6), Geometry.cell(row: 4, column: 1), Geometry.cell(row: 7, column: 2)]
+        for cell in blockers {
+            values[cell] = 5
+        }
         let step = SolveStep(
             technique: .hiddenSingle,
             placements: [Placement(cell: 0, digit: 5)],
@@ -238,9 +250,54 @@ struct HintTests {
             patternCells: [0],
             patternDigits: [5]
         )
-        let hint = Hint.step(step, board: Board())
-        #expect(HintHighlights(hint: hint, stage: .explanation).style(for: 0)?.ghostDigit == nil)
-        #expect(HintHighlights(hint: hint, stage: .explanation).style(for: 0)?.emphasizedNotes.isEmpty == true)
-        #expect(HintHighlights(hint: hint, stage: .result).style(for: 0)?.ghostDigit == 5)
+        let pages = HintWalkthrough.pages(for: .step(step, board: Board(values: values)))
+        let explanation = try #require(pages.first { $0.kind == .explanation }).highlights
+        #expect(Set(blockers.filter { explanation.style(for: $0)?.fill == .blocker }) == Set(blockers))
+        #expect(explanation.style(for: 0)?.fill == .pattern)
+        // The answer is only previewed on the result page.
+        #expect(explanation.style(for: 0)?.ghostDigit == nil)
+        #expect(pages.last?.highlights.style(for: 0)?.ghostDigit == 5)
+    }
+
+    @Test func xWingColorsItsTwoDiagonals() throws {
+        var board = Board()
+        for column in 0..<9 where column != 2 && column != 6 {
+            board.eliminate([5], from: Geometry.cell(row: 1, column: column))
+            board.eliminate([5], from: Geometry.cell(row: 4, column: column))
+        }
+        let step = try #require(BasicFish.xWing.findStep(in: board))
+        let pages = HintWalkthrough.pages(for: .step(step, board: board))
+        let diagonals = try #require(pages.last { $0.kind == .explanation }).highlights
+        let mark = { (row: Int, column: Int) in diagonals.style(for: Geometry.cell(row: row, column: column))?.marks[5] }
+        #expect(mark(1, 2) == .alternativeA)
+        #expect(mark(4, 6) == .alternativeA)
+        #expect(mark(1, 6) == .alternativeB)
+        #expect(mark(4, 2) == .alternativeB)
+        let strongLinks = diagonals.links.filter { $0.isStrong }
+        #expect(diagonals.links.count == 2)
+        #expect(strongLinks.count == 2)
+    }
+
+    @MainActor
+    @Test func modelStepsBackAndForthThroughPages() throws {
+        let model = GameModel(game: generatedGame(.medium, seed: 1), settings: AppSettings(defaults: UserDefaults(suiteName: "HintTests.\(UUID().uuidString)") ?? .standard))
+        model.requestHint()
+        let hint = try #require(model.activeHint)
+        #expect(hint.pageIndex == 0)
+        #expect(!hint.canGoBack)
+
+        model.showPreviousHintPage()
+        #expect(model.activeHint?.pageIndex == 0)
+
+        for _ in 0..<20 {
+            model.showNextHintPage()
+        }
+        #expect(model.activeHint?.pageIndex == hint.pages.count - 1)
+        #expect(model.activeHint?.canGoForward == false)
+        #expect(model.hintHighlights == hint.pages.last?.highlights)
+
+        model.showPreviousHintPage()
+        #expect(model.activeHint?.pageIndex == hint.pages.count - 2)
+        #expect(model.hintHighlights == hint.pages[hint.pages.count - 2].highlights)
     }
 }

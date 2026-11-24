@@ -37,10 +37,12 @@ struct BoardView: View {
             )
             .background(.background)
             .overlay { GridLines() }
-            .clipShape(.rect(cornerRadius: 10))
+            .overlay { HintLinks(links: hintHighlights.links, cellSide: cellSide) }
+            // A small radius keeps corner pencil marks (like a 3 in the top-right cell) uncut.
+            .clipShape(.rect(cornerRadius: 6))
             .overlay {
-                RoundedRectangle(cornerRadius: 10)
-                    .strokeBorder(Color.primary, lineWidth: 2)
+                RoundedRectangle(cornerRadius: 6)
+                    .strokeBorder(Color.primary, lineWidth: 1.5)
             }
             .frame(width: side, height: side)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -110,10 +112,51 @@ private struct GridLines: View {
                 context.stroke(
                     path,
                     with: .color(isBoxEdge ? Color.primary : Color.primary.opacity(0.2)),
-                    lineWidth: isBoxEdge ? 2 : 0.5
+                    lineWidth: isBoxEdge ? 1.5 : 0.5
                 )
             }
         }
         .allowsHitTesting(false)
+    }
+}
+
+/// Lines between linked candidates of a hint. Strong links are solid, weak links dashed.
+private struct HintLinks: View {
+    let links: [HintHighlights.Link]
+    let cellSide: CGFloat
+
+    var body: some View {
+        Canvas { context, _ in
+            for link in links {
+                let start = center(of: link.digit, in: link.from)
+                let end = center(of: link.digit, in: link.to)
+                // Stop short of both candidates so the digits stay readable.
+                let dx = end.x - start.x
+                let dy = end.y - start.y
+                let length = max(sqrt(dx * dx + dy * dy), 1)
+                let inset = cellSide * 0.16 / length
+                var path = Path()
+                path.move(to: CGPoint(x: start.x + dx * inset, y: start.y + dy * inset))
+                path.addLine(to: CGPoint(x: end.x - dx * inset, y: end.y - dy * inset))
+                let style = StrokeStyle(
+                    lineWidth: 2,
+                    lineCap: .round,
+                    dash: link.isStrong ? [] : [cellSide * 0.1, cellSide * 0.08]
+                )
+                context.stroke(path, with: .color(.indigo), style: style)
+            }
+        }
+        .allowsHitTesting(false)
+        .accessibilityHidden(true)
+    }
+
+    /// Center of `digit`'s pencil-mark position inside `cell`.
+    private func center(of digit: Digit, in cell: CellIndex) -> CGPoint {
+        // Matches `CellView`'s notes grid: three slots across 92% of the cell, centered.
+        let slot = cellSide * 0.92 / 3
+        let inset = cellSide * 0.04
+        let x = CGFloat(Geometry.column(of: cell)) * cellSide + inset + (CGFloat((digit - 1) % 3) + 0.5) * slot
+        let y = CGFloat(Geometry.row(of: cell)) * cellSide + inset + (CGFloat((digit - 1) / 3) + 0.5) * slot
+        return CGPoint(x: x, y: y)
     }
 }
