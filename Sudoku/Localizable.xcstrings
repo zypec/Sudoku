@@ -171,6 +171,23 @@
         }
       }
     },
+    "Auto Solve": {
+      "comment": "Game menu item and panel title: solves the puzzle step by step",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auto Solve"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Otomatik Çöz"
+          }
+        }
+      }
+    },
     "Back": {
       "comment": "Hint panel: go to the previous page",
       "localizations": {
@@ -1089,6 +1106,23 @@
         }
       }
     },
+    "Next Step": {
+      "comment": "Auto solve: apply the step on screen now",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Next Step"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sonraki Adım"
+          }
+        }
+      }
+    },
     "No Hint Available": {
       "comment": "Hint panel title when no known technique applies",
       "localizations": {
@@ -1208,6 +1242,40 @@
         }
       }
     },
+    "Pause": {
+      "comment": "Auto solve: pause",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pause"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Duraklat"
+          }
+        }
+      }
+    },
+    "Paused": {
+      "comment": "Auto solve status while paused",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paused"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Duraklatıldı"
+          }
+        }
+      }
+    },
     "Pivot with two pincers": {
       "comment": "Technique subtitle",
       "localizations": {
@@ -1255,6 +1323,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bulmaca hazırlanıyor…"
+          }
+        }
+      }
+    },
+    "Progress": {
+      "comment": "Accessibility label of the auto solve progress bar",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Progress"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İlerleme"
           }
         }
       }
@@ -1340,6 +1425,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Notları Otomatik Sil"
+          }
+        }
+      }
+    },
+    "Resume": {
+      "comment": "Auto solve: continue after pausing",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resume"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Devam Et"
           }
         }
       }
@@ -1514,6 +1616,23 @@
         }
       }
     },
+    "Speed": {
+      "comment": "Auto solve: speed picker",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Speed"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hız"
+          }
+        }
+      }
+    },
     "Starting a new game replaces the game in progress.": {
       "comment": "Note in the New Game sheet when a saved game exists",
       "localizations": {
@@ -1531,6 +1650,23 @@
         }
       }
     },
+    "Step %lld": {
+      "comment": "Auto solve status: number of the step on screen",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Step %lld"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adım %lld"
+          }
+        }
+      }
+    },
     "Step %lld of %lld": {
       "comment": "Accessibility label of the hint progress bars",
       "localizations": {
@@ -1544,6 +1680,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Adım %1$lld / %2$lld"
+          }
+        }
+      }
+    },
+    "Stop": {
+      "comment": "Auto solve: stop and close the panel",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stop"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Durdur"
+          }
+        }
+      }
+    },
+    "Stopped": {
+      "comment": "Auto solve status when the next step needs an unknown technique",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stopped"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Durdu"
           }
         }
       }
@@ -1629,6 +1799,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "%1$@ hücresinin satırındaki, sütunundaki ve kutusundaki rakamlar (işaretli) ve önceki elemeler geriye yalnızca %2$lld bırakıyor."
+          }
+        }
+      }
+    },
+    "The incorrect digits will be erased.": {
+      "comment": "Auto solve: the next step clears wrong entries",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The incorrect digits will be erased."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yanlış rakamlar silinecek."
           }
         }
       }

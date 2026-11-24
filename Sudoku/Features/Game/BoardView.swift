@@ -54,7 +54,7 @@ struct BoardView: View {
         let game = model.game
         let settings = model.settings
         // While a hint is open, selection highlighting is hidden so the hint's colors stand out.
-        let isShowingHint = model.activeHint != nil
+        let isShowingHint = model.isShowingHintHighlights
         return CellView(
             cell: cell,
             value: game.values[cell],

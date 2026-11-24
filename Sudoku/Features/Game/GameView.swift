@@ -43,6 +43,7 @@ struct GameView: View {
             }
         }
         .animation(.snappy, value: model.activeHint != nil)
+        .animation(.snappy, value: model.autoSolve != nil)
         .overlay {
             if model.isPreparingNewGame {
                 ProgressView()
@@ -76,10 +77,12 @@ struct GameView: View {
         // Ticks aren't saved individually, so save the clock when leaving the foreground or the screen.
         .onChange(of: scenePhase) { _, phase in
             if phase != .active {
+                model.pauseAutoSolve()
                 model.save()
             }
         }
         .onDisappear {
+            model.stopAutoSolve()
             model.save()
         }
         .alert(outcomeTitle, item: $outcome) { _ in
@@ -109,7 +112,7 @@ struct GameView: View {
     }
 
     /// Actions used rarely enough to sit behind a menu: Auto Notes (which replaces every pencil
-    /// mark) and Settings.
+    /// mark), Auto Solve and Settings.
     private var optionsMenu: some View {
         Menu("More", systemImage: "ellipsis") {
             if model.settings.showsAutoNotesButton {
@@ -117,9 +120,14 @@ struct GameView: View {
                     model.fillNotes()
                 }
                 .disabled(model.game.isFinished)
-                Divider()
             }
+            Button("Auto Solve", systemImage: "play.circle") {
+                model.startAutoSolve()
+            }
+            .disabled(model.game.isFinished || model.autoSolve != nil)
+            Divider()
             Button("Settings", systemImage: "gearshape") {
+                model.pauseAutoSolve()
                 isShowingSettings = true
             }
         }
@@ -129,11 +137,11 @@ struct GameView: View {
         model.settings.hapticsEnabled
     }
 
-    /// Controls and number pad, with the hint panel covering them while a hint is open. The controls
+    /// Controls and number pad, with the hint or auto solve panel covering them while open. The controls
     /// stay in the layout (hidden) so the board keeps its size, and the panel fills all the space
     /// below the board.
     private func inputArea(keypadColumns: Int) -> some View {
-        let isShowingHint = model.activeHint != nil
+        let isShowingHint = model.isShowingHintHighlights
         return ZStack(alignment: .bottom) {
             VStack(spacing: 16) {
                 GameControlsView(model: model)
@@ -143,7 +151,10 @@ struct GameView: View {
             .allowsHitTesting(!isShowingHint)
             .accessibilityHidden(isShowingHint)
 
-            if let activeHint = model.activeHint {
+            if let autoSolve = model.autoSolve {
+                AutoSolvePanel(model: model, state: autoSolve)
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+            } else if let activeHint = model.activeHint {
                 HintPanel(model: model, activeHint: activeHint)
                     .transition(.move(edge: .bottom).combined(with: .opacity))
             }

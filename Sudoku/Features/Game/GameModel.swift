@@ -15,10 +15,14 @@ final class GameModel {
     private(set) var isNotesMode = false
     private(set) var isPreparingNewGame = false
     private(set) var activeHint: ActiveHint?
+    private(set) var autoSolve: AutoSolveState?
 
     @ObservationIgnored let settings: AppSettings
     /// `nil` keeps the game in memory only (previews, tests).
     @ObservationIgnored private let store: GameStore?
+    @ObservationIgnored private var autoSolveTask: Task<Void, Never>?
+    /// Set by "Next Step" to apply the step on screen without waiting.
+    @ObservationIgnored private var skipsAutoSolveWait = false
 
     /// A hint being shown and the page the player is on.
     struct ActiveHint: Equatable {
@@ -110,7 +114,15 @@ final class GameModel {
     // MARK: Hints
 
     var hintHighlights: HintHighlights {
-        activeHint?.page.highlights ?? HintHighlights()
+        if let page = autoSolve?.page {
+            return page.highlights
+        }
+        return activeHint?.page.highlights ?? HintHighlights()
+    }
+
+    /// Whether a hint or auto solve is drawing on the board (selection highlighting is hidden then).
+    var isShowingHintHighlights: Bool {
+        activeHint != nil || autoSolve != nil
     }
 
     func requestHint() {
@@ -167,6 +179,96 @@ final class GameModel {
         activeHint = nil
     }
 
+    // MARK: Auto solve
+
+    /// Solves the rest of the puzzle step by step: each step is shown on the board for a moment
+    /// (see `AutoSolveSpeed`) and then applied. Every step counts as a hint and can be undone.
+    func startAutoSolve() {
+        guard !game.isFinished, autoSolve == nil else { return }
+        activeHint = nil
+        isNotesMode = false
+        autoSolve = AutoSolveState()
+        autoSolveTask = Task { await runAutoSolve() }
+    }
+
+    func stopAutoSolve() {
+        autoSolveTask?.cancel()
+        autoSolveTask = nil
+        autoSolve = nil
+    }
+
+    func toggleAutoSolvePause() {
+        guard let autoSolve, !autoSolve.isStuck else { return }
+        self.autoSolve?.isPaused.toggle()
+    }
+
+    func pauseAutoSolve() {
+        autoSolve?.isPaused = true
+    }
+
+    /// Applies the step on screen right away; useful while paused to go one step at a time.
+    func autoSolveNextStep() {
+        guard autoSolve?.isStuck == false else { return }
+        skipsAutoSolveWait = true
+    }
+
+    private func runAutoSolve() async {
+        while !Task.isCancelled, autoSolve != nil, !game.isFinished {
+            let hint = HintFinder.hint(for: game)
+            var page = HintWalkthrough.pages(for: hint).last
+            if case .incorrectEntries = hint, let highlights = page?.highlights {
+                page = HintPage(kind: .result, text: String(localized: "The incorrect digits will be erased."), highlights: highlights)
+            }
+            autoSolve?.hint = hint
+            autoSolve?.page = page
+
+            if case .unavailable = hint {
+                autoSolve?.isStuck = true
+                autoSolve?.isPaused = true
+                return
+            }
+            guard await waitForAutoSolveStep() else { return }
+
+            switch hint {
+            case .step(let step, _):
+                update {
+                    $0.registerHint()
+                    $0.apply(step)
+                }
+            case .incorrectEntries:
+                update { $0.eraseIncorrectEntries() }
+            case .unavailable:
+                break
+            }
+            autoSolve?.appliedSteps += 1
+        }
+        if game.isFinished {
+            autoSolve = nil
+            autoSolveTask = nil
+        }
+    }
+
+    /// Waits until the step on screen has been shown long enough. Only unpaused time counts, and the
+    /// speed is read on every tick, so pausing or changing speed takes effect mid-step.
+    /// Returns `false` if auto solve was stopped.
+    private func waitForAutoSolveStep() async -> Bool {
+        let tick = 0.05
+        var progress = 0.0
+        skipsAutoSolveWait = false
+        while progress < 1 {
+            guard !Task.isCancelled, let state = autoSolve else { return false }
+            if skipsAutoSolveWait {
+                skipsAutoSolveWait = false
+                return true
+            }
+            try? await Task.sleep(for: .seconds(tick))
+            if !state.isPaused {
+                progress += tick / settings.autoSolveSpeed.stepDuration
+            }
+        }
+        return !Task.isCancelled && autoSolve != nil
+    }
+
     // MARK: Lifecycle
 
     /// Advances the clock by one second while the game is running. Not saved on every tick;
@@ -185,6 +287,7 @@ final class GameModel {
         selectedCell = nil
         isNotesMode = false
         activeHint = nil
+        stopAutoSolve()
         isPreparingNewGame = false
         save()
     }

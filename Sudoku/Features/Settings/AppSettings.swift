@@ -69,6 +69,10 @@ final class AppSettings {
     var hapticsEnabled: Bool {
         didSet { defaults.set(hapticsEnabled, forKey: Key.hapticsEnabled) }
     }
+    /// Last speed chosen in the auto solve panel.
+    var autoSolveSpeed: AutoSolveSpeed {
+        didSet { defaults.set(autoSolveSpeed.rawValue, forKey: Key.autoSolveSpeed) }
+    }
 
     @ObservationIgnored private let defaults: UserDefaults
 
@@ -84,6 +88,7 @@ final class AppSettings {
         dimsCompletedDigits = defaults.object(forKey: Key.dimsCompletedDigits) as? Bool ?? true
         showsAutoNotesButton = defaults.object(forKey: Key.showsAutoNotesButton) as? Bool ?? true
         hapticsEnabled = defaults.object(forKey: Key.hapticsEnabled) as? Bool ?? true
+        autoSolveSpeed = (defaults.object(forKey: Key.autoSolveSpeed) as? Double).flatMap(AutoSolveSpeed.init(rawValue:)) ?? .normal
     }
 
     /// Mistake limit for a game starting now. Without visible mistakes a limit would end games
@@ -103,5 +108,6 @@ final class AppSettings {
         static let dimsCompletedDigits = "settings.dimsCompletedDigits"
         static let showsAutoNotesButton = "settings.showsAutoNotesButton"
         static let hapticsEnabled = "settings.hapticsEnabled"
+        static let autoSolveSpeed = "settings.autoSolveSpeed"
     }
 }

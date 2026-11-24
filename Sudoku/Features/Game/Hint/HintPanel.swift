@@ -46,11 +46,11 @@ struct HintPanel: View {
                 }
             }
             Spacer()
-            HeaderButton(title: "Reveal Cell", systemImage: "eye") {
+            PanelIconButton(title: "Reveal Cell", systemImage: "eye") {
                 model.revealCell()
             }
             .disabled(model.revealTarget == nil)
-            HeaderButton(title: "Close", systemImage: "xmark") {
+            PanelIconButton(title: "Close", systemImage: "xmark") {
                 model.closeHint()
             }
         }
@@ -108,8 +108,8 @@ struct HintPanel: View {
     }
 }
 
-/// Small round icon button used in the panel's header.
-private struct HeaderButton: View {
+/// Small round icon button used in the headers of the hint and auto solve panels.
+struct PanelIconButton: View {
     let title: LocalizedStringKey
     let systemImage: String
     let action: () -> Void
