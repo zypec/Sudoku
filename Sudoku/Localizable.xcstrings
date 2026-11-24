@@ -1,23 +1,6 @@
 {
   "sourceLanguage": "en",
   "strings": {
-    "%@ · %@": {
-      "comment": "Saved game summary under Continue: difficulty and elapsed time",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@ · %2$@"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@ · %2$@"
-          }
-        }
-      }
-    },
     "%lld remaining": {
       "comment": "Accessibility value of a number pad key: how many of this digit are still missing",
       "localizations": {
@@ -647,6 +630,57 @@
         }
       }
     },
+    "In %@ and %@, %lld fits in only two cells each, and these four cells lie in %@ and %@. However %lld is placed in the two lines, it fills one cell in each of %@ and %@, so it can be removed from their other cells.": {
+      "comment": "X-Wing explanation: base lines, digit, cover lines, digit, cover lines",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In %1$@ and %2$@, %3$lld fits in only two cells each, and these four cells lie in %4$@ and %5$@. However %6$lld is placed in the two lines, it fills one cell in each of %7$@ and %8$@, so it can be removed from their other cells."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ ve %2$@ içinde %3$lld yalnızca ikişer hücreye girebiliyor ve bu dört hücre %4$@ ile %5$@ üzerinde. %6$lld bu iki çizgiye nasıl yerleşirse yerleşsin %7$@ ve %8$@ içinde birer hücre doldurur; bu yüzden bunların diğer hücrelerinden silinebilir."
+          }
+        }
+      }
+    },
+    "In %@ and %@, %lld fits in only two cells each. Two of these cells share %@, so at most one of them is %lld. That means %lld must be in at least one of the other two cells: %@ or %@. Any cell that sees both of them can't be %lld.": {
+      "comment": "Skyscraper explanation: two lines, digit, shared base line, digit, digit, the two top cells, digit",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In %1$@ and %2$@, %3$lld fits in only two cells each. Two of these cells share %4$@, so at most one of them is %5$lld. That means %6$lld must be in at least one of the other two cells: %7$@ or %8$@. Any cell that sees both of them can't be %9$lld."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ ve %2$@ içinde %3$lld yalnızca ikişer hücreye girebiliyor. Bu hücrelerden ikisi %4$@ üzerinde; dolayısıyla en fazla biri %5$lld olabilir. Yani %6$lld diğer iki hücreden en az birinde olmalı: %7$@ ya da %8$@. İkisini birden gören hiçbir hücre %9$lld olamaz."
+          }
+        }
+      }
+    },
+    "In %@ and in %@, %lld fits in only two cells each. One cell from each pair lies in %@, and since they see each other, at most one of them is %lld. So %lld must be in at least one of the other ends: %@ or %@. Any cell that sees both of them can't be %lld.": {
+      "comment": "2-String Kite explanation: row, column, digit, box, digit, digit, the two outer cells, digit",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In %1$@ and in %2$@, %3$lld fits in only two cells each. One cell from each pair lies in %4$@, and since they see each other, at most one of them is %5$lld. So %6$lld must be in at least one of the other ends: %7$@ or %8$@. Any cell that sees both of them can't be %9$lld."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ ve %2$@ içinde %3$lld yalnızca ikişer hücreye girebiliyor. Her çiftten bir hücre %4$@ içinde ve birbirlerini gördükleri için en fazla biri %5$lld olabilir. Yani %6$lld diğer uçlardan en az birinde olmalı: %7$@ ya da %8$@. İkisini birden gören hiçbir hücre %9$lld olamaz."
+          }
+        }
+      }
+    },
     "In %@, %@ can only go in the %lld highlighted cells. Those cells must hold exactly these digits, so their other candidates can be removed.": {
       "comment": "Hidden pair/triple/quad explanation. Arguments: house, digit list such as '1 and 2', cell count",
       "localizations": {
@@ -796,6 +830,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Kilitli adaylar ve ikililer"
+          }
+        }
+      }
+    },
+    "Look for %@ around the cell at %@.": {
+      "comment": "Hint, first stage for patterns without a house: technique name and the pivot cell",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Look for %1$@ around the cell at %2$@."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%2$@ hücresinin çevresinde %1$@ ara."
+          }
+        }
+      }
+    },
+    "Look for %@ in %@.": {
+      "comment": "Hint, first stage: technique name and the house to look at",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Look for %1$@ in %2$@."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%2$@ içinde %1$@ ara."
           }
         }
       }
@@ -1055,6 +1123,23 @@
         }
       }
     },
+    "Pivot with two pincers": {
+      "comment": "Technique subtitle",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pivot with two pincers"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eksen ve İki Kıskaç"
+          }
+        }
+      }
+    },
     "Place %lld at %@.": {
       "comment": "Hint result. %1$lld is a digit, %2$@ a cell such as 'row 3, column 5'",
       "localizations": {
@@ -1102,6 +1187,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bulmaca Çözüldü!"
+          }
+        }
+      }
+    },
+    "Rectangle on two lines": {
+      "comment": "Technique subtitle",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rectangle on two lines"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İki Çizgide Dikdörtgen"
           }
         }
       }
@@ -1187,6 +1289,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "%1$lld. satır, %2$lld. sütun"
+          }
+        }
+      }
+    },
+    "Row and column joined in a box": {
+      "comment": "Technique subtitle",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Row and column joined in a box"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uçurtma"
           }
         }
       }
@@ -1378,6 +1497,57 @@
         }
       }
     },
+    "The cell at %@ can only be %@. If it's %lld, the cell at %@ must be %lld; if it's %lld, the cell at %@ must be %lld; otherwise it is %lld itself. So one of these three cells is %lld, and any cell that sees all three can't be %lld.": {
+      "comment": "XYZ-Wing explanation: pivot cell, its digits as an 'or' list, then each pincer cell with the eliminated digit",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The cell at %1$@ can only be %2$@. If it's %3$lld, the cell at %4$@ must be %5$lld; if it's %6$lld, the cell at %7$@ must be %8$lld; otherwise it is %9$lld itself. So one of these three cells is %10$lld, and any cell that sees all three can't be %11$lld."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ hücresi yalnızca %2$@ olabilir. %3$lld ise %4$@ hücresi %5$lld olmak zorunda; %6$lld ise %7$@ hücresi %8$lld olmak zorunda; aksi halde kendisi %9$lld olur. Yani bu üç hücreden biri %10$lld; üçünü birden gören hiçbir hücre %11$lld olamaz."
+          }
+        }
+      }
+    },
+    "The cell at %@ can only be %lld or %lld. If it's %lld, the cell at %@ must be %lld; if it's %lld, the cell at %@ must be %lld. Either way one of these two cells is %lld, so any cell that sees both can't be %lld.": {
+      "comment": "XY-Wing explanation: pivot cell, its two digits, then each pincer cell with the eliminated digit",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The cell at %1$@ can only be %2$lld or %3$lld. If it's %4$lld, the cell at %5$@ must be %6$lld; if it's %7$lld, the cell at %8$@ must be %9$lld. Either way one of these two cells is %10$lld, so any cell that sees both can't be %11$lld."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ hücresi yalnızca %2$lld ya da %3$lld olabilir. %4$lld ise %5$@ hücresi %6$lld olmak zorunda; %7$lld ise %8$@ hücresi %9$lld olmak zorunda. Her durumda bu iki hücreden biri %10$lld olur; ikisini birden gören hiçbir hücre %11$lld olamaz."
+          }
+        }
+      }
+    },
+    "The cells at %@ and %@ can only be %lld or %lld. In %@, %lld fits in only two cells, and each of them sees one of these cells. Whichever holds %lld, the cell it sees can't be %lld and must be %lld. So one of the two cells is %lld, and any cell that sees both can't be %lld.": {
+      "comment": "W-Wing explanation: the two bivalue cells, link digit, eliminated digit, link house, then the link and eliminated digits",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The cells at %1$@ and %2$@ can only be %3$lld or %4$lld. In %5$@, %6$lld fits in only two cells, and each of them sees one of these cells. Whichever holds %7$lld, the cell it sees can't be %8$lld and must be %9$lld. So one of the two cells is %10$lld, and any cell that sees both can't be %11$lld."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ ve %2$@ hücreleri yalnızca %3$lld ya da %4$lld olabilir. %5$@ içinde %6$lld yalnızca iki hücreye girebiliyor ve bunların her biri bu hücrelerden birini görüyor. %7$lld hangisindeyse, onun gördüğü hücre %8$lld olamaz ve %9$lld olmak zorunda. Yani iki hücreden biri %10$lld; ikisini birden gören hiçbir hücre %11$lld olamaz."
+          }
+        }
+      }
+    },
     "The mistake limit applies to new games. When mistakes are hidden, there is no limit.": {
       "comment": "Settings footer for the Game section",
       "localizations": {
@@ -1429,23 +1599,6 @@
         }
       }
     },
-    "There's a %@ in %@.": {
-      "comment": "First hint stage. %1$@ is a technique name such as 'Hidden Single', %2$@ a house such as 'row 3'",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "There's a %1$@ in %2$@."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%2$@ içinde bir %1$@ var."
-          }
-        }
-      }
-    },
     "Three cells, three digits": {
       "comment": "Subtitle for the Naked Triple technique",
       "localizations": {
@@ -1480,6 +1633,40 @@
         }
       }
     },
+    "Three-digit pivot with two pincers": {
+      "comment": "Technique subtitle",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Three-digit pivot with two pincers"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Üç Adaylı Eksen ve İki Kıskaç"
+          }
+        }
+      }
+    },
+    "Twin pairs joined by a link": {
+      "comment": "Technique subtitle",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Twin pairs joined by a link"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bağlı İkiz Çiftler"
+          }
+        }
+      }
+    },
     "Two cells, two digits": {
       "comment": "Subtitle for the Naked Pair technique",
       "localizations": {
@@ -1510,6 +1697,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Gizli İkili"
+          }
+        }
+      }
+    },
+    "Two links sharing a base": {
+      "comment": "Technique subtitle",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Two links sharing a base"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gökdelen"
           }
         }
       }

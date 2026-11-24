@@ -101,6 +101,10 @@ struct HintHighlights: Equatable {
             for cell in houses.flatMap(\.cells) {
                 styles[cell, default: CellStyle()].isFocus = true
             }
+            // Wings have no house to point at; point at their pivot cell instead.
+            if step.focusHouses.isEmpty, let pivot = step.patternCells.first {
+                styles[pivot, default: CellStyle()].isFocus = true
+            }
             guard stage >= .explanation else { return }
 
             for cell in step.patternCells {

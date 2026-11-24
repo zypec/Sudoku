@@ -69,6 +69,15 @@ enum Geometry {
         a != b && (row(of: a) == row(of: b) || column(of: a) == column(of: b) || box(of: a) == box(of: b))
     }
 
+    /// Cells, other than the given ones, that see every cell in `cells`. Used by patterns that
+    /// prove "one of these cells holds the digit": any cell seeing all of them can't hold it.
+    static func cellsSeeingAll(_ cells: [CellIndex]) -> [CellIndex] {
+        guard let first = cells.first else { return [] }
+        return peers[first].filter { candidate in
+            !cells.contains(candidate) && cells.allSatisfy { sees(candidate, $0) }
+        }
+    }
+
     /// Cells of every house, indexed by `kind.rawValue * 9 + index`.
     fileprivate static let cellsByHouse: [[CellIndex]] = House.Kind.allCases.flatMap { kind in
         (0..<9).map { index in

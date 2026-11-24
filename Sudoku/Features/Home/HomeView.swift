@@ -35,6 +35,8 @@ struct HomeView: View {
                         newGameButton
                     }
                 }
+                // Full width on iPhone; a comfortable column on iPad.
+                .frame(maxWidth: 440)
             }
             .padding()
             .toolbar {
@@ -74,14 +76,17 @@ struct HomeView: View {
         Button {
             activeGame = GameModel(game: game, settings: settings, store: store)
         } label: {
-            VStack(spacing: 2) {
-                Text("Continue")
+            // One line: the action on the left, the saved game's difficulty and time on the right.
+            HStack(spacing: 8) {
+                Label("Continue", systemImage: "play.fill")
                     .font(.headline)
-                Text("\(Text(game.puzzle.difficulty.title)) · \(GameStatusView.formattedTime(game.elapsedSeconds))")
-                    .font(.caption)
-                    .opacity(0.8)
+                Spacer(minLength: 8)
+                Text(game.puzzle.difficulty.title)
+                Text(verbatim: GameStatusView.formattedTime(game.elapsedSeconds))
+                    .monospacedDigit()
             }
-            .frame(maxWidth: .infinity, minHeight: 44)
+            .font(.subheadline)
+            .frame(maxWidth: .infinity)
         }
         .buttonStyle(.glassProminent)
         .controlSize(.large)
@@ -89,9 +94,12 @@ struct HomeView: View {
 
     @ViewBuilder
     private var newGameButton: some View {
-        let label = Text("New Game")
-            .font(.headline)
-            .frame(maxWidth: .infinity, minHeight: 44)
+        let label = HStack {
+            Label("New Game", systemImage: "plus")
+                .font(.headline)
+            Spacer(minLength: 0)
+        }
+        .frame(maxWidth: .infinity)
         // The primary action is the most prominent button: Continue when there's a saved game.
         Group {
             if savedGame == nil {

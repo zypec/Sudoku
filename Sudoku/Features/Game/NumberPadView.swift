@@ -5,9 +5,9 @@
 
 import SwiftUI
 
-/// Digit keys 1–9 drawn as large bare numerals. Each key shows how many of that digit are still
+/// Digit keys 1 to 9 drawn as large bare numerals. Each key shows how many of that digit are still
 /// missing; completed digits fade out. In notes mode each digit shrinks into the corner where it
-/// appears as a pencil mark (1 top-left … 9 bottom-right), so the mode is visible at a glance.
+/// appears as a pencil mark (1 top-left through 9 bottom-right), so the mode is visible at a glance.
 struct NumberPadView: View {
     let model: GameModel
     /// 9 for a single row under the board, 3 for a keypad next to the board on wide screens.

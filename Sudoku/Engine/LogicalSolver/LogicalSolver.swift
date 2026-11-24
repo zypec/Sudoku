@@ -23,6 +23,12 @@ struct LogicalSolver: Sendable {
         // Level 3
         NakedSubset(size: 4),
         HiddenSubset(size: 4),
+        BasicFish.xWing,
+        Skyscraper(),
+        TwoStringKite(),
+        XYWing(),
+        XYZWing(),
+        WWing(),
     ]
 
     let techniques: [any Technique]

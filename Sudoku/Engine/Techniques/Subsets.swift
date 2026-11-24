@@ -4,7 +4,7 @@
 //
 
 /// Naked pair / triple / quad. When `size` empty cells of a house together have only `size`
-/// candidates, those digits must fill exactly these cells — so they can be removed from every
+/// candidates, those digits must fill exactly these cells, so they can be removed from every
 /// other cell of the house.
 struct NakedSubset: Technique {
     let size: Int
@@ -54,7 +54,7 @@ struct NakedSubset: Technique {
 }
 
 /// Hidden pair / triple / quad. When `size` digits can only go in the same `size` cells of a house,
-/// those cells must hold exactly these digits — so every other candidate can be removed from them.
+/// those cells must hold exactly these digits, so every other candidate can be removed from them.
 struct HiddenSubset: Technique {
     let size: Int
 

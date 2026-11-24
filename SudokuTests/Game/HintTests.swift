@@ -80,7 +80,7 @@ struct HintTests {
 
     // MARK: Applying hints
 
-    @Test(arguments: [(Difficulty.easy, UInt64(1)), (.medium, 1), (.medium, 2), (.medium, 3)])
+    @Test(arguments: [(Difficulty.easy, UInt64(1)), (.medium, 1), (.medium, 2), (.medium, 3), (.hard, 1), (.hard, 2)])
     func applyingHintsSolvesThePuzzleWithoutNotes(difficulty: Difficulty, seed: UInt64) {
         var game = generatedGame(difficulty, seed: seed)
         let hints = solveWithHints(&game)
@@ -168,6 +168,38 @@ struct HintTests {
         #expect(erased)
         #expect(game.values[2] == 4)
         #expect(game.values[3] == 0)
+    }
+
+    // MARK: Wording
+
+    /// Every technique has wording for every stage, with all placeholders filled in.
+    @Test(arguments: [(Difficulty.hard, UInt64(1)), (.hard, 2), (.hard, 3)])
+    func everyStepOfAHardPuzzleHasWording(difficulty: Difficulty, seed: UInt64) {
+        var game = generatedGame(difficulty, seed: seed)
+        var seen = Set<TechniqueKind>()
+        while !game.isFinished, case .step(let step, _) = HintFinder.hint(for: game) {
+            let hint = HintFinder.hint(for: game)
+            seen.insert(step.technique)
+            for stage in HintStage.allCases {
+                let message = HintText.message(for: hint, stage: stage)
+                #expect(!message.isEmpty, "\(step.technique) has no text for \(stage)")
+                #expect(!message.contains("%"), "\(step.technique): \(message)")
+            }
+            game.apply(step)
+        }
+        #expect(seen.contains { $0.level == 3 })
+    }
+
+    @Test func wingNudgePointsAtThePivot() {
+        let step = SolveStep(
+            technique: .xyWing,
+            eliminations: [Elimination(cell: 1, digits: [3])],
+            patternCells: [0, 4, 18],
+            patternDigits: [1, 2, 3]
+        )
+        let nudge = HintHighlights(hint: .step(step, board: Board()), stage: .nudge)
+        #expect(nudge.style(for: 0)?.isFocus == true)
+        #expect(nudge.style(for: 4) == nil)
     }
 
     // MARK: Highlights

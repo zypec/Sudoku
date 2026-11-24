@@ -31,7 +31,7 @@ struct Board: Hashable, Sendable {
         }
     }
 
-    /// Parses 81 characters row by row: `1`–`9` are digits, `0`, `.` or `-` are empty cells.
+    /// Parses 81 characters row by row: `1` to `9` are digits, `0`, `.` or `-` are empty cells.
     /// Whitespace is ignored. Returns `nil` for malformed input.
     init?(string: String) {
         var parsed: [Digit] = []

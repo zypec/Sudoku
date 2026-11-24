@@ -31,7 +31,7 @@ extension RandomNumberGenerator {
 }
 
 extension Array {
-    /// Fisher–Yates shuffle that, unlike `shuffle(using:)`, is guaranteed to give the same order for
+    /// Fisher-Yates shuffle that, unlike `shuffle(using:)`, is guaranteed to give the same order for
     /// the same generator state on every OS version.
     mutating func stableShuffle(using generator: inout some RandomNumberGenerator) {
         guard count > 1 else { return }

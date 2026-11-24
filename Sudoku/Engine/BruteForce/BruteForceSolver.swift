@@ -5,7 +5,7 @@
 
 /// Fast backtracking solver used only to verify puzzles (uniqueness) and to look up solutions.
 ///
-/// It never explains anything — hints and difficulty grading use `LogicalSolver` instead.
+/// It never explains anything; hints and difficulty grading use `LogicalSolver` instead.
 enum BruteForceSolver {
     /// Counts solutions of `values` (81 digits, `0` = empty), stopping once `limit` is reached.
     /// Returns `0` for grids whose givens already conflict.

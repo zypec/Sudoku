@@ -16,8 +16,14 @@ enum TechniqueKind: String, CaseIterable, Codable, Sendable {
     case hiddenTriple
     case nakedQuad
     case hiddenQuad
+    case xWing
+    case skyscraper
+    case twoStringKite
+    case xyWing
+    case xyzWing
+    case wWing
 
-    /// Difficulty tier `1...5` (basic … master). A puzzle's difficulty is the highest
+    /// Difficulty tier `1...5` (basic to master). A puzzle's difficulty is the highest
     /// level among the techniques it requires.
     var level: Int {
         switch self {
@@ -25,7 +31,7 @@ enum TechniqueKind: String, CaseIterable, Codable, Sendable {
             1
         case .pointing, .claiming, .nakedPair, .hiddenPair, .nakedTriple, .hiddenTriple:
             2
-        case .nakedQuad, .hiddenQuad:
+        case .nakedQuad, .hiddenQuad, .xWing, .skyscraper, .twoStringKite, .xyWing, .xyzWing, .wWing:
             3
         }
     }
@@ -44,7 +50,7 @@ struct Elimination: Hashable, Sendable, Codable {
 }
 
 /// One logical deduction: what was found, with which technique, and what the UI should
-/// highlight to explain it. Contains no text — explanations are localized in the UI layer.
+/// highlight to explain it. Contains no text; explanations are localized in the UI layer.
 struct SolveStep: Hashable, Sendable {
     let technique: TechniqueKind
     var placements: [Placement] = []
@@ -65,6 +71,17 @@ protocol Technique: Sendable {
 }
 
 extension Board {
+    /// Cells of `house` that still have `digit` as a candidate. Two cells form a *strong link*
+    /// (conjugate pair): exactly one of them holds the digit.
+    func cells(in house: House, withCandidate digit: Digit) -> [CellIndex] {
+        house.cells.filter { candidates(at: $0).contains(digit) }
+    }
+
+    /// Eliminations removing `digit` from those of `cells` that still have it.
+    func eliminations(of digit: Digit, from cells: some Sequence<CellIndex>) -> [Elimination] {
+        cells.compactMap { candidates(at: $0).contains(digit) ? Elimination(cell: $0, digits: [digit]) : nil }
+    }
+
     /// Applies a step's placements and eliminations.
     mutating func apply(_ step: SolveStep) {
         for placement in step.placements {

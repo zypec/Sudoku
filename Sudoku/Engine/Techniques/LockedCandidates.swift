@@ -4,7 +4,7 @@
 //
 
 /// Locked Candidates type 1. When every candidate for a digit inside a box lies in one row (or
-/// column), the digit must be placed in that line within the box — so it can be removed from the
+/// column), the digit must be placed in that line within the box, so it can be removed from the
 /// rest of the line outside the box.
 struct Pointing: Technique {
     let kind = TechniqueKind.pointing
@@ -45,7 +45,7 @@ struct Pointing: Technique {
 }
 
 /// Locked Candidates type 2 (box/line reduction). When every candidate for a digit inside a row
-/// (or column) lies in one box, the digit must be placed in that box within the line — so it can be
+/// (or column) lies in one box, the digit must be placed in that box within the line, so it can be
 /// removed from the rest of the box.
 struct Claiming: Technique {
     let kind = TechniqueKind.claiming
