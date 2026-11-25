@@ -6,11 +6,37 @@
 //  Run Tools/generate-puzzle-bank.sh instead of calling this directly.
 //
 //  Usage: PuzzleBankGenerator <output.json> <puzzles per difficulty>
+//         PuzzleBankGenerator positions <bank.json> <output.json> <positions per technique>
 //
 
 import Foundation
 
 let arguments = CommandLine.arguments
+
+// Training positions: read the bank and record, per puzzle, where each technique is first needed.
+if arguments.count == 5, arguments[1] == "positions", let limit = Int(arguments[4]) {
+    let bank = try PuzzleBank(data: Data(contentsOf: URL(filePath: arguments[2])))
+    // Alternate difficulties so each technique's positions come from varied puzzles.
+    let longest = Difficulty.allCases.map(bank.count(of:)).max() ?? 0
+    var puzzles: [Puzzle] = []
+    for index in 0..<longest {
+        for difficulty in Difficulty.allCases.reversed() {
+            if let puzzle = bank.puzzle(difficulty, at: index) {
+                puzzles.append(puzzle)
+            }
+        }
+    }
+    let file = TrainingPositions.extract(from: puzzles, limit: limit)
+    for technique in TechniqueKind.allCases {
+        print("\(technique): \(file.positions[technique.rawValue]?.count ?? 0)")
+    }
+    let encoder = JSONEncoder()
+    encoder.outputFormatting = [.sortedKeys]
+    try encoder.encode(file).write(to: URL(filePath: arguments[3]), options: .atomic)
+    print("Wrote \(arguments[3])")
+    exit(0)
+}
+
 guard arguments.count == 3, let perDifficulty = Int(arguments[2]), perDifficulty > 0 else {
     print("Usage: PuzzleBankGenerator <output.json> <puzzles per difficulty>")
     exit(1)

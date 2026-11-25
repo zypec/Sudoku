@@ -55,6 +55,18 @@ struct PuzzleTransform: Hashable, Sendable {
         }
     }
 
+    /// Applies the transform to 81 candidate sets: cells move like values, digits are relabeled.
+    func apply(toCandidates candidates: [CandidateSet]) -> [CandidateSet] {
+        Geometry.cells.map { cell in
+            var row = Geometry.row(of: cell)
+            var column = Geometry.column(of: cell)
+            if transposes {
+                swap(&row, &column)
+            }
+            return CandidateSet(candidates[Geometry.cell(row: rows[row], column: columns[column])].map { digits[$0] })
+        }
+    }
+
     func apply(to puzzle: Puzzle) -> Puzzle {
         Puzzle(
             givens: apply(to: puzzle.givens),

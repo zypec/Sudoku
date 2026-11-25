@@ -31,6 +31,14 @@ struct Board: Hashable, Sendable {
         }
     }
 
+    /// A board with given digits and candidates, e.g. a stored training position. Candidates of
+    /// filled cells are ignored.
+    init(values: [Digit], candidates: [CandidateSet]) {
+        precondition(values.count == Geometry.cellCount && candidates.count == Geometry.cellCount, "A board needs 81 cells")
+        self.values = values
+        self.candidates = Geometry.cells.map { values[$0] == 0 ? candidates[$0] : .empty }
+    }
+
     /// Parses 81 characters row by row: `1` to `9` are digits, `0`, `.` or `-` are empty cells.
     /// Whitespace is ignored. Returns `nil` for malformed input.
     init?(string: String) {
