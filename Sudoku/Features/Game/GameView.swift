@@ -43,8 +43,8 @@ struct GameView: View {
         // Paused: the game stays in view but blurred, so it can't be studied with the clock stopped.
         .blur(radius: model.isPaused ? 6 : 0)
         .allowsHitTesting(!model.isPaused)
-        .animation(.snappy, value: model.activeHint != nil)
-        .animation(.snappy, value: model.autoSolve != nil)
+        .animation(.snappy(duration: 0.25), value: model.activeHint != nil)
+        .animation(.snappy(duration: 0.25), value: model.autoSolve != nil)
         .overlay {
             if model.isPreparingNewGame {
                 ProgressView()

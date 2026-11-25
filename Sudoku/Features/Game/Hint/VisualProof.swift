@@ -126,6 +126,8 @@ private struct ProofBuilder {
     // MARK: Building
 
     mutating func build() {
+        // Where to look first, then the pattern itself.
+        add(String(localized: "How to spot it: \(step.technique.guide.howToSpot)"), HintSpotting.highlights(for: step, board: board), kind: .spotting)
         addIntroduction()
         switch step.technique {
         case .fullHouse, .hiddenSingle, .nakedSingle:

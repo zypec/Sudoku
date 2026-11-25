@@ -16,6 +16,7 @@ enum Hint: Equatable, Sendable {
     case step(SolveStep, board: Board)
     /// Eliminations the player can't act on (they aren't in their notes), followed by the placement
     /// they lead to. The last link holds the placement; every link keeps the board it was found on.
+    /// A single elimination with no placement means a placement is still too far away.
     case chain([ChainedStep])
     /// No known technique applies.
     case unavailable
@@ -43,8 +44,10 @@ struct ChainedStep: Equatable, Sendable {
 
 /// Finds the next logical step for the player's current position.
 enum HintFinder {
-    /// Longest run of eliminations followed to reach a placement.
-    private static let chainLimit = 12
+    /// Most eliminations a chained hint walks through before its placement. Longer chains became
+    /// dozens of pages; past this, the hint shows only the first elimination and the next hint
+    /// continues from there.
+    private static let chainLimit = 3
 
     /// - Parameter chainsEliminations: When the next step only removes candidates the player hasn't
     ///   noted, follow the logic on to the placement it leads to and return that as a `.chain`.
@@ -63,20 +66,41 @@ enum HintFinder {
         guard chainsEliminations, step.placements.isEmpty, !removesNotedCandidates(step, in: game) else {
             return .step(step, board: board)
         }
+        if let shortcut = eliminationOpeningAPlacement(on: board, upToLevel: step.technique.level, solver: solver) {
+            return shortcut
+        }
 
         // Follow eliminations until a placement appears. Every single available after an elimination
         // is one it enabled, because the solver always tries singles first.
         var links = [ChainedStep(step: step, board: board)]
         var current = board
         current.apply(step)
-        while links.count <= chainLimit, let next = solver.nextStep(on: current) {
+        while let next = solver.nextStep(on: current) {
             if !next.placements.isEmpty {
                 return .chain(pruned(links, leadingTo: ChainedStep(step: next, board: current)))
             }
+            guard links.count < chainLimit else { break }
             links.append(ChainedStep(step: next, board: current))
             current.apply(next)
         }
-        return .step(step, board: board)
+        // Too far from a placement: just the first elimination, as a chain without a placement so
+        // the hint can say why no digit is placed yet.
+        return .chain([ChainedStep(step: step, board: board)])
+    }
+
+    /// An elimination, no harder than the easiest step available, after which a digit can be
+    /// placed right away: the shortest way from here to a placement. Techniques are tried in the
+    /// solver's order, so the simplest such step wins.
+    private static func eliminationOpeningAPlacement(on board: Board, upToLevel level: Int, solver: LogicalSolver) -> Hint? {
+        for technique in solver.techniques where technique.kind.level <= level {
+            guard let candidate = technique.findStep(in: board), candidate.placements.isEmpty else { continue }
+            var next = board
+            next.apply(candidate)
+            if let follow = solver.nextStep(on: next), !follow.placements.isEmpty {
+                return .chain([ChainedStep(step: candidate, board: board), ChainedStep(step: follow, board: next)])
+            }
+        }
+        return nil
     }
 
     /// Notes for digits already placed in a peer, per cell.

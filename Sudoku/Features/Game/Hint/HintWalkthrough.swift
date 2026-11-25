@@ -10,6 +10,8 @@ struct HintPage: Equatable {
     enum Kind: Equatable {
         /// The technique's name and where to look.
         case nudge
+        /// How to find the technique: its search space on this board.
+        case spotting
         /// One step of the reasoning.
         case explanation
         /// The placement or eliminations, ready to apply.
@@ -60,6 +62,7 @@ enum HintWalkthrough {
         case .step(let step, let board):
             var builder = WalkthroughBuilder(step: step, board: board)
             builder.addNudge()
+            builder.addSpotting()
             builder.addExplanation()
             builder.addResult()
             return builder.pages
@@ -73,9 +76,10 @@ enum HintWalkthrough {
                 if index == 0 {
                     builder.addNudge()
                 }
+                builder.addSpotting()
                 builder.addExplanation()
                 if index == links.count - 1 {
-                    builder.addResult()
+                    builder.addResult(endsWithoutPlacement: link.step.placements.isEmpty)
                 } else {
                     builder.addConsequence()
                 }
@@ -118,7 +122,13 @@ private struct WalkthroughBuilder {
         pages.append(HintPage(kind: .nudge, text: text, highlights: nudge, technique: step.technique))
     }
 
-    mutating func addResult() {
+    /// Where the player should have been looking: the technique's search space on this board.
+    mutating func addSpotting() {
+        let text = String(localized: "How to spot it: \(step.technique.guide.howToSpot)")
+        pages.append(HintPage(kind: .spotting, text: text, highlights: HintSpotting.highlights(for: step, board: board), technique: step.technique))
+    }
+
+    mutating func addResult(endsWithoutPlacement: Bool = false) {
         for elimination in step.eliminations {
             highlights.fill([elimination.cell], .target)
             highlights.mark(elimination.digits, in: elimination.cell, as: .eliminated)
@@ -129,6 +139,8 @@ private struct WalkthroughBuilder {
         }
         let text = if let placement = step.placements.first {
             String(localized: "Place \(placement.digit) at \(HintText.cellName(placement.cell)).")
+        } else if endsWithoutPlacement {
+            String(localized: "So \(HintText.digitList(removedDigits)) can't go in the cells marked in red. No digit can be placed from this alone yet; apply it and the next hint continues from here.")
         } else {
             String(localized: "Remove \(HintText.digitList(removedDigits)) from the highlighted cells.")
         }

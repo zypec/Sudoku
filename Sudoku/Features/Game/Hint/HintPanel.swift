@@ -36,7 +36,7 @@ struct HintPanel: View {
         .padding(20)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .glassEffect(in: .rect(cornerRadius: 28))
-        .animation(.snappy, value: activeHint.index)
+        .animation(.snappy(duration: 0.2), value: activeHint.index)
         .sheet(isPresented: $isShowingGuide) {
             HintDetailSheet(model: model, hint: activeHint.hint)
         }
@@ -77,7 +77,7 @@ struct HintPanel: View {
                     }
                 }
                 PanelIconButton(title: "Explain in Detail", systemImage: activeHint.isVisual ? "play.rectangle.fill" : "play.rectangle", isOn: activeHint.isVisual) {
-                    withAnimation(.spring(duration: 0.45, bounce: 0.25)) {
+                    withAnimation(.snappy(duration: 0.25)) {
                         if activeHint.isVisual {
                             model.endVisualExplanation()
                         } else {

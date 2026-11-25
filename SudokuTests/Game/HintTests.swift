@@ -90,8 +90,11 @@ struct HintTests {
         let hints = solveWithHints(&game)
         #expect(game.isSolved)
         #expect(game.mistakeCount == 0)
-        // Without notes every hint ends in a placement, so there is exactly one hint per empty cell.
-        #expect(hints == game.puzzle.givens.count { $0 == 0 })
+        // Without notes almost every hint ends in a placement; only eliminations too far from one
+        // come on their own (see `HintFinder.chainLimit`).
+        let emptyCells = game.puzzle.givens.count { $0 == 0 }
+        #expect(hints >= emptyCells)
+        #expect(hints <= emptyCells + 8)
     }
 
     @Test func applyingHintsSolvesThePuzzleWithFullNotes() {
@@ -107,10 +110,13 @@ struct HintTests {
     @Test(arguments: [(Difficulty.medium, UInt64(1)), (.hard, 1), (.expert, 3), (.master, 1)])
     func withoutNotesHintsChainEliminationsIntoAPlacement(difficulty: Difficulty, seed: UInt64) throws {
         var game = generatedGame(difficulty, seed: seed)
-        // Play until the first hint that needs an elimination.
+        // Play until the first chained hint that reaches a placement.
         var hint = HintFinder.hint(for: game)
-        while case .step(let step, _) = hint, !step.placements.isEmpty {
-            game.apply(step)
+        while true {
+            if case .chain(let links) = hint, links.last?.step.placements.isEmpty == false { break }
+            for step in hint.steps {
+                game.apply(step)
+            }
             hint = HintFinder.hint(for: game)
         }
         guard case .chain(let links) = hint else {
@@ -407,6 +413,45 @@ struct HintTests {
         #expect(seen.contains { $0.level == difficulty.level })
     }
 
+    /// Without notes, a chained hint stays short: at most three eliminations before its placement,
+    /// and most of the time the shortcut finds a single elimination that opens a placement.
+    @Test(arguments: [Difficulty.hard, .expert, .master])
+    func chainedHintsStayShort(difficulty: Difficulty) throws {
+        for index in 0..<4 {
+            var game = SudokuGame(puzzle: try #require(PuzzleBank.bundled.puzzle(difficulty, at: index)), mistakeLimit: nil)
+            while !game.isFinished {
+                let hint = HintFinder.hint(for: game)
+                guard !hint.steps.isEmpty else { break }
+                if case .chain(let links) = hint {
+                    #expect(links.count <= 4)
+                    // Either it reaches a placement, or it's a single elimination on its own.
+                    #expect(links.last?.step.placements.isEmpty == false || links.count == 1)
+                }
+                for step in hint.steps {
+                    game.apply(step)
+                }
+            }
+            #expect(game.isSolved)
+        }
+    }
+
+    @Test func spottingShowsTheSearchSpaceNotTheAnswer() throws {
+        // XY-Wing: the spotting page highlights every two-candidate cell.
+        var board = Board()
+        for (cell, digits) in [(0, [1, 2]), (4, [1, 3]), (18, [2, 3]), (80, [4, 5])] as [(CellIndex, CandidateSet)] {
+            board.eliminate(CandidateSet.all.subtracting(digits), from: cell)
+        }
+        let step = try #require(XYWing().findStep(in: board))
+        let pages = HintWalkthrough.pages(for: .step(step, board: board))
+        let spotting = try #require(pages.first { $0.kind == .spotting })
+        #expect(spotting.text.hasPrefix("How to spot it"))
+        for cell in [0, 4, 18, 80] {
+            #expect(spotting.highlights.style(for: cell)?.fill == .house)
+        }
+        // No eliminations are shown yet.
+        #expect(!spotting.highlights.styles.values.contains { $0.marks.values.contains(.eliminated) })
+    }
+
     @Test func wingNudgePointsAtThePivot() {
         let step = SolveStep(
             technique: .xyWing,
@@ -428,23 +473,26 @@ struct HintTests {
             patternDigits: [5]
         )
         let pages = HintWalkthrough.pages(for: .step(step, board: Board()))
-        #expect(pages.map(\.kind) == [.nudge, .explanation, .explanation, .result])
+        #expect(pages.map(\.kind) == [.nudge, .spotting, .explanation, .explanation, .result])
 
         let nudge = pages[0].highlights
         #expect(nudge.style(for: 9)?.fill == .house)  // in box 0
         #expect(nudge.style(for: 3) == nil)           // row 0 only shown later
         #expect(nudge.style(for: 0)?.fill == .house)
 
-        let box = pages[1].highlights
+        // Spotting: the box and where 5 can go in it.
+        #expect(pages[1].highlights.style(for: 0)?.marks[5] == .emphasized)
+
+        let box = pages[2].highlights
         #expect(box.style(for: 0)?.fill == .pattern)
         #expect(box.style(for: 0)?.marks == [5: .emphasized])
         #expect(box.style(for: 3) == nil)
 
-        let line = pages[2].highlights
+        let line = pages[3].highlights
         #expect(line.style(for: 3)?.fill == .house)
         #expect(line.style(for: 3)?.marks.isEmpty == true)
 
-        let result = pages[3].highlights
+        let result = pages[4].highlights
         #expect(result.style(for: 3)?.fill == .target)
         #expect(result.style(for: 3)?.marks == [5: .eliminated])
     }

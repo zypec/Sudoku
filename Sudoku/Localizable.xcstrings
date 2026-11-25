@@ -1922,6 +1922,23 @@
         }
       }
     },
+    "How to spot it: %@": {
+      "comment": "Hint page before the reasoning: the technique's spotting tip, with its search space shown on the board",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How to spot it: %@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nasıl fark edilir: %@"
+          }
+        }
+      }
+    },
     "If %lld cells in a house together have only %lld candidates, those digits must fill exactly those cells. So none of them can go anywhere else in the house.": {
       "comment": "Technique guide (detailed hint explanation and training)",
       "localizations": {
@@ -3890,6 +3907,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Yani %@ kırmızıyla işaretli hücrelere giremez."
+          }
+        }
+      }
+    },
+    "So %@ can't go in the cells marked in red. No digit can be placed from this alone yet; apply it and the next hint continues from here.": {
+      "comment": "Hint result for an elimination that doesn't lead to a placement within a few steps",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "So %@ can't go in the cells marked in red. No digit can be placed from this alone yet; apply it and the next hint continues from here."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yani %@ kırmızıyla işaretli hücrelere giremez. Bundan tek başına henüz bir rakam yerleştirilemiyor; uygularsan sonraki ipucu buradan devam eder."
           }
         }
       }

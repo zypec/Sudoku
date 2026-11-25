@@ -89,6 +89,6 @@ struct HintDetailSheet: View {
 
     /// The reasoning pages of the hint, in order, without the opening nudge.
     private var steps: [String] {
-        HintWalkthrough.pages(for: hint).filter { $0.kind != .nudge }.map(\.text)
+        HintWalkthrough.pages(for: hint).filter { $0.kind != .nudge && $0.kind != .spotting }.map(\.text)
     }
 }
