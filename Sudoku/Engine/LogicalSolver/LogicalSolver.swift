@@ -40,6 +40,12 @@ struct LogicalSolver: Sendable {
         BUG(),
         FinnedFish.swordfish,
         BasicFish.jellyfish,
+        // Level 5
+        RemotePair(),
+        XChain(),
+        XYChain(),
+        AIC(),
+        ALSXZ(),
     ]
 
     let techniques: [any Technique]

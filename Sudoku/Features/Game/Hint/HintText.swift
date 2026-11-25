@@ -90,6 +90,11 @@ extension TechniqueKind {
         case .finnedXWing: "Finned X-Wing"
         case .finnedSwordfish: "Finned Swordfish"
         case .bug: "BUG+1"
+        case .remotePair: "Remote Pair"
+        case .xChain: "X-Chain"
+        case .xyChain: "XY-Chain"
+        case .aic: "AIC"
+        case .alsXZ: "ALS-XZ"
         }
     }
 
@@ -121,6 +126,11 @@ extension TechniqueKind {
         case .finnedXWing: "X-Wing with a fin"
         case .finnedSwordfish: "Swordfish with a fin"
         case .bug: "All cells two-valued but one"
+        case .remotePair: "A chain of identical pairs"
+        case .xChain: "Chain of links on one digit"
+        case .xyChain: "Chain of two-candidate cells"
+        case .aic: "Alternating inference chain"
+        case .alsXZ: "Two almost locked sets"
         }
     }
 }

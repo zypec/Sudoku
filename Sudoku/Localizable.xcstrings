@@ -103,6 +103,23 @@
         }
       }
     },
+    "A chain of identical pairs": {
+      "comment": "Technique subtitle: Remote Pair",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A chain of identical pairs"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uzak Çift"
+          }
+        }
+      }
+    },
     "All cells two-valued but one": {
       "comment": "Technique subtitle: BUG+1",
       "localizations": {
@@ -116,6 +133,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Biri Hariç Tüm Hücreler İki Adaylı"
+          }
+        }
+      }
+    },
+    "Alternating inference chain": {
+      "comment": "Technique subtitle: AIC",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alternating inference chain"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dönüşümlü Çıkarım Zinciri"
           }
         }
       }
@@ -269,6 +303,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Boş Dikdörtgen"
+          }
+        }
+      }
+    },
+    "Chain of links on one digit": {
+      "comment": "Technique subtitle: X-Chain",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chain of links on one digit"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tek Rakamlı Zincir"
+          }
+        }
+      }
+    },
+    "Chain of two-candidate cells": {
+      "comment": "Technique subtitle: XY-Chain",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chain of two-candidate cells"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İki Adaylı Hücre Zinciri"
           }
         }
       }
@@ -477,6 +545,23 @@
         }
       }
     },
+    "Each highlighted cell can only be %lld or %lld, and each one sees the next in the chain. So the digits alternate along the chain.": {
+      "comment": "Hint walkthrough page: Remote Pair chain",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Each highlighted cell can only be %1$lld or %2$lld, and each one sees the next in the chain. So the digits alternate along the chain."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İşaretli her hücre yalnızca %1$lld ya da %2$lld olabilir ve her biri zincirdeki bir sonrakini görüyor. Yani rakamlar zincir boyunca sırayla değişir."
+          }
+        }
+      }
+    },
     "Each of these %lld lines needs a %lld, each in a different one of %@. So those lines get their %lld here, and it can be removed from the rest of them.": {
       "comment": "Hint walkthrough page: Swordfish and Jellyfish conclusion",
       "localizations": {
@@ -609,6 +694,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Hataları Sil"
+          }
+        }
+      }
+    },
+    "Every %lld in one set sees every %lld in the other, so %lld is in at most one of them. The set without %lld has as many digits as cells left, so it must hold all of them, %lld included.": {
+      "comment": "Hint walkthrough page: ALS-XZ, the restricted common digit",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Every %1$lld in one set sees every %2$lld in the other, so %3$lld is in at most one of them. The set without %4$lld has as many digits as cells left, so it must hold all of them, %5$lld included."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bir kümedeki her %1$lld diğer kümedeki her %2$lld adayını görüyor; yani %3$lld en fazla birinde olabilir. %4$lld olmayan kümede hücre sayısı kadar rakam kalır, bu yüzden hepsini almak zorundadır; %5$lld de dahil."
           }
         }
       }
@@ -1170,6 +1272,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "%1$@ içinde işaretli %2$lld hücre yalnızca %3$@ alabilir. Bu rakamlar o hücreleri doldurmak zorunda; %4$@ içindeki diğer hücrelerden silinebilir."
+          }
+        }
+      }
+    },
+    "In %@, the highlighted cells can only hold %@: one digit more than there are cells. That makes them an almost locked set.": {
+      "comment": "Hint walkthrough page: ALS-XZ, first almost locked set",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In %1$@, the highlighted cells can only hold %2$@: one digit more than there are cells. That makes them an almost locked set."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ içinde işaretli hücreler yalnızca %2$@ alabilir: hücre sayısından bir fazla rakam. Bu onları neredeyse kilitli bir küme yapar."
           }
         }
       }
@@ -1956,6 +2075,40 @@
         }
       }
     },
+    "So %lld is at %@ or at %@, and a cell that sees both can't be %lld.": {
+      "comment": "Hint walkthrough page: chain conclusion when both ends are the same digit",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "So %1$lld is at %2$@ or at %3$@, and a cell that sees both can't be %4$lld."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yani %1$lld ya %2$@ ya da %3$@ hücresinde; ikisini birden gören bir hücre %4$lld olamaz."
+          }
+        }
+      }
+    },
+    "So %lld is in at least one of the two sets, and a cell that sees every %lld in both can't be %lld.": {
+      "comment": "Hint walkthrough page: ALS-XZ conclusion",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "So %1$lld is in at least one of the two sets, and a cell that sees every %2$lld in both can't be %3$lld."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yani %1$lld iki kümeden en az birinde; iki kümedeki her %2$lld adayını gören bir hücre %3$lld olamaz."
+          }
+        }
+      }
+    },
     "So %lld is on one of the two diagonals of the highlighted rectangle. Either way %@ and %@ each get a %lld here, so it can be removed from the rest of them.": {
       "comment": "Hint walkthrough page: X-Wing, conclusion",
       "localizations": {
@@ -1986,6 +2139,57 @@
           "stringUnit": {
             "state": "translated",
             "value": "Yani diğer iki uçtan en az biri, %1$@ ya da %2$@, %3$lld olmalı. İkisini birden gören bir hücre %4$lld olamaz."
+          }
+        }
+      }
+    },
+    "So the cell at %@ is %lld or %lld, and its other candidates can be removed.": {
+      "comment": "Hint walkthrough page: chain conclusion when both ends are in one cell",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "So the cell at %1$@ is %2$lld or %3$lld, and its other candidates can be removed."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yani %1$@ hücresi %2$lld ya da %3$lld; diğer adayları silinebilir."
+          }
+        }
+      }
+    },
+    "So the cell at %@ is %lld or the cell at %@ is %lld. They see each other, so the cell at %@ can't be %@.": {
+      "comment": "Hint walkthrough page: chain conclusion with different digits, one elimination",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "So the cell at %1$@ is %2$lld or the cell at %3$@ is %4$lld. They see each other, so the cell at %5$@ can't be %6$@."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yani %1$@ hücresi %2$lld ya da %3$@ hücresi %4$lld. Bu hücreler birbirini görüyor; bu yüzden %5$@ hücresi %6$@ olamaz."
+          }
+        }
+      }
+    },
+    "So the cell at %@ is %lld or the cell at %@ is %lld. They see each other, so the first can't be %lld and the second can't be %lld.": {
+      "comment": "Hint walkthrough page: chain conclusion when the ends are different digits in cells that see each other",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "So the cell at %1$@ is %2$lld or the cell at %3$@ is %4$lld. They see each other, so the first can't be %5$lld and the second can't be %6$lld."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yani %1$@ hücresi %2$lld ya da %3$@ hücresi %4$lld. Bu hücreler birbirini görüyor; bu yüzden ilki %5$lld, ikincisi %6$lld olamaz."
           }
         }
       }
@@ -2177,6 +2381,23 @@
         }
       }
     },
+    "Suppose %lld at %@ is false. Following the links, every second candidate must then be true, up to %lld at %@. So at least one of the two ends is true.": {
+      "comment": "Hint walkthrough page: chain reasoning; start digit and cell, end digit and cell",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suppose %1$lld at %2$@ is false. Following the links, every second candidate must then be true, up to %3$lld at %4$@. So at least one of the two ends is true."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%2$@ hücresindeki %1$lld yanlış olsun. Bağları izleyince her ikinci aday doğru olmak zorunda; bu %4$@ hücresindeki %3$lld adayına kadar sürer. Yani iki uçtan en az biri doğru."
+          }
+        }
+      }
+    },
     "Swordfish with a fin": {
       "comment": "Technique subtitle: Finned Swordfish",
       "localizations": {
@@ -2279,6 +2500,23 @@
         }
       }
     },
+    "The highlighted cells in %@ are another one, with %@.": {
+      "comment": "Hint walkthrough page: ALS-XZ, second almost locked set",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The highlighted cells in %1$@ are another one, with %2$@."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ içindeki işaretli hücreler de böyle bir küme; rakamları %2$@."
+          }
+        }
+      }
+    },
     "The incorrect digits will be erased.": {
       "comment": "Auto solve: the next step clears wrong entries",
       "localizations": {
@@ -2364,6 +2602,23 @@
         }
       }
     },
+    "The two ends are an odd number of steps apart, so one of them is %lld and the other is %lld. A cell that sees both ends can't be either digit.": {
+      "comment": "Hint walkthrough page: Remote Pair conclusion",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The two ends are an odd number of steps apart, so one of them is %1$lld and the other is %2$lld. A cell that sees both ends can't be either digit."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İki uç arasında tek sayıda adım var; yani biri %1$lld, diğeri %2$lld. İki ucu birden gören bir hücre bu rakamlardan hiçbiri olamaz."
+          }
+        }
+      }
+    },
     "Theme": {
       "comment": "Settings: light/dark appearance",
       "localizations": {
@@ -2377,6 +2632,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tema"
+          }
+        }
+      }
+    },
+    "These candidates form a chain. Along a solid link at least one of the two is true; along a dashed link at most one is.": {
+      "comment": "Hint walkthrough page: chain overview",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "These candidates form a chain. Along a solid link at least one of the two is true; along a dashed link at most one is."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu adaylar bir zincir oluşturuyor. Düz bir bağın iki ucundan en az biri doğrudur; kesikli bir bağda en fazla biri."
           }
         }
       }
@@ -2513,6 +2785,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bağlı İkiz Çiftler"
+          }
+        }
+      }
+    },
+    "Two almost locked sets": {
+      "comment": "Technique subtitle: ALS-XZ",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Two almost locked sets"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İki Neredeyse Kilitli Küme"
           }
         }
       }

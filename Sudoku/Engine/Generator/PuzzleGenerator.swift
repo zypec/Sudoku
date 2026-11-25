@@ -11,7 +11,7 @@
 /// 3. Accept the result only if its hardest required technique is exactly the target level.
 enum PuzzleGenerator {
     /// Difficulties the current technique set can grade. Grows as techniques are added.
-    static let supportedDifficulties: Set<Difficulty> = [.easy, .medium, .hard, .expert]
+    static let supportedDifficulties: Set<Difficulty> = Set(Difficulty.allCases)
 
     /// Generates a puzzle off the main actor using the system random number generator.
     @concurrent

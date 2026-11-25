@@ -196,12 +196,13 @@ struct HardTechniqueTests {
     // MARK: Published examples
 
     /// Example puzzles from sudokuwiki.org's strategy pages, with the technique we expect the solver
-    /// to need and whether our current technique set can finish them.
+    /// to need and whether the full technique set can finish them.
     @Test(arguments: [
         ("100000569402000008050009040000640801000010000208035000040500010900000402621000005", TechniqueKind.xWing, true),
         ("000001008700030009020000061080009003001040900900300020240000080600090005100600000", .twoStringKite, true),
         ("034500000802060400600008000003900004050000090900005800000300008001040605000007120", .skyscraper, true),
-        ("090001700500200008000030200070004960200060005069700030008090000700003009003800040", .xyzWing, false),
+        // Needs techniques beyond level 3 after its XYZ-Wing.
+        ("090001700500200008000030200070004960200060005069700030008090000700003009003800040", .xyzWing, true),
         ("900000000037010420840000603000034810000060000068120000102000084085070360000000001", .xyWing, true),
     ])
     func publishedExamplesAreSolvedSoundly(puzzle: String, technique: TechniqueKind, isSolvable: Bool) throws {

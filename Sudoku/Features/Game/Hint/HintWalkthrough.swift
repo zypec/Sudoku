@@ -146,6 +146,9 @@ private struct WalkthroughBuilder {
         case .simpleColoring: simpleColoring()
         case .uniqueRectangleType1, .uniqueRectangleType2, .uniqueRectangleType4: uniqueRectangle()
         case .bug: bug()
+        case .remotePair: remotePair()
+        case .xChain, .xyChain, .aic: alternatingChain()
+        case .alsXZ: alsXZ()
         }
     }
 
@@ -506,5 +509,92 @@ private struct WalkthroughBuilder {
             highlights.mark([digit], in: cell, as: .emphasized)
         }
         add(String(localized: "If that cell weren't \(digit), every candidate would appear exactly twice in each house and the puzzle would have two solutions. \(digit) appears three times in \(name(house)), so the cell must be \(digit)."))
+    }
+
+    // MARK: Chains
+
+    /// X-Chain, XY-Chain and AIC. `step.chain` alternates strong and weak links, starting and ending
+    /// with a strong one.
+    private mutating func alternatingChain() {
+        let nodes = step.chain
+        guard let start = nodes.first, let end = nodes.last else { return }
+
+        highlights.fill(step.patternCells, .pattern)
+        for node in nodes {
+            highlights.mark([node.digit], in: node.cell, as: .emphasized)
+        }
+        for index in nodes.indices.dropLast() {
+            highlights.link(nodes[index], nodes[index + 1], isStrong: index % 2 == 0)
+        }
+        add(String(localized: "These candidates form a chain. Along a solid link at least one of the two is true; along a dashed link at most one is."))
+
+        // Assume the start is false (blue): every second candidate after it is then true (green).
+        for (index, node) in nodes.enumerated() {
+            highlights.mark([node.digit], in: node.cell, as: index % 2 == 0 ? .alternativeB : .alternativeA)
+        }
+        add(String(localized: "Suppose \(start.digit) at \(name(start.cell)) is false. Following the links, every second candidate must then be true, up to \(end.digit) at \(name(end.cell)). So at least one of the two ends is true."))
+
+        highlights.mark([start.digit], in: start.cell, as: .alternativeA)
+        if start.cell == end.cell {
+            add(String(localized: "So the cell at \(name(start.cell)) is \(start.digit) or \(end.digit), and its other candidates can be removed."))
+        } else if start.digit == end.digit {
+            add(String(localized: "So \(start.digit) is at \(name(start.cell)) or at \(name(end.cell)), and a cell that sees both can't be \(start.digit)."))
+        } else if step.eliminations.count == 1, let only = step.eliminations.first {
+            // Only one of the two cells has the other end's digit.
+            let lost = HintText.digitList(only.digits)
+            add(String(localized: "So the cell at \(name(start.cell)) is \(start.digit) or the cell at \(name(end.cell)) is \(end.digit). They see each other, so the cell at \(name(only.cell)) can't be \(lost)."))
+        } else {
+            add(String(localized: "So the cell at \(name(start.cell)) is \(start.digit) or the cell at \(name(end.cell)) is \(end.digit). They see each other, so the first can't be \(end.digit) and the second can't be \(start.digit)."))
+        }
+    }
+
+    /// Cells are the chain in order; digits are {a, b}.
+    private mutating func remotePair() {
+        let cells = step.patternCells
+        let a = step.patternDigits.min() ?? 0
+        let b = step.patternDigits.max() ?? 0
+
+        showPattern(cells)
+        for index in cells.indices.dropLast() {
+            highlights.link(cells[index], cells[index + 1], digit: a, isStrong: false)
+        }
+        add(String(localized: "Each highlighted cell can only be \(a) or \(b), and each one sees the next in the chain. So the digits alternate along the chain."))
+
+        for (index, cell) in cells.enumerated() {
+            highlights.mark(step.patternDigits, in: cell, as: index % 2 == 0 ? .alternativeA : .alternativeB)
+        }
+        add(String(localized: "The two ends are an odd number of steps apart, so one of them is \(a) and the other is \(b). A cell that sees both ends can't be either digit."))
+    }
+
+    /// Groups are `[A, B]`, houses `[house of A, house of B]`, digits {X, Z} with Z eliminated.
+    private mutating func alsXZ() {
+        guard step.cellGroups.count == 2, let z = removedDigits.single else { return }
+        let (groupA, groupB) = (step.cellGroups[0], step.cellGroups[1])
+        let x = step.patternDigits.subtracting([z]).min() ?? 0
+        let digitsA = groupA.reduce(CandidateSet()) { $0.union(board.candidates(at: $1)) }
+        let digitsB = groupB.reduce(CandidateSet()) { $0.union(board.candidates(at: $1)) }
+
+        highlights.fill([house(0)])
+        showPattern(groupA, digits: digitsA)
+        add(String(localized: "In \(name(house(0))), the highlighted cells can only hold \(HintText.digitList(digitsA)): one digit more than there are cells. That makes them an almost locked set."))
+
+        highlights.fill([house(1)])
+        showPattern(groupB, digits: digitsB)
+        add(String(localized: "The highlighted cells in \(name(house(1))) are another one, with \(HintText.digitList(digitsB))."))
+
+        let xA = groupA.filter { board.candidates(at: $0).contains(x) }
+        let xB = groupB.filter { board.candidates(at: $0).contains(x) }
+        for cell in xA + xB {
+            highlights.mark([x], in: cell, as: .alternativeB)
+        }
+        if let from = xA.first, let to = xB.first {
+            highlights.link(from, to, digit: x, isStrong: false)
+        }
+        add(String(localized: "Every \(x) in one set sees every \(x) in the other, so \(x) is in at most one of them. The set without \(x) has as many digits as cells left, so it must hold all of them, \(z) included."))
+
+        for cell in groupA + groupB where board.candidates(at: cell).contains(z) {
+            highlights.mark([z], in: cell, as: .alternativeA)
+        }
+        add(String(localized: "So \(z) is in at least one of the two sets, and a cell that sees every \(z) in both can't be \(z)."))
     }
 }

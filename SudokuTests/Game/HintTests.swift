@@ -104,7 +104,7 @@ struct HintTests {
 
     /// Without notes, an elimination is useless on its own: the hint follows it to the placement it
     /// enables, and applying the hint remembers the eliminations.
-    @Test(arguments: [(Difficulty.medium, UInt64(1)), (.hard, 1), (.expert, 3)])
+    @Test(arguments: [(Difficulty.medium, UInt64(1)), (.hard, 1), (.expert, 3), (.master, 1)])
     func withoutNotesHintsChainEliminationsIntoAPlacement(difficulty: Difficulty, seed: UInt64) throws {
         var game = generatedGame(difficulty, seed: seed)
         // Play until the first hint that needs an elimination.
@@ -232,7 +232,7 @@ struct HintTests {
 
     /// Every hint of a hard puzzle starts with a nudge, ends with the result, and has wording on
     /// every page with all placeholders filled in.
-    @Test(arguments: [(Difficulty.hard, UInt64(1)), (.hard, 2), (.hard, 3), (.expert, 3), (.expert, 12)])
+    @Test(arguments: [(Difficulty.hard, UInt64(1)), (.hard, 2), (.hard, 3), (.expert, 3), (.expert, 12), (.master, 1), (.master, 2)])
     func everyStepOfAHardPuzzleHasAWalkthrough(difficulty: Difficulty, seed: UInt64) {
         var seen = Set<TechniqueKind>()
         // Auto solve's view of the hints, so elimination steps get their own walkthrough too.

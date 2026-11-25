@@ -140,8 +140,8 @@ private struct HintLinks: View {
     var body: some View {
         Canvas { context, _ in
             for link in links {
-                let start = center(of: link.digit, in: link.from)
-                let end = center(of: link.digit, in: link.to)
+                let start = center(of: link.fromDigit, in: link.from)
+                let end = center(of: link.toDigit, in: link.to)
                 // Stop short of both candidates so the digits stay readable.
                 let dx = end.x - start.x
                 let dy = end.y - start.y

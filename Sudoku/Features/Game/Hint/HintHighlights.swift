@@ -44,12 +44,13 @@ struct HintHighlights: Equatable {
         }
     }
 
-    /// A link between the same candidate in two cells. Strong: at least one is true.
-    /// Weak: at most one is true.
+    /// A link between two candidates (usually the same digit in two cells, or two digits of one
+    /// cell). Strong: at least one is true. Weak: at most one is true.
     struct Link: Hashable {
         let from: CellIndex
+        let fromDigit: Digit
         let to: CellIndex
-        let digit: Digit
+        let toDigit: Digit
         let isStrong: Bool
     }
 
@@ -86,7 +87,11 @@ struct HintHighlights: Equatable {
     }
 
     mutating func link(_ from: CellIndex, _ to: CellIndex, digit: Digit, isStrong: Bool) {
-        let link = Link(from: from, to: to, digit: digit, isStrong: isStrong)
+        link(ChainNode(cell: from, digit: digit), ChainNode(cell: to, digit: digit), isStrong: isStrong)
+    }
+
+    mutating func link(_ from: ChainNode, _ to: ChainNode, isStrong: Bool) {
+        let link = Link(from: from.cell, fromDigit: from.digit, to: to.cell, toDigit: to.digit, isStrong: isStrong)
         if !links.contains(link) {
             links.append(link)
         }

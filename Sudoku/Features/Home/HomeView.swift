@@ -216,12 +216,13 @@ private struct DailyCard: View {
 
             WeekStrip()
 
+            // Secondary: the screen's one prominent action is Continue or New Game at the bottom.
             Button(action: onPlay) {
-                Text("Play Today's Puzzle")
+                Label("Play Today's Puzzle", systemImage: "play.fill")
                     .font(.headline)
                     .frame(maxWidth: .infinity)
             }
-            .buttonStyle(.glassProminent)
+            .buttonStyle(.glass)
             .controlSize(.large)
         }
         .padding(18)

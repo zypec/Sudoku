@@ -32,6 +32,11 @@ enum TechniqueKind: String, CaseIterable, Codable, Sendable {
     case bug
     case finnedSwordfish
     case jellyfish
+    case remotePair
+    case xChain
+    case xyChain
+    case aic
+    case alsXZ
 
     /// Difficulty tier `1...5` (basic to master). A puzzle's difficulty is the highest
     /// level among the techniques it requires.
@@ -46,6 +51,8 @@ enum TechniqueKind: String, CaseIterable, Codable, Sendable {
         case .uniqueRectangleType1, .swordfish, .emptyRectangle, .simpleColoring, .finnedXWing,
              .uniqueRectangleType2, .uniqueRectangleType4, .bug, .finnedSwordfish, .jellyfish:
             4
+        case .remotePair, .xChain, .xyChain, .aic, .alsXZ:
+            5
         }
     }
 }
@@ -74,6 +81,17 @@ struct SolveStep: Hashable, Sendable {
     var patternCells: [CellIndex] = []
     /// Digits the pattern is about.
     var patternDigits: CandidateSet = []
+    /// For chains: the candidates in order. Links alternate strong, weak, strong, … and the chain
+    /// starts and ends with a strong link, so at least one of its two ends is true.
+    var chain: [ChainNode] = []
+    /// For patterns made of several groups of cells (ALS-XZ: the two almost locked sets).
+    var cellGroups: [[CellIndex]] = []
+}
+
+/// A candidate: one digit in one cell. Chains are sequences of candidates.
+struct ChainNode: Hashable, Sendable {
+    let cell: CellIndex
+    let digit: Digit
 }
 
 /// A human solving technique. Implementations look at the board's current candidates and
