@@ -15,6 +15,7 @@ struct HintPanel: View {
 
     @State private var isShowingGuide = false
     @State private var isPlaying = false
+    @Namespace private var glassNamespace
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -76,10 +77,12 @@ struct HintPanel: View {
                     }
                 }
                 PanelIconButton(title: "Explain in Detail", systemImage: activeHint.isVisual ? "play.rectangle.fill" : "play.rectangle", isOn: activeHint.isVisual) {
-                    if activeHint.isVisual {
-                        model.endVisualExplanation()
-                    } else {
-                        model.startVisualExplanation()
+                    withAnimation(.spring(duration: 0.45, bounce: 0.25)) {
+                        if activeHint.isVisual {
+                            model.endVisualExplanation()
+                        } else {
+                            model.startVisualExplanation()
+                        }
                     }
                 }
             }
@@ -113,36 +116,26 @@ struct HintPanel: View {
         case .unavailable:
             EmptyView()
         case .step, .chain:
-            ZStack {
-                HStack(spacing: 12) {
-                    Button {
-                        model.showPreviousHintPage()
-                    } label: {
-                        Label("Back", systemImage: "chevron.left")
-                            .labelStyle(.iconOnly)
-                            .frame(width: 24, height: 24)
-                    }
-                    .buttonStyle(.glass)
-                    .buttonBorderShape(.circle)
-                    .disabled(!activeHint.canGoBack)
-
-                    Spacer(minLength: 0)
-                    forwardButton
-                }
-                // Centered between back and forward regardless of their widths.
-                VStack(spacing: 8) {
-                    PageIndicator(index: activeHint.index, count: activeHint.count)
-                    if activeHint.isVisual {
-                        Button {
-                            isPlaying.toggle()
-                        } label: {
-                            Label(isPlaying ? "Pause" : "Play", systemImage: isPlaying ? "pause.fill" : "play.fill")
-                                .labelStyle(.iconOnly)
-                                .frame(width: 24, height: 24)
-                                .contentTransition(.symbolEffect(.replace))
+            // One glass container, so switching to the visual explanation morphs the buttons:
+            // Next turns from a capsule into a circle and Play grows out of the glass beside it.
+            GlassEffectContainer(spacing: 20) {
+                ZStack {
+                    HStack(spacing: 12) {
+                        GlassControl(systemImage: "chevron.left", title: "Back", id: "back", namespace: glassNamespace) {
+                            model.showPreviousHintPage()
                         }
-                        .buttonStyle(.glass)
-                        .buttonBorderShape(.circle)
+                        .disabled(!activeHint.canGoBack)
+
+                        Spacer(minLength: 0)
+                        forwardButton
+                    }
+                    VStack(spacing: 10) {
+                        PageIndicator(index: activeHint.index, count: activeHint.count, namespace: glassNamespace)
+                        if activeHint.isVisual {
+                            GlassControl(systemImage: isPlaying ? "pause.fill" : "play.fill", title: isPlaying ? "Pause" : "Play", id: "play", namespace: glassNamespace) {
+                                isPlaying.toggle()
+                            }
+                        }
                     }
                 }
             }
@@ -157,32 +150,62 @@ extension HintPanel {
     @ViewBuilder
     fileprivate var forwardButton: some View {
         if activeHint.canGoForward, activeHint.isVisual {
-            Button {
+            GlassControl(systemImage: "chevron.right", title: "Next", id: "forward", namespace: glassNamespace, isProminent: true) {
                 model.showNextHintPage()
-            } label: {
-                Label("Next", systemImage: "chevron.right")
-                    .labelStyle(.iconOnly)
-                    .frame(width: 24, height: 24)
             }
-            .buttonStyle(.glassProminent)
-            .buttonBorderShape(.circle)
         } else if activeHint.canGoForward {
-            Button {
+            GlassControl(systemImage: "chevron.right", title: "Next", id: "forward", namespace: glassNamespace, isProminent: true, showsTitle: true) {
                 model.showNextHintPage()
-            } label: {
-                HStack(spacing: 4) {
-                    Text("Next")
-                    Image(systemName: "chevron.right")
-                        .font(.body.weight(.semibold))
-                }
             }
-            .buttonStyle(.glassProminent)
         } else {
-            Button("Apply") {
+            GlassControl(systemImage: "checkmark", title: "Apply", id: "forward", namespace: glassNamespace, isProminent: true, showsTitle: true) {
                 model.applyHint()
             }
-            .buttonStyle(.glassProminent)
         }
+    }
+}
+
+/// A Liquid Glass button for the hint panel's bottom row: a circle with an icon, or a capsule with
+/// a title. Each has a glass ID, so inside a `GlassEffectContainer` its shape morphs when the row
+/// changes instead of popping.
+private struct GlassControl: View {
+    let systemImage: String
+    let title: LocalizedStringKey
+    let id: String
+    let namespace: Namespace.ID
+    var isProminent = false
+    var showsTitle = false
+    let action: () -> Void
+
+    @Environment(\.isEnabled) private var isEnabled
+
+    var body: some View {
+        Button(action: action) {
+            Group {
+                if showsTitle {
+                    HStack(spacing: 4) {
+                        Text(title)
+                        Image(systemName: systemImage)
+                            .font(.body.weight(.semibold))
+                    }
+                    .font(.headline)
+                    .padding(.horizontal, 20)
+                    .frame(height: 48)
+                } else {
+                    Image(systemName: systemImage)
+                        .font(.body.weight(.semibold))
+                        .frame(width: 48, height: 48)
+                        .contentTransition(.symbolEffect(.replace))
+                }
+            }
+            .foregroundStyle(isProminent ? AnyShapeStyle(Color.white) : AnyShapeStyle(.primary))
+            .opacity(isEnabled ? 1 : 0.35)
+            .contentShape(.capsule)
+        }
+        .buttonStyle(.plain)
+        .glassEffect(isProminent ? .regular.tint(.accentColor).interactive() : .regular.interactive(), in: .capsule)
+        .glassEffectID(id, in: namespace)
+        .accessibilityLabel(Text(title))
     }
 }
 
@@ -211,10 +234,12 @@ struct PanelIconButton: View {
 }
 
 /// Progress through the pages. One short bar per page; with many pages (a visual explanation)
-/// it becomes a single bar that fills up, so it always fits.
+/// it becomes a single bar that fills up, so it always fits. The two forms share a geometry ID, so
+/// switching between them morphs instead of jumping.
 private struct PageIndicator: View {
     let index: Int
     let count: Int
+    let namespace: Namespace.ID
 
     var body: some View {
         Group {
@@ -226,6 +251,7 @@ private struct PageIndicator: View {
                             .frame(width: item == index ? 18 : 8, height: 4)
                     }
                 }
+                .matchedGeometryEffect(id: "progress", in: namespace)
             } else {
                 Capsule()
                     .fill(.fill.tertiary)
@@ -235,6 +261,7 @@ private struct PageIndicator: View {
                             .fill(.tint)
                             .frame(width: 120 * CGFloat(index + 1) / CGFloat(max(count, 1)), height: 4)
                     }
+                    .matchedGeometryEffect(id: "progress", in: namespace)
             }
         }
         .animation(.snappy, value: index)

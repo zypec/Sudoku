@@ -76,7 +76,7 @@ struct PauseView: View {
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         // Lets the blurred game show through.
-        .background(Color(uiColor: .systemBackground).opacity(0.35))
+        .background(Color(uiColor: .systemBackground).opacity(0.2))
     }
 
     /// Cells the player has filled, out of those that started empty.

@@ -7,8 +7,8 @@ import SwiftData
 import SwiftUI
 
 /// Home screen: the daily puzzle with its streak, training and statistics, and at the bottom the
-/// buttons to continue or start a game. New Game and Settings open as Liquid Glass sheets that
-/// zoom out of the buttons that present them. Daily and Training are placeholders for now and say
+/// buttons to continue or start a game. New Game opens as a Liquid Glass sheet that zooms out of
+/// its button; Settings opens as a standard sheet. Daily and Training are placeholders for now and say
 /// so when tapped.
 struct HomeView: View {
     @Environment(AppSettings.self) private var settings
@@ -76,7 +76,6 @@ struct HomeView: View {
                         isShowingSettings = true
                     }
                 }
-                .matchedTransitionSource(id: TransitionID.settings, in: namespace)
             }
             .navigationDestination(item: $activeGame) { model in
                 GameView(model: model)
@@ -90,9 +89,9 @@ struct HomeView: View {
                 }
                 .navigationTransition(.zoom(sourceID: TransitionID.newGame, in: namespace))
             }
+            // A standard sheet: the zoom out of the toolbar button stuttered on the first open.
             .sheet(isPresented: $isShowingSettings) {
                 SettingsView()
-                    .navigationTransition(.zoom(sourceID: TransitionID.settings, in: namespace))
             }
             .alert("Coming Soon", isPresented: $isShowingComingSoon) {
                 Button("OK", role: .cancel) {}
@@ -197,7 +196,6 @@ struct HomeView: View {
 
     private enum TransitionID {
         static let newGame = "newGame"
-        static let settings = "settings"
     }
 }
 
