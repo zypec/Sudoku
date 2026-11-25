@@ -170,9 +170,12 @@ struct StatisticsTests {
             solution: try TestPuzzles.values(TestPuzzles.easySolution),
             difficulty: .easy
         )
-        let model = GameModel(game: SudokuGame(puzzle: puzzle, mistakeLimit: 1), settings: settings, recorder: GameRecorder(context: context))
-        model.select(2)
-        model.input(1)  // wrong; the limit is 1
+        // The default setting is three mistakes.
+        let model = GameModel(game: SudokuGame(puzzle: puzzle, mistakeLimit: 3), settings: settings, recorder: GameRecorder(context: context))
+        model.select(2)  // solution 4
+        for wrong in [1, 2, 9] {
+            model.input(wrong)
+        }
         #expect(model.game.isLost)
 
         let records = try context.fetch(FetchDescriptor<GameRecord>())

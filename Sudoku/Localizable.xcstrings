@@ -3911,6 +3911,23 @@
         }
       }
     },
+    "The mistake limit also applies to the game in progress. When mistakes are hidden, there is no limit.": {
+      "comment": "Settings footer for the mistake limit",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The mistake limit also applies to the game in progress. When mistakes are hidden, there is no limit."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hata limiti devam eden oyuna da uygulanır. Hatalar gizliyken limit yoktur."
+          }
+        }
+      }
+    },
     "The mistake limit applies to new games. When mistakes are hidden, there is no limit.": {
       "comment": "Settings footer for the Game section",
       "localizations": {

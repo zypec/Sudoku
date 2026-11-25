@@ -69,6 +69,14 @@ final class GameModel {
         self.store = store
         self.recorder = recorder
         hasRecordedResult = game.isFinished
+        // A saved game picks up the limit set since it was started.
+        self.game.setMistakeLimit(settings.mistakeLimitSetting)
+    }
+
+    /// Applies the current mistake-limit setting to the game in progress.
+    func applyMistakeLimitSetting() {
+        guard game.mistakeLimit != settings.mistakeLimitSetting else { return }
+        update { $0.setMistakeLimit(settings.mistakeLimitSetting) }
     }
 
     /// Takes a puzzle from the bank (or generates one) and wraps it in a saved model. The mistake
@@ -76,7 +84,7 @@ final class GameModel {
     static func make(difficulty: Difficulty, settings: AppSettings, store: GameStore? = nil, recorder: GameRecorder? = nil) async -> GameModel {
         let puzzle = await PuzzleSource.shared.puzzle(difficulty)
         let model = GameModel(
-            game: SudokuGame(puzzle: puzzle, mistakeLimit: settings.mistakeLimitForNewGame),
+            game: SudokuGame(puzzle: puzzle, mistakeLimit: settings.mistakeLimitSetting),
             settings: settings,
             store: store,
             recorder: recorder
@@ -459,7 +467,7 @@ final class GameModel {
     func startNewGame() async {
         isPreparingNewGame = true
         let puzzle = await PuzzleSource.shared.puzzle(game.puzzle.difficulty)
-        game = SudokuGame(puzzle: puzzle, mistakeLimit: settings.mistakeLimitForNewGame)
+        game = SudokuGame(puzzle: puzzle, mistakeLimit: settings.mistakeLimitSetting)
         hasRecordedResult = false
         isPaused = false
         selectedCell = nil

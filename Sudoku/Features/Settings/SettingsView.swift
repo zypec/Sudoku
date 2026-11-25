@@ -43,7 +43,7 @@ struct SettingsView: View {
                 } header: {
                     Text("Game")
                 } footer: {
-                    Text("The mistake limit applies to new games. When mistakes are hidden, there is no limit.")
+                    Text("The mistake limit also applies to the game in progress. When mistakes are hidden, there is no limit.")
                 }
 
                 Section("Assists") {

@@ -37,7 +37,7 @@ struct PersistenceAndSettingsTests {
         #expect(settings.mistakeLimit == .three)
         #expect(settings.showsMistakes)
         #expect(settings.highlightsRelatedCells)
-        #expect(settings.mistakeLimitForNewGame == 3)
+        #expect(settings.mistakeLimitSetting == 3)
     }
 
     @Test func settingsPersistAcrossInstances() {
@@ -56,11 +56,11 @@ struct PersistenceAndSettingsTests {
         let settings = AppSettings(defaults: defaults)
         settings.mistakeLimit = .five
         settings.showsMistakes = false
-        #expect(settings.mistakeLimitForNewGame == nil)
+        #expect(settings.mistakeLimitSetting == nil)
 
         settings.showsMistakes = true
         settings.mistakeLimit = .off
-        #expect(settings.mistakeLimitForNewGame == nil)
+        #expect(settings.mistakeLimitSetting == nil)
     }
 
     // MARK: Game store
@@ -124,8 +124,30 @@ struct PersistenceAndSettingsTests {
         let model = await GameModel.make(difficulty: .easy, settings: settings, store: GameStore(url: storeURL))
         #expect(model.game.mistakeLimit == 5)
 
-        // Changing the setting doesn't affect the running game.
+        // The game in progress follows the setting.
         settings.mistakeLimit = .off
+        model.applyMistakeLimitSetting()
+        #expect(model.game.mistakeLimit == nil)
+        settings.mistakeLimit = .three
+        model.applyMistakeLimitSetting()
+        #expect(model.game.mistakeLimit == 3)
+    }
+
+    @Test func loweringTheLimitBelowTheMistakesLeavesOneTry() throws {
+        var game = try easyGame(mistakeLimit: 5)
+        game.enter(1, at: 2)  // wrong
+        game.enter(2, at: 2)  // wrong
+        game.enter(9, at: 2)  // wrong
+        #expect(game.mistakeCount == 3)
+        game.setMistakeLimit(3)
+        #expect(game.mistakeLimit == 4)
+        #expect(!game.isLost)
+    }
+
+    @Test func savedGamesPickUpTheCurrentLimit() throws {
+        let settings = AppSettings(defaults: defaults)
+        settings.mistakeLimit = .five
+        let model = GameModel(game: try easyGame(mistakeLimit: 3), settings: settings)
         #expect(model.game.mistakeLimit == 5)
     }
 

@@ -91,9 +91,9 @@ final class AppSettings {
         autoSolveSpeed = (defaults.object(forKey: Key.autoSolveSpeed) as? Double).flatMap(AutoSolveSpeed.init(rawValue:)) ?? .normal
     }
 
-    /// Mistake limit for a game starting now. Without visible mistakes a limit would end games
-    /// without warning, so it only applies while mistakes are shown.
-    var mistakeLimitForNewGame: Int? {
+    /// The mistake limit games use (new ones and the one in progress). Without visible mistakes a
+    /// limit would end games without warning, so it only applies while mistakes are shown.
+    var mistakeLimitSetting: Int? {
         showsMistakes ? mistakeLimit.value : nil
     }
 

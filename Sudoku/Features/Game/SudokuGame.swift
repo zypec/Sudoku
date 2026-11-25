@@ -18,7 +18,8 @@ struct SudokuGame: Codable, Sendable {
 
     let puzzle: Puzzle
     /// Mistakes allowed before the game is lost; `nil` means unlimited. Fixed when the game starts.
-    let mistakeLimit: Int?
+    /// Mistakes that end the game, `nil` for no limit. Follows the setting, also mid-game.
+    private(set) var mistakeLimit: Int?
 
     /// Givens plus the player's entries, `0` for empty cells.
     private(set) var values: [Digit]
@@ -159,6 +160,13 @@ struct SudokuGame: Codable, Sendable {
     /// Whether auto solve did any of the work.
     var usedAutoSolve: Bool {
         (autoSolvedSteps ?? 0) > 0
+    }
+
+    /// Changes the mistake limit of a game in progress. A limit at or below the mistakes already
+    /// made leaves one more try, so changing the setting never ends a game on the spot.
+    mutating func setMistakeLimit(_ limit: Int?) {
+        guard !isFinished else { return }
+        mistakeLimit = limit.map { max($0, mistakeCount + 1) }
     }
 
     /// Counts a hint, and remembers which technique it was about.

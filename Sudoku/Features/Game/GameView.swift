@@ -79,6 +79,9 @@ struct GameView: View {
                 model.tick()
             }
         }
+        .onChange(of: model.settings.mistakeLimitSetting) { _, _ in
+            model.applyMistakeLimitSetting()
+        }
         .onChange(of: model.game.isFinished) { _, isFinished in
             guard isFinished else { return }
             outcome = model.game.isSolved ? .solved : .lost
