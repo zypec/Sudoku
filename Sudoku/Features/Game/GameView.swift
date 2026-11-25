@@ -22,7 +22,7 @@ struct GameView: View {
                 HStack(spacing: 24) {
                     BoardView(model: model)
                     VStack(spacing: 16) {
-                        GameStatusView(game: model.game, settings: model.settings, onPause: model.pause)
+                        GameStatusView(model: model)
                         inputArea(keypadColumns: 3)
                     }
                     .frame(maxWidth: 360)
@@ -30,7 +30,7 @@ struct GameView: View {
                 .padding()
             } else {
                 VStack(spacing: 16) {
-                    GameStatusView(game: model.game, settings: model.settings, onPause: model.pause)
+                    GameStatusView(model: model)
                     BoardView(model: model)
                         .layoutPriority(1)
                     inputArea(keypadColumns: 9)
@@ -180,9 +180,15 @@ struct GameView: View {
 
 /// Mistake counter, elapsed time and the pause button above the board.
 struct GameStatusView: View {
-    let game: SudokuGame
-    let settings: AppSettings
-    var onPause: (() -> Void)?
+    let model: GameModel
+
+    private var game: SudokuGame {
+        model.game
+    }
+
+    private var settings: AppSettings {
+        model.settings
+    }
 
     var body: some View {
         HStack(spacing: 8) {
@@ -195,10 +201,9 @@ struct GameStatusView: View {
             }
             Spacer()
             if settings.showsTimer {
-                timer
+                TimerChip(model: model)
             }
-            if let onPause {
-                Button(action: onPause) {
+            Button(action: model.pause) {
                     Image(systemName: "pause.fill")
                         .font(.subheadline.weight(.bold))
                         .frame(width: 32, height: 32)
@@ -207,7 +212,6 @@ struct GameStatusView: View {
                 .buttonStyle(.pressable)
                 .disabled(game.isFinished)
                 .accessibilityLabel(Text("Pause"))
-            }
         }
         .font(.subheadline.weight(.semibold))
         .frame(minHeight: 32)
@@ -231,11 +235,20 @@ struct GameStatusView: View {
         .accessibilityLabel(Text("Mistakes: \(game.mistakeCount)"))
     }
 
-    private var timer: some View {
+    static func formattedTime(_ seconds: Int) -> String {
+        Duration.seconds(seconds).formatted(.time(pattern: seconds >= 3600 ? .hourMinuteSecond : .minuteSecond))
+    }
+}
+
+/// Elapsed time. Reads the clock on its own, so the tick every second redraws only this chip.
+private struct TimerChip: View {
+    let model: GameModel
+
+    var body: some View {
         HStack(spacing: 5) {
             Image(systemName: "stopwatch")
                 .foregroundStyle(.secondary)
-            Text(verbatim: Self.formattedTime(game.elapsedSeconds))
+            Text(verbatim: GameStatusView.formattedTime(model.elapsedSeconds))
                 .fontDesign(.rounded)
                 .monospacedDigit()
         }
@@ -244,11 +257,7 @@ struct GameStatusView: View {
         .background(.fill.tertiary, in: .capsule)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(Text("Elapsed time"))
-        .accessibilityValue(Text(Duration.seconds(game.elapsedSeconds).formatted(.units(allowed: [.hours, .minutes, .seconds], width: .wide))))
-    }
-
-    static func formattedTime(_ seconds: Int) -> String {
-        Duration.seconds(seconds).formatted(.time(pattern: seconds >= 3600 ? .hourMinuteSecond : .minuteSecond))
+        .accessibilityValue(Text(Duration.seconds(model.elapsedSeconds).formatted(.units(allowed: [.hours, .minutes, .seconds], width: .wide))))
     }
 }
 

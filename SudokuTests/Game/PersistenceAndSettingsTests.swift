@@ -133,6 +133,21 @@ struct PersistenceAndSettingsTests {
         #expect(model.game.mistakeLimit == 3)
     }
 
+    /// The clock ticks outside the game (so the board isn't redrawn every second) and is written
+    /// into it when saved.
+    @Test func clockTicksOutsideTheGameUntilSaved() throws {
+        let store = GameStore(url: storeURL)
+        let model = GameModel(game: try easyGame(), settings: AppSettings(defaults: defaults), store: store)
+        for _ in 0..<3 {
+            model.tick()
+        }
+        #expect(model.elapsedSeconds == 3)
+        #expect(model.game.elapsedSeconds == 0)
+        model.save()
+        #expect(model.game.elapsedSeconds == 3)
+        #expect(store.load()?.elapsedSeconds == 3)
+    }
+
     @Test func loweringTheLimitBelowTheMistakesLeavesOneTry() throws {
         var game = try easyGame(mistakeLimit: 5)
         game.enter(1, at: 2)  // wrong

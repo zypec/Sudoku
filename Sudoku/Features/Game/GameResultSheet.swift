@@ -131,7 +131,7 @@ struct GameResultSheet: View {
     }
 
     private var message: String {
-        let time = GameStatusView.formattedTime(model.game.elapsedSeconds)
+        let time = GameStatusView.formattedTime(model.elapsedSeconds)
         switch outcome {
         case .solved:
             if let share = model.shareOfSlowerPlayers {

@@ -24,6 +24,9 @@ final class GameModel {
     private(set) var autoSolve: AutoSolveState?
     /// Whether the board shows every candidate around the active hint (detailed explanation).
     private(set) var showsHintCandidates = false
+    /// Seconds played. Kept apart from `game` so the clock ticking every second doesn't redraw
+    /// everything that reads the game, like the board; written into `game` whenever it's saved.
+    private(set) var elapsedSeconds: Int
     /// The clock is stopped and the board hidden until the player resumes.
     private(set) var isPaused = false
 
@@ -84,6 +87,7 @@ final class GameModel {
 
     init(game: SudokuGame, settings: AppSettings, store: GameStore? = nil, recorder: GameRecorder? = nil) {
         self.game = game
+        elapsedSeconds = game.elapsedSeconds
         self.settings = settings
         self.store = store
         self.recorder = recorder
@@ -120,7 +124,15 @@ final class GameModel {
 
     /// Writes the game to disk (or clears the save once it's finished).
     func save() {
+        syncClock()
         store?.save(game)
+    }
+
+    /// Copies the clock into the game before it's saved or recorded.
+    private func syncClock() {
+        if game.elapsedSeconds != elapsedSeconds {
+            game.elapsedSeconds = elapsedSeconds
+        }
     }
 
     // MARK: Input
@@ -359,7 +371,7 @@ final class GameModel {
     /// Takes back the last applied step and pauses, showing that step again.
     func autoSolvePreviousStep() {
         guard autoSolve != nil, var previous = autoSolveHistory.popLast() else { return }
-        previous.elapsedSeconds = game.elapsedSeconds
+        previous.elapsedSeconds = elapsedSeconds
         game = previous
         save()
         if var state = autoSolve {
@@ -497,7 +509,7 @@ final class GameModel {
     /// the view saves when the app leaves the foreground or the screen closes.
     func tick() {
         guard !game.isFinished else { return }
-        game.elapsedSeconds += 1
+        elapsedSeconds += 1
     }
 
     /// Replaces the current game with a fresh puzzle of the same difficulty, using the
@@ -506,6 +518,7 @@ final class GameModel {
         isPreparingNewGame = true
         let puzzle = await PuzzleSource.shared.puzzle(game.puzzle.difficulty)
         game = SudokuGame(puzzle: puzzle, mistakeLimit: settings.mistakeLimitSetting)
+        elapsedSeconds = 0
         hasRecordedResult = false
         isPaused = false
         selectedCell = nil
@@ -519,7 +532,7 @@ final class GameModel {
     /// Applies a change to the game and saves it.
     private func update(_ change: (inout SudokuGame) -> some Any) {
         _ = change(&game)
-        save()
+        save()  // also copies the clock in, before a finished game is recorded
         if game.isFinished, !hasRecordedResult {
             hasRecordedResult = true
             recorder?.record(game)

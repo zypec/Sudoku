@@ -29,7 +29,7 @@ struct PauseView: View {
 
             VStack(spacing: 0) {
                 row("Time", systemImage: "stopwatch") {
-                    Text(verbatim: GameStatusView.formattedTime(game.elapsedSeconds))
+                    Text(verbatim: GameStatusView.formattedTime(model.elapsedSeconds))
                 }
                 Divider()
                 row("Mistakes", systemImage: "heart") {
