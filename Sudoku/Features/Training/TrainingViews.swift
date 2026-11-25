@@ -161,7 +161,7 @@ private struct TechniqueExample: View {
                 BoardView(model: model)
                     .allowsHitTesting(false)
                     .frame(maxWidth: 420)
-                Text(verbatim: hint.page.text)
+                Text(HintStyling.styled(hint.page.text))
                     .font(.subheadline)
                     .frame(maxWidth: .infinity, minHeight: 60, alignment: .topLeading)
                     .transaction { $0.animation = nil }

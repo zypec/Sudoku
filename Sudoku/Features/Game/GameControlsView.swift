@@ -31,9 +31,10 @@ struct GameControlsView: View {
                 model.toggleNotesMode()
             }
 
-            ControlButton(title: "Hint", systemImage: "lightbulb") {
+            ControlButton(title: "Hint", systemImage: "lightbulb", badge: model.hintsLeft) {
                 model.requestHint()
             }
+            .disabled(model.hintsLeft == 0)
         }
         .disabled(model.game.isFinished)
     }
@@ -43,6 +44,8 @@ private struct ControlButton: View {
     let title: LocalizedStringKey
     let systemImage: String
     var isOn = false
+    /// A count shown on the button's corner, such as the hints left.
+    var badge: Int? = nil
     let action: () -> Void
 
     @Environment(\.isEnabled) private var isEnabled
@@ -55,6 +58,18 @@ private struct ControlButton: View {
                     .foregroundStyle(isOn ? AnyShapeStyle(Color.white) : AnyShapeStyle(.primary))
                     .frame(width: 48, height: 48)
                     .background(isOn ? AnyShapeStyle(Color.accentColor) : AnyShapeStyle(.fill.tertiary), in: .circle)
+                    .overlay(alignment: .topTrailing) {
+                        if let badge {
+                            Text(badge, format: .number)
+                                .font(.caption2.weight(.bold))
+                                .monospacedDigit()
+                                .foregroundStyle(.white)
+                                .frame(minWidth: 18, minHeight: 18)
+                                .background(Color.accentColor, in: .capsule)
+                                .offset(x: 4, y: -2)
+                                .contentTransition(.numericText())
+                        }
+                    }
                 Text(title)
                     .font(.caption)
                     .foregroundStyle(isOn ? AnyShapeStyle(.tint) : AnyShapeStyle(.secondary))
@@ -68,5 +83,6 @@ private struct ControlButton: View {
         .buttonStyle(.pressable)
         .animation(.snappy, value: isOn)
         .accessibilityAddTraits(isOn ? .isSelected : [])
+        .accessibilityValue(badge.map { Text("Hints left: \($0)") } ?? Text(verbatim: ""))
     }
 }

@@ -1854,6 +1854,23 @@
         }
       }
     },
+    "Hints left: %lld": {
+      "comment": "Accessibility value of the Hint button when hints are limited.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hints left: %lld"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kalan ipucu: %lld"
+          }
+        }
+      }
+    },
     "Hints per Game": {
       "comment": "Statistics tile",
       "localizations": {
@@ -1867,6 +1884,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Oyun Başına İpucu"
+          }
+        }
+      }
+    },
+    "Hints per Game: %lld": {
+      "comment": "Settings stepper for the hint limit.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hints per Game: %lld"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oyun başına ipucu: %lld"
           }
         }
       }
@@ -2615,6 +2649,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "XY-Wing gibidir, ama merkezde X, Y ve Z'nin üçü de vardır. O zaman Z ya merkezde ya da diğer iki hücreden birindedir; bu yüzden yalnızca üçünü birden gören hücreler Z'yi kaybeder."
+          }
+        }
+      }
+    },
+    "Limit Hints": {
+      "comment": "Settings toggle that limits the hints per game.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limit Hints"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İpucunu Sınırla"
           }
         }
       }
@@ -4642,19 +4693,19 @@
         }
       }
     },
-    "The mistake limit also applies to the game in progress. When mistakes are hidden, there is no limit.": {
-      "comment": "Settings footer for the mistake limit",
+    "The mistake and hint limits also apply to the game in progress. When mistakes are hidden, there is no mistake limit.": {
+      "comment": "Footer of the Game section in Settings.",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "The mistake limit also applies to the game in progress. When mistakes are hidden, there is no limit."
+            "value": "The mistake and hint limits also apply to the game in progress. When mistakes are hidden, there is no mistake limit."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hata limiti devam eden oyuna da uygulanır. Hatalar gizliyken limit yoktur."
+            "value": "Hata ve ipucu limitleri devam eden oyuna da uygulanır. Hatalar gizliyken hata limiti yoktur."
           }
         }
       }

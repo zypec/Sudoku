@@ -23,7 +23,7 @@ struct HintPanel: View {
 
             ScrollView {
                 // No crossfade: two sentences fading over each other are hard to read.
-                Text(verbatim: activeHint.page.text)
+                Text(HintStyling.styled(activeHint.page.text))
                     .font(.body)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .transaction { $0.animation = nil }

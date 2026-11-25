@@ -37,13 +37,21 @@ struct SettingsView: View {
                         Label("Mistake Limit", systemImage: "heart")
                     }
                     .disabled(!settings.showsMistakes)
+                    Toggle(isOn: Binding(get: { settings.hintLimit > 0 }, set: { settings.hintLimit = $0 ? 3 : 0 })) {
+                        Label("Limit Hints", systemImage: "lightbulb")
+                    }
+                    if settings.hintLimit > 0 {
+                        Stepper(value: $settings.hintLimit, in: 1...20) {
+                            Text("Hints per Game: \(settings.hintLimit)")
+                        }
+                    }
                     Toggle(isOn: $settings.showsTimer) {
                         Label("Show Timer", systemImage: "timer")
                     }
                 } header: {
                     Text("Game")
                 } footer: {
-                    Text("The mistake limit also applies to the game in progress. When mistakes are hidden, there is no limit.")
+                    Text("The mistake and hint limits also apply to the game in progress. When mistakes are hidden, there is no mistake limit.")
                 }
 
                 Section("Assists") {

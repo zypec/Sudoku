@@ -239,8 +239,15 @@ final class GameModel {
         activeHint != nil || autoSolve != nil
     }
 
+    /// Hints the Hint button has left in this game, `nil` when there is no limit (always in practice).
+    /// Steps taken by auto solve count as hints in the statistics, but not against the limit.
+    var hintsLeft: Int? {
+        guard settings.hintLimit > 0, !isPractice else { return nil }
+        return max(0, settings.hintLimit - (game.hintCount - (game.autoSolvedSteps ?? 0)))
+    }
+
     func requestHint() {
-        guard !game.isFinished else { return }
+        guard !game.isFinished, hintsLeft != 0 else { return }
         if let focus = practiceFocus {
             var highlights = HintHighlights()
             highlights.fill(focus.cells, .pattern)

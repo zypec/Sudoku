@@ -176,4 +176,28 @@ struct PersistenceAndSettingsTests {
         model.input(4)
         #expect(model.game.notes[3].contains(4))
     }
+
+    @Test func hintsAreUnlimitedUntilALimitIsSet() throws {
+        let settings = AppSettings(defaults: defaults)
+        #expect(settings.hintLimit == 0)
+        let model = GameModel(game: try easyGame(), settings: settings)
+        #expect(model.hintsLeft == nil)
+        settings.hintLimit = 4
+        #expect(AppSettings(defaults: defaults).hintLimit == 4)
+    }
+
+    @Test func theHintLimitStopsTheHintButton() throws {
+        let settings = AppSettings(defaults: defaults)
+        settings.hintLimit = 2
+        let model = GameModel(game: try easyGame(), settings: settings)
+        #expect(model.hintsLeft == 2)
+        model.requestHint()
+        model.requestHint()
+        #expect(model.hintsLeft == 0)
+        model.requestHint()
+        #expect(model.game.hintCount == 2)
+        // Raising the limit gives the game in progress more hints.
+        settings.hintLimit = 3
+        #expect(model.hintsLeft == 1)
+    }
 }

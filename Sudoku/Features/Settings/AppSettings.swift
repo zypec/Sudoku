@@ -44,6 +44,10 @@ final class AppSettings {
     var mistakeLimit: MistakeLimit {
         didSet { defaults.set(mistakeLimit.rawValue, forKey: Key.mistakeLimit) }
     }
+    /// Hints the Hint button gives per game; 0 is unlimited.
+    var hintLimit: Int {
+        didSet { defaults.set(hintLimit, forKey: Key.hintLimit) }
+    }
     /// Colors wrong digits red and shows the mistake counter.
     var showsMistakes: Bool {
         didSet { defaults.set(showsMistakes, forKey: Key.showsMistakes) }
@@ -80,6 +84,7 @@ final class AppSettings {
         self.defaults = defaults
         theme = defaults.string(forKey: Key.theme).flatMap(Theme.init(rawValue:)) ?? .system
         mistakeLimit = (defaults.object(forKey: Key.mistakeLimit) as? Int).flatMap(MistakeLimit.init(rawValue:)) ?? .three
+        hintLimit = max(0, defaults.integer(forKey: Key.hintLimit))
         showsMistakes = defaults.object(forKey: Key.showsMistakes) as? Bool ?? true
         showsTimer = defaults.object(forKey: Key.showsTimer) as? Bool ?? true
         highlightsSameDigits = defaults.object(forKey: Key.highlightsSameDigits) as? Bool ?? true
@@ -100,6 +105,7 @@ final class AppSettings {
     private enum Key {
         static let theme = "settings.theme"
         static let mistakeLimit = "settings.mistakeLimit"
+        static let hintLimit = "settings.hintLimit"
         static let showsMistakes = "settings.showsMistakes"
         static let showsTimer = "settings.showsTimer"
         static let highlightsSameDigits = "settings.highlightsSameDigits"
