@@ -1,99 +1,83 @@
 <!--
-  Everything Sudoku's page says. Change it here, save, and reload the page.
+  Everything Sudoku's front page says. Change it here and the page follows; nothing else needs touching.
 
-  ## A heading             starts a section
-  A paragraph             with **bold**, *italic* and [a link](https://…)
-  - an item               a list
+  ## A heading             starts a section; ## Gallery {#gallery} gives it the id the links use
+  A paragraph             with **bold**, *italic*, `code` and [a link](https://…)
 
   A block starts with "::: kind" and ends with ":::". Its fields come first, one a line, up to the first
   empty line; after that is what it says. A field can be given more than once, and a | splits it in parts.
   The kinds this page knows:
 
-  hero        kicker, title, badge, link: Words | address (any number); then the opening words
-  board       the board beside the hero, drawn by the page: caption
-  feature     a card in the grid of what it does: label, name; then what it says
-  shots       the screens of the app: image, caption
+  hero      kicker, button: Words | address | primary (any number), note, technique: name | what it means,
+            step (any number: what the hint beside the board says, one step after another); then the opening
+            words. The name and the board are drawn by the page
+  card      name, link, go (the words at its foot), until (said instead of go while link is empty),
+            featured: yes (drawn as the one to pick); then what it says. Cards side by side form a row
+  gallery   picture: file | caption (any number; a picture opens large when clicked)
+  credits   the small print under the gallery
 -->
 
 ::: hero
-kicker: An iPhone and iPad app, in development
-title: Sudoku
-badge: Built with Claude
-link: Source code | https://github.com/zypec/Sudoku
+kicker: A Sudoku for iPhone and iPad
+button: See the gallery | #gallery | primary
+button: Read the source | https://github.com/zypec/Sudoku
+note: On iOS 27, in English and Turkish. In development.
+technique: X-Wing | Rectangle on two lines
+step: In rows 1 and 5, **7** fits only in columns 5 and 7.
+step: Suppose **7** is in row 1, column 5. Then row 5 has its **7** in column 7.
+step: Suppose instead it is in row 1, column 7. Then row 5 has it in column 5.
+step: Either way both columns get their **7** in these rows, so **7** goes from the rest of them.
 
-A Sudoku that explains itself. Its solver thinks like a person: a hint names the technique an experienced
-player would use next, shows where to look and how to spot it, and plays the reasoning on the board, case by
-case, until the answer is plain.
+A Sudoku that explains itself. Its hints don't say "put a 7 here": they name the technique a good player
+would use next, show where to look and how to spot it, and play the reasoning on the board.
 :::
 
-::: board
-caption: An X-Wing on 7. Rows 1 and 5 hold it only in columns 5 and 7, so whichever diagonal is right, both columns get their 7 here and lose it everywhere else.
+::: card
+name: Source code
+link: https://github.com/zypec/Sudoku
+go: Open on GitHub
+featured: yes
+
+The Swift engine with all 32 techniques and the tests that check them, the generator that grades every
+puzzle, and the app.
 :::
 
-## What it does
+::: card
+name: Get Sudoku
+link:
+go: Get it on the App Store
+until: Coming soon
 
-::: feature
-label: Hints
-name: The next step, not the answer
-
-Not "put a 7 here", but the step a good player would take next: where to look, how to spot it, why it
-works, and then the result to apply. Hints check your notes first and point out the ones that can't be right.
+The engine, the hints and training are in; the daily puzzle and its streak come next.
 :::
 
-::: feature
-label: Visual
-name: Proofs played on the board
+::: card
+name: Built with Claude
+link: https://claude.com/claude-code
+go: About Claude Code
 
-Each technique is tried case by case. An assumed digit appears in green, what it rules out is struck in red,
-and the links between candidates are drawn, so the reasoning is seen rather than read.
+Developed with Claude, Anthropic's model, in Claude Code: the engine, the explanations, the app and this
+page.
 :::
 
-::: feature
-label: Training
-name: Every technique, practiced
+## Gallery {#gallery}
 
-A library of 32 techniques, from Hidden Single to AICs and ALS-XZ, each with an animated example on a real
-position and practice where the next step is exactly that technique.
+Screens of the app, recorded on the iPhone simulator.
+
+::: gallery
+picture: gallery/hint.jpg | A hint played on the board: an X-Wing, one case after the other
+picture: gallery/steps.jpg | A hint step by step: an alternating chain, link by link
+picture: gallery/autosolve.jpg | Auto solve, a step at a time, with the cell it solves next marked
+picture: gallery/home.jpg | The home screen: the daily puzzle, training and statistics
+picture: gallery/library.jpg | Training: 32 techniques in five levels, from Full House to ALS-XZ
+picture: gallery/training.jpg | Each technique with an animated example on a real position, then practice
+picture: gallery/stats.jpg | Statistics per difficulty, and a score that rewards speed
+picture: gallery/dark.jpg | Dark mode, and a hint's first step: where to look
 :::
 
-::: feature
-label: Puzzles
-name: Graded by logic
-
-Difficulty comes from the hardest technique a puzzle needs, not from how many digits it gives. 1,500
-puzzles are generated and graded ahead of time and come in a fresh symmetry every time.
+::: credits
+The techniques and how they are explained draw on [SudokuWiki.org](https://www.sudokuwiki.org) by Andrew
+Stuart, and several of its example puzzles test the solver, along with the example puzzle of Wikipedia's
+[Sudoku](https://en.wikipedia.org/wiki/Sudoku) article and Arto Inkala's hard puzzle. The board at the top is
+cut from the solution of Wikipedia's puzzle.
 :::
-
-::: feature
-label: Progress
-name: Statistics and scores
-
-Wins, streaks, best and average times per difficulty, how you do with each technique, and points that reward
-speed against each puzzle's estimated time.
-:::
-
-::: feature
-label: Details
-name: Made for iPhone
-
-Liquid Glass controls, a board that stays flat and legible, auto solve, pause, light and dark, English and
-Turkish.
-:::
-
-::: shots
-image: gallery/screens.jpg
-caption: The home screen, a hint's visual explanation of an X-Wing, and the X-Wing's page in training.
-:::
-
-## How it was made
-
-Sudoku is developed with [Claude](https://claude.com), Anthropic's model, working in Claude Code: the engine
-and every technique in it, the step-by-step and visual explanations, the app, and this page. The whole history
-is on [GitHub](https://github.com/zypec/Sudoku).
-
-## Credits
-
-- [SudokuWiki.org](https://www.sudokuwiki.org) by Andrew Stuart, whose strategy pages helped shape the
-  techniques and how they are explained. Several of its example puzzles are used to test the solver.
-- The example puzzle from Wikipedia's [Sudoku](https://en.wikipedia.org/wiki/Sudoku) article and Arto
-  Inkala's well-known hard puzzle are used as test puzzles; the board above is drawn from Wikipedia's.

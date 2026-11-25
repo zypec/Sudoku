@@ -7,92 +7,146 @@
 <meta name="description" content="A Sudoku for iPhone and iPad whose hints explain the next step the way a good player would take it, and play the reasoning on the board. Built with Claude.">
 <meta property="og:title" content="Sudoku">
 <meta property="og:description" content="A Sudoku that explains itself: human-like hints, visual proofs and training for 32 techniques.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Crect width='30' height='30' rx='7' fill='%23f4f6fb'/%3E%3Cpath stroke='%23c3c9d8' stroke-width='1.4' d='M10 0v30M20 0v30M0 10h30M0 20h30'/%3E%3Crect x='11' y='11' width='8' height='8' rx='2' fill='%230a66d8'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Crect width='30' height='30' rx='7' fill='%23f4f6fb'/%3E%3Cpath stroke='%23c3c9d8' stroke-width='1.4' d='M10 0v30M20 0v30M0 10h30M0 20h30'/%3E%3Crect x='10.5' y='10.5' width='9' height='9' rx='2.2' fill='%230a66d8'/%3E%3C/svg%3E">
 <script>
 try {
   const theme = localStorage.getItem('zypec-theme') || localStorage.getItem('pp-theme');
   if (theme === 'light' || theme === 'dark') document.documentElement.setAttribute('data-theme', theme);
 } catch (unavailable) {}
 </script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700..800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="kit/front.css">
 <style>
-/* Sudoku, drawn the way the app draws a hint: a flat, legible board with the pattern marked on it, and the
-   reasoning beside it in plain words. The bar along the top is the kit's, as on every other page. Everything
-   it says is in content.md beside it. */
-
-/* ── Settings: the values worth changing by hand. ── */
-:root{
-  /* The name in a rounded face, as the app sets its digits; SF Pro Rounded on Apple devices. */
-  --font-logo:ui-rounded,"SF Pro Rounded","Nunito","Helvetica Neue",Arial,sans-serif;
-  --size-title:clamp(52px,6.4vw,82px);
-  /* The app's blue, from its icon. Brighter than MetroCrafter's navy, so the two never read as one. */
-  --accent:#0a66d8; --accent-ink:#0855b5; --accent-soft:#0a66d812; --accent-line:#0a66d840;
+/* The name is a logo, in the rounded face the app sets its digits in (SF Pro Rounded on Apple devices,
+   Nunito elsewhere), wherever it is written as the name. */
+:root{--logo:ui-rounded,"SF Pro Rounded",Nunito,"Helvetica Neue",Arial,sans-serif;
+  /* The app's blue, from its icon: brighter than MetroCrafter's navy, so the two never read as one. */
+  --accent:#0a66d8;--accent-ink:#0855b5;--accent-soft:#0a66d812;--accent-line:#0a66d840;
+  /* The tile the icon's 7 sits on, and its glow. */
+  --tile-a:#3f8cff;--tile-b:#0a5fd0;--tile-glow:#2f7bf066;
   /* The hint colors of the app: one case of a pattern in green, the other in blue, what goes in red. */
-  --case-a:#2f9e55; --case-b:#2f7bf0; --struck:#d93a3a;
-  --house:#f6d36b33; --cornerfill:#f39a4a3d; --target:#d93a3a1f;
-}
+  --case-a:#2f9e55;--case-b:#2f7bf0;--struck:#d93a3a;--house:#f6d36b38;--corner:#f39a4a40;--target:#d93a3a1c}
 @media (prefers-color-scheme:dark){:root:not([data-theme=light]){
-  --accent:#5aa7ff; --accent-ink:#7cb9ff; --accent-soft:#5aa7ff17; --accent-line:#5aa7ff45;
-  --house:#f6d36b1f; --cornerfill:#f39a4a2e; --target:#ff5b5b24; --struck:#ff6b6b}}
-:root[data-theme=dark]{--accent:#5aa7ff; --accent-ink:#7cb9ff; --accent-soft:#5aa7ff17; --accent-line:#5aa7ff45;
-  --house:#f6d36b1f; --cornerfill:#f39a4a2e; --target:#ff5b5b24; --struck:#ff6b6b}
+  --accent:#5aa7ff;--accent-ink:#7cb9ff;--accent-soft:#5aa7ff17;--accent-line:#5aa7ff45;--tile-glow:#5aa7ff80;
+  --house:#f6d36b1f;--corner:#f39a4a2e;--target:#ff5b5b24;--struck:#ff6b6b}}
+:root[data-theme=dark]{--accent:#5aa7ff;--accent-ink:#7cb9ff;--accent-soft:#5aa7ff17;--accent-line:#5aa7ff45;--tile-glow:#5aa7ff80;
+  --house:#f6d36b1f;--corner:#f39a4a2e;--target:#ff5b5b24;--struck:#ff6b6b}
 
-header .home{font-family:var(--font-logo);font-weight:800;letter-spacing:-.01em}
-header .home svg{width:18px;height:18px}
+header .home{font-family:var(--logo);font-weight:800;letter-spacing:-.01em}
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:48px;align-items:center;padding:64px 0 40px}
+.brand{font-size:76px;font-weight:800;letter-spacing:-.025em;line-height:1;margin:0 0 18px;display:inline-flex;align-items:center;
+  gap:.2em;font-family:var(--logo);white-space:nowrap}
 
-/* The board takes the wider half, so its notes stay readable. */
-.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px;align-items:center;padding:64px 0 24px}
-.hero h1{margin:6px 0 18px;font:800 var(--size-title)/.95 var(--font-logo);letter-spacing:-.03em}
-.hero p{color:var(--ink-2);font-size:18px;line-height:1.6;margin:0 0 22px}
-.hero .actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.hero .badge{font-size:13px;color:var(--accent-ink);background:var(--accent-soft);border:1px solid var(--accent-line);
-  border-radius:999px;padding:5px 12px}
+/* The name, as the app's icon is: the board's corner settles first, the letters rise one by one, and then
+   the 7 is placed on its tile, which keeps glowing. Only here; the bar shows it still. */
+.brand .mark{width:.92em;height:.92em;flex:none;display:block;animation:pop .7s cubic-bezier(.34,1.6,.5,1) .1s both}
+.brand .mark .seven{transform-box:fill-box;transform-origin:center;
+  animation:pop .8s cubic-bezier(.34,1.7,.5,1) .78s both,glow 3.4s ease-in-out 1.7s infinite}
+.brand .word{display:inline-flex}
+.brand .ch{display:inline-block;animation:rise .8s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(.2s + var(--i) * .055s)}
+@keyframes rise{from{opacity:0;filter:blur(10px);transform:translateY(.22em)}to{opacity:1;filter:none;transform:none}}
+@keyframes pop{from{opacity:0;transform:scale(0)}to{opacity:1;transform:scale(1)}}
+@keyframes glow{0%,100%{filter:drop-shadow(0 0 .02em var(--tile-glow))}50%{filter:drop-shadow(0 0 .09em var(--tile-glow))}}
+.cta{display:flex;gap:10px;flex-wrap:wrap}
 
-.board{margin:0}
-.board svg{display:block;width:100%;height:auto;border-radius:14px;background:var(--panel);
-  box-shadow:0 0 0 1px var(--line),0 24px 48px -28px #0a1b3a59}
-.board figcaption{font-size:13.5px;line-height:1.55;color:var(--muted);margin-top:10px}
-.board .given{font:600 22px var(--font-logo);fill:var(--ink)}
-.board .note{font:600 9px var(--font-logo);fill:var(--muted)}
-.board .note.on{fill:#fff}
-.board .grid{stroke:var(--line-2);stroke-width:1}
-.board .box{stroke:var(--ink);stroke-width:2;fill:none}
+/* The board beside the name, drawn as the app draws a hint: a flat, legible board with the pattern on it,
+   and the hint's panel beside it, saying each step while the board shows it. The four steps take three
+   seconds each; with reduced motion the board holds the last one. */
+.hero figure{margin:0;border-radius:18px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line);
+  aspect-ratio:16/10;background:var(--stage);display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;padding:14px;
+  align-items:center}
+.board{height:100%;aspect-ratio:1;display:block;border-radius:10px;background:var(--panel)}
+.board .given{font:700 23px var(--logo);fill:var(--ink)}
+.board .note{font:700 10px var(--logo);fill:var(--muted)}
+.board .on .note{fill:#fff}
+.board .thin{stroke:var(--line-2);stroke-width:1}
+.board .thick{stroke:var(--ink);stroke-width:2.2;fill:none}
 .board .link{stroke:var(--accent);stroke-width:2.2;stroke-linecap:round}
 .board .strike{stroke:var(--struck);stroke-width:1.6}
 .board .ring{fill:none;stroke:var(--struck);stroke-width:1.2}
-/* The two diagonals light up in turn, the way the app plays the two cases; held still with reduced motion. */
-.board .case-a{fill:var(--case-a);animation:caseA 6s ease-in-out infinite}
-.board .case-b{fill:var(--case-b);animation:caseB 6s ease-in-out infinite}
-@keyframes caseA{0%,40%{opacity:1}50%,90%{opacity:.25}100%{opacity:1}}
-@keyframes caseB{0%,40%{opacity:.25}50%,90%{opacity:1}100%{opacity:.25}}
-@media (prefers-reduced-motion:reduce){.board .case-a,.board .case-b{animation:none;opacity:1}}
+.board .case-a circle{fill:var(--case-a)}
+.board .case-b circle{fill:var(--case-b)}
+.board .case-a{animation:case-a 12s infinite}
+.board .case-b{animation:case-b 12s infinite}
+.board .end{animation:end 12s infinite}
+@keyframes case-a{0%,48%{opacity:1}52%,73%{opacity:.2}77%,100%{opacity:1}}
+@keyframes case-b{0%,23%{opacity:1}27%,48%{opacity:.2}52%,100%{opacity:1}}
+@keyframes end{0%,73%{opacity:0}77%,97%{opacity:1}100%{opacity:0}}
 
-section{margin-top:56px}
-.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-top:18px}
-.feature{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px 20px 6px}
-.feature .label{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.02em;color:var(--accent-ink);
-  background:var(--accent-soft);border-radius:999px;padding:3px 10px}
-.feature h3{font:700 20px/1.25 var(--font-logo);margin:12px 0 8px}
-.feature p{color:var(--ink-2);margin:0 0 14px;font-size:15.5px}
-
-.shots{margin:28px 0 0}
-.shots img{display:block;width:100%;height:auto;border-radius:18px;border:1px solid var(--line);background:var(--stage)}
-.shots figcaption{font-size:13.5px;color:var(--muted);margin-top:10px}
-
-section p,section li{color:var(--ink-2)}
-section ul{padding-left:20px}
-section li{margin-bottom:10px}
-
-@media (max-width:840px){
-  .hero{grid-template-columns:1fr;gap:28px;padding-top:40px}
-  .hero p{font-size:17px}
+.hint{align-self:stretch;display:flex;flex-direction:column;gap:4px;min-width:0;padding:16px 16px 14px;border-radius:14px;
+  background:var(--panel);color:var(--ink)}
+.hint b{font:800 19px/1.2 var(--logo);letter-spacing:-.01em}
+.hint small{font-size:12.5px;color:var(--muted)}
+.hint .says{display:grid;margin-top:12px;flex:1}
+.hint .says p{grid-area:1/1;margin:0;font-size:14px;line-height:1.5;color:var(--ink-2);opacity:0;
+  animation:say 12s infinite;animation-delay:calc(var(--k) * 3s - 12s)}
+.hint .says strong{color:var(--accent-ink)}
+.hint .pages{display:flex;gap:4px;align-items:center}
+.hint .pages i{height:4px;width:8px;border-radius:2px;background:var(--line-2);
+  animation:page 12s infinite;animation-delay:calc(var(--k) * 3s - 12s)}
+@keyframes say{0%{opacity:0;transform:translateY(4px)}3%,23%{opacity:1;transform:none}26%,100%{opacity:0}}
+@keyframes page{0%,24%{width:22px;background:var(--accent)}26%,100%{width:8px;background:var(--line-2)}}
+@media (prefers-reduced-motion:reduce){
+  .brand .mark,.brand .mark .seven,.brand .ch{animation:none}
+  .board .case-a,.board .case-b,.board .end{animation:none;opacity:1}
+  .hint .says p,.hint .pages i{animation:none}
+  .hint .says p:last-child{opacity:1}
+  .hint .pages i:last-child{width:22px;background:var(--accent)}
 }
+
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:20px}
+.card{display:flex;flex-direction:column;gap:10px;border:1px solid var(--line);border-radius:var(--r);background:var(--panel);
+  padding:22px;color:var(--ink);transition:border-color .15s,transform .15s}
+a.card:hover{text-decoration:none;border-color:var(--accent-line);transform:translateY(-2px)}
+.card b{font-size:17px;letter-spacing:-.01em}
+.card p{margin:0;color:var(--ink-2);font-size:14.5px}
+.card .go{margin-top:auto;color:var(--accent-ink);font-weight:600;font-size:14px}
+.card.soon .go{color:var(--muted)}
+/* The card a first visit should take. */
+.card.featured{border:1px solid var(--accent-line);background:linear-gradient(180deg,var(--accent-soft),var(--panel) 60%);
+  box-shadow:0 10px 30px -24px color-mix(in srgb,var(--accent) 70%,transparent)}
+.card.featured:hover{border-color:var(--accent)}
+.card.featured .go{font-size:15px;animation:goglow 2.8s ease-in-out infinite}
+@keyframes goglow{0%,100%{text-shadow:0 0 0 transparent}50%{text-shadow:0 0 8px var(--tile-glow)}}
+
+/* The screens stand as the phone holds them, whole. */
+.gallery{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:16px}
+.gallery figure{margin:0}
+.gallery a{display:block;cursor:zoom-in}
+.gallery img{display:block;width:100%;height:auto;aspect-ratio:700/1521;object-fit:cover;object-position:top;border-radius:18px;
+  border:1px solid var(--line);background:var(--stage)}
+.gallery a:hover img{border-color:var(--accent-line)}
+.gallery figcaption{font-size:13.5px;color:var(--ink-2);margin-top:8px;line-height:1.5}
+/* The credits are owed, not read. */
+.credits{margin:20px 0 0;color:var(--muted);font-size:11px;line-height:1.6}
+.credits p{margin:0}
+.credits a{color:var(--muted);text-decoration:underline;text-underline-offset:2px}
+
+@media (max-width:900px){
+  .hero{grid-template-columns:minmax(0,1fr);gap:28px;padding-top:40px}
+  .cards{grid-template-columns:1fr}
+  .gallery{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .brand{font-size:56px}
+}
+/* On a phone the board takes the whole width, so its notes stay readable, and the hint goes under it. */
+@media (max-width:640px){
+  .hero figure{aspect-ratio:auto;grid-template-columns:minmax(0,1fr);padding:10px;gap:10px}
+  .board{width:100%;height:auto}
+  .hint .says{min-height:4.5em}
+}
+.lede p{margin:0}.lede p+p{margin-top:12px}
+/* The words under a section's heading, before what it shows, read as a note. */
+section>.prose p{margin:0;color:var(--muted);font-size:14px}
+.content-error{color:var(--muted);padding:48px 0}
 </style>
 </head>
 <body>
 <header>
-  <a class="home" href="./"><svg viewBox="0 0 30 30" aria-hidden="true"><rect width="30" height="30" rx="7" fill="var(--panel)"/><path stroke="var(--line-2)" stroke-width="1.6" d="M10 0v30M20 0v30M0 10h30M0 20h30"/><rect x="11" y="11" width="8" height="8" rx="2" fill="var(--accent)"/></svg>Sudoku</a>
+  <a class="home" href="./"><svg viewBox="0 0 30 30" aria-hidden="true"><rect width="30" height="30" rx="7" fill="var(--panel)"/><path stroke="var(--line-2)" stroke-width="1.6" d="M10 0v30M20 0v30M0 10h30M0 20h30"/><rect x="10.5" y="10.5" width="9" height="9" rx="2.2" fill="var(--accent)"/></svg>Sudoku</a>
   <nav>
+    <a class="roomy" href="#gallery">Gallery</a>
     <a href="../">Portfolio</a>
     <button id="theme" type="button" aria-live="polite"><span class="icon" aria-hidden="true"></span><span class="text"></span></button>
   </nav>
@@ -102,79 +156,139 @@ section li{margin-bottom:10px}
 <!-- What this page says is in content.md beside it; this file only draws it. -->
 <main data-content="content.md"></main>
 
+<footer>
+  <span>Sudoku by <a href="https://github.com/zypec" target="_blank" rel="noopener">zypec</a></span>
+  <a href="#gallery">Gallery</a>
+  <a href="https://github.com/zypec/Sudoku" target="_blank" rel="noopener">Source code</a>
+  <a href="https://github.com/zypec/Sudoku/issues" target="_blank" rel="noopener">Report a bug</a>
+  <a href="../">Portfolio</a>
+</footer>
+
 <script src="kit/content.js"></script>
+<script src="kit/lightbox.js"></script>
 <script>
 const {escape, inline} = Content;
+const button = ([words, href, primary]) => `<a class="btn${primary ? ' primary' : ''}" href="${escape(href)}"`
+  + `${/^https?:/.test(href) ? ' target="_blank" rel="noopener"' : ''}>${inline(words)}</a>`;
 
-/** The hero, with the board beside it: the board is drawn by the hero, wherever it is written in the file. */
-Content.kind('hero', (block, _, blocks) => {
-  const board = blocks.find(one => one.kind === 'board');
-  const links = block.pairs('link').map(([words, href]) =>
-    `<a class="btn primary" href="${escape(href)}" target="_blank" rel="noopener">${inline(words)}</a>`).join('');
-  return `<section class="hero"><div><p class="kicker">${inline(block.one('kicker'))}</p>`
-    + `<h1>${inline(block.one('title'))}</h1>${block.html}`
-    + `<div class="actions">${links}${block.one('badge') ? `<span class="badge">${inline(block.one('badge'))}</span>` : ''}</div></div>`
-    + (board ? boardOf(board) : '') + '</section>';
-});
-Content.kind('board', () => '');
+/** The app's icon, drawn: a corner of a board with its 7 on a blue tile. */
+const MARK = '<svg class="mark" viewBox="0 0 30 30" aria-hidden="true">'
+  + '<defs><linearGradient id="tile" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--tile-a)"/><stop offset="1" stop-color="var(--tile-b)"/></linearGradient></defs>'
+  + '<rect x=".5" y=".5" width="29" height="29" rx="7" fill="var(--panel)" stroke="var(--line-2)"/>'
+  + '<path stroke="var(--line-2)" stroke-width=".8" d="M10 .5v29M20 .5v29M.5 10h29M.5 20h29"/>'
+  + '<g fill="var(--ink)" font-family="ui-rounded,Nunito,sans-serif" font-weight="700" font-size="7" text-anchor="middle">'
+  + '<text x="5" y="7.5">5</text><text x="25" y="7.5">9</text><text x="25" y="27.5">1</text>'
+  + '<g fill="var(--muted)" font-size="2.6"><text x="5" y="23.2">2</text><text x="2.4" y="25.6">4</text><text x="5" y="28">8</text></g></g>'
+  + '<g class="seven"><rect x="10.8" y="10.8" width="8.4" height="8.4" rx="2.2" fill="url(#tile)"/>'
+  + '<text x="15" y="17.6" fill="#fff" font-family="ui-rounded,Nunito,sans-serif" font-weight="700" font-size="7" text-anchor="middle">7</text></g></svg>';
 
 /*
- * The board: a real X-Wing on 7, taken from the solved grid of Wikipedia's example puzzle with cells emptied
- * so that rows 1 and 5 hold 7 only in columns 5 and 7. The corners alternate between the two cases, as in
- * the app's visual explanation, and the 7s the X-Wing removes from those columns are struck.
+ * The board: a real X-Wing on 7, cut from the solution of Wikipedia's example puzzle with cells emptied so
+ * that rows 1 and 5 hold 7 only in columns 5 and 7. One case of the X-Wing is in green, the other in blue,
+ * and the 7s it removes from those two columns are struck, as in the app's visual explanation.
  */
 const GIVENS = '.346.8.12672.95348198342.6.859..14234268...91.1392485696.537284.8.41.635345.861.9';
 /** The candidates of each empty cell, by cell index (row * 9 + column). */
 const NOTES = {0: '5', 4: '7', 6: '579', 12: '1', 24: '57', 26: '7', 30: '7', 31: '67', 40: '57', 41: '3', 42: '7',
   45: '7', 56: '1', 63: '27', 65: '7', 68: '9', 75: '2', 79: '7'};
-const CORNERS = {4: 'case-a', 42: 'case-a', 6: 'case-b', 40: 'case-b'};
+const CASES = {4: 'case-a', 42: 'case-a', 6: 'case-b', 40: 'case-b'};
 const TARGETS = [24, 31];
 const ROWS = [0, 4], COLUMNS = [4, 6];
 
-function boardOf(block) {
-  const size = 40, out = [];
+function board(label) {
+  const size = 40, out = [], end = [];
   const at = cell => [cell % 9 * size, Math.floor(cell / 9) * size];
-  const notePoint = (cell, digit) => {
+  const slot = (cell, digit) => {
     const [x, y] = at(cell);
     return [x + ((digit - 1) % 3 + .5) * size / 3, y + (Math.floor((digit - 1) / 3) + .5) * size / 3];
   };
-  // The two rows and the two columns of the pattern, then its corners and the cells that lose the 7.
+  const fill = (cell, color, into) => { const [x, y] = at(cell); into.push(`<rect x="${x}" y="${y}" width="${size}" height="${size}" fill="var(${color})"/>`); };
+  // The two rows and two columns of the pattern, its corners, and the cells that lose the 7.
   for (const row of ROWS) out.push(`<rect x="0" y="${row * size}" width="${9 * size}" height="${size}" fill="var(--house)"/>`);
   for (const column of COLUMNS) out.push(`<rect x="${column * size}" y="0" width="${size}" height="${9 * size}" fill="var(--house)"/>`);
-  for (const cell of Object.keys(CORNERS)) { const [x, y] = at(+cell); out.push(`<rect x="${x}" y="${y}" width="${size}" height="${size}" fill="var(--cornerfill)"/>`); }
-  for (const cell of TARGETS) { const [x, y] = at(cell); out.push(`<rect x="${x}" y="${y}" width="${size}" height="${size}" fill="var(--target)"/>`); }
-  for (let i = 1; i < 9; i++) {
-    out.push(`<line class="grid" x1="${i * size}" y1="0" x2="${i * size}" y2="${9 * size}"/>`, `<line class="grid" x1="0" y1="${i * size}" x2="${9 * size}" y2="${i * size}"/>`);
+  for (const cell of Object.keys(CASES)) fill(+cell, '--corner', out);
+  for (const cell of TARGETS) fill(cell, '--target', end);
+  for (let i = 1; i < 9; i++) if (i % 3) {
+    out.push(`<line class="thin" x1="${i * size}" y1="0" x2="${i * size}" y2="${9 * size}"/>`, `<line class="thin" x1="0" y1="${i * size}" x2="${9 * size}" y2="${i * size}"/>`);
   }
-  // The strong links: in each row, 7 fits only in its two corners.
+  // In each of the two rows, 7 fits only in its two corners: one of them holds it.
   for (const row of ROWS) {
-    const [x1, y1] = notePoint(row * 9 + COLUMNS[0], 7), [x2, y2] = notePoint(row * 9 + COLUMNS[1], 7);
-    out.push(`<line class="link" x1="${x1 + 5}" y1="${y1}" x2="${x2 - 5}" y2="${y2}"/>`);
+    const [x1, y] = slot(row * 9 + COLUMNS[0], 7), [x2] = slot(row * 9 + COLUMNS[1], 7);
+    out.push(`<line class="link" x1="${x1 + 6}" y1="${y}" x2="${x2 - 6}" y2="${y}"/>`);
   }
   [...GIVENS].forEach((digit, cell) => {
     const [x, y] = at(cell);
     if (digit !== '.') { out.push(`<text class="given" x="${x + size / 2}" y="${y + size / 2 + 8}" text-anchor="middle">${digit}</text>`); return; }
     for (const note of NOTES[cell] || '') {
-      const [nx, ny] = notePoint(cell, +note);
-      const corner = note === '7' && CORNERS[cell], target = note === '7' && TARGETS.includes(cell);
-      if (corner) out.push(`<circle class="${corner}" cx="${nx}" cy="${ny}" r="5.6"/>`);
-      if (target) out.push(`<circle class="ring" cx="${nx}" cy="${ny}" r="5.4"/>`);
-      out.push(`<text class="note${corner ? ' on' : ''}" x="${nx}" y="${ny + 3.2}" text-anchor="middle">${note}</text>`);
-      if (target) out.push(`<line class="strike" x1="${nx - 4}" y1="${ny}" x2="${nx + 4}" y2="${ny}"/>`);
+      const [nx, ny] = slot(cell, +note);
+      const text = `<text class="note" x="${nx}" y="${ny + 3.5}" text-anchor="middle">${note}</text>`;
+      if (note === '7' && CASES[cell]) out.push(`<g class="${CASES[cell]} on"><circle cx="${nx}" cy="${ny}" r="6"/>${text}</g>`);
+      else out.push(text);
+      if (note === '7' && TARGETS.includes(cell)) {
+        end.push(`<circle class="ring" cx="${nx}" cy="${ny}" r="5.8"/><line class="strike" x1="${nx - 4.5}" y1="${ny}" x2="${nx + 4.5}" y2="${ny}"/>`);
+      }
     }
   });
-  for (let i = 0; i <= 3; i++) {
-    out.push(`<line class="box" x1="${i * 3 * size}" y1="0" x2="${i * 3 * size}" y2="${9 * size}"/>`, `<line class="box" x1="0" y1="${i * 3 * size}" x2="${9 * size}" y2="${i * 3 * size}"/>`);
+  out.push(`<g class="end">${end.join('')}</g>`);
+  for (let i = 0; i <= 9; i += 3) {
+    out.push(`<line class="thick" x1="${i * size}" y1="0" x2="${i * size}" y2="${9 * size}"/>`, `<line class="thick" x1="0" y1="${i * size}" x2="${9 * size}" y2="${i * size}"/>`);
   }
-  return `<figure class="board"><svg viewBox="-1 -1 ${9 * size + 2} ${9 * size + 2}" role="img" aria-label="${escape(block.one('caption'))}">${out.join('')}</svg>`
-    + `<figcaption>${inline(block.one('caption'))}</figcaption></figure>`;
+  return `<svg class="board" viewBox="-1.1 -1.1 ${9 * size + 2.2} ${9 * size + 2.2}" role="img" aria-label="${escape(label)}">${out.join('')}</svg>`;
 }
 
-Content.kind('feature', block => `<article class="feature"><span class="label">${inline(block.one('label'))}</span>`
-  + `<h3>${inline(block.one('name'))}</h3>${block.html}</article>`, 'features');
+Content.kind('hero', block => {
+  const [name, meaning] = block.pairs('technique')[0] || [];
+  const steps = block.all('step');
+  const hint = name ? `<div class="hint"><b>${inline(name)}</b>${meaning ? `<small>${inline(meaning)}</small>` : ''}`
+    + `<div class="says">${steps.map((step, k) => `<p style="--k:${k}">${inline(step)}</p>`).join('')}</div>`
+    + `<div class="pages" aria-hidden="true">${steps.map((step, k) => `<i style="--k:${k}"></i>`).join('')}</div></div>` : '';
+  return `<section class="hero"><div><p class="kicker">${inline(block.one('kicker'))}</p>`
+    + `<h1 class="brand" id="brand" aria-label="Sudoku">Sudoku</h1>`
+    + `<div class="lede">${block.html}</div><div class="cta">${block.pairs('button').map(button).join('')}</div>`
+    + (block.one('note') ? `<p class="note" style="margin-top:14px">${inline(block.one('note'))}</p>` : '') + '</div>'
+    + (name ? `<figure>${board(`A Sudoku board with an ${name} on 7, explained by a hint beside it`)}${hint}</figure>` : '')
+    + '</section>';
+});
 
-Content.kind('shots', block => `<figure class="shots"><img src="${escape(block.one('image'))}" alt="${escape(block.one('caption'))}" loading="lazy" width="1920" height="1080">`
-  + `<figcaption>${inline(block.one('caption'))}</figcaption></figure>`);
+/** A card leads somewhere. The one whose link is empty (a store page not open yet) says so instead. */
+Content.kind('card', block => {
+  const href = block.one('link');
+  const go = href ? block.one('go') : block.one('until') || block.one('go');
+  const featured = block.one('featured') === 'yes' && href;
+  const away = /^https?:/.test(href) ? ' target="_blank" rel="noopener"' : '';
+  return href
+    ? `<a class="card${featured ? ' featured' : ''}" href="${escape(href)}"${away}><b>${inline(block.one('name'))}</b>${block.html}<span class="go">${inline(go)}</span></a>`
+    : `<div class="card soon"><b>${inline(block.one('name'))}</b>${block.html}<span class="go">${inline(go)}</span></div>`;
+}, 'cards');
+
+Content.kind('gallery', block => '<div class="gallery">' + block.pairs('picture').map(([src, caption]) =>
+  `<figure><a href="${escape(src)}"><img src="${escape(src)}" alt="${escape(caption || '')}" loading="lazy" width="700" height="1521"></a>`
+  + `${caption ? `<figcaption>${inline(caption)}</figcaption>` : ''}</figure>`).join('') + '</div>');
+
+Content.kind('credits', block => `<div class="credits">${block.html}</div>`);
+
+/** What only works once the words are on the page. */
+document.addEventListener('contentready', () => {
+  const brand = document.getElementById('brand');
+  if (brand) brand.innerHTML = MARK + '<span class="word" aria-hidden="true">'
+    + [...'Sudoku'].map((c, i) => `<span class="ch" style="--i:${i}">${c}</span>`).join('') + '</span>';
+
+  Lightbox.wire('.gallery a');
+
+  /**
+   * Arriving from another page at #gallery: the browser looked for the section before the words were drawn
+   * and found nothing, so it is brought into view now, and again once the pictures above it have loaded,
+   * unless the reader has scrolled since.
+   */
+  (() => {
+    const section = location.hash.length > 1 && document.getElementById(location.hash.slice(1));
+    if (!section) return;
+    let placed = null;
+    const bring = () => { section.scrollIntoView(); placed = scrollY; };
+    requestAnimationFrame(bring);
+    addEventListener('load', () => { if (placed === null || Math.abs(scrollY - placed) < 2) bring(); }, {once: true});
+  })();
+});
 </script>
 <script src="kit/theme.js"></script>
 </body>
