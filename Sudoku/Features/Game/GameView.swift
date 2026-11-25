@@ -54,6 +54,8 @@ struct GameView: View {
         }
         .navigationTitle(Text(model.game.puzzle.difficulty.title))
         .navigationBarTitleDisplayMode(.inline)
+        // Dragging across the board must not go back; only the edge swipe does.
+        .disablesContentSwipeBack()
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 optionsMenu

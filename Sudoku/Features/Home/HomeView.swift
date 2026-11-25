@@ -102,6 +102,12 @@ struct HomeView: View {
             .task {
                 savedGame = store.load()
             }
+            .task {
+                // Decode the puzzle bank off the main actor now, so New Game doesn't wait for it.
+                await Task.detached(priority: .utility) {
+                    _ = PuzzleBank.bundled.count(of: .easy)
+                }.value
+            }
             .onChange(of: activeGame) { _, game in
                 // Returning from a game: show its latest saved state (or none if it finished).
                 if game == nil {
