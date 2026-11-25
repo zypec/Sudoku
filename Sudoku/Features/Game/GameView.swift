@@ -9,6 +9,8 @@ import SwiftUI
 /// Wide (iPad, landscape): board on the left, controls and a 3x3 keypad on the right.
 struct GameView: View {
     let model: GameModel
+    /// Set when the game is a training position: a task banner replaces the status bar.
+    var practice: PracticeModel?
 
     @Environment(\.dismiss) private var dismiss
     @Environment(\.scenePhase) private var scenePhase
@@ -22,7 +24,7 @@ struct GameView: View {
                 HStack(spacing: 24) {
                     BoardView(model: model)
                     VStack(spacing: 16) {
-                        GameStatusView(model: model)
+                        statusArea
                         inputArea(keypadColumns: 3)
                     }
                     .frame(maxWidth: 360)
@@ -30,7 +32,7 @@ struct GameView: View {
                 .padding()
             } else {
                 VStack(spacing: 16) {
-                    GameStatusView(model: model)
+                    statusArea
                     BoardView(model: model)
                         .layoutPriority(1)
                     inputArea(keypadColumns: 9)
@@ -51,7 +53,7 @@ struct GameView: View {
                     .glassEffect(in: .rect(cornerRadius: 20))
             }
         }
-        .navigationTitle(Text(model.game.puzzle.difficulty.title))
+        .navigationTitle(practice.map { Text(verbatim: $0.technique.title) } ?? Text(model.game.puzzle.difficulty.title))
         .navigationBarTitleDisplayMode(.inline)
         // Swipes never leave a game (they're easy to trigger on the board); only the back button does.
         .disablesSwipeBack()
@@ -78,11 +80,17 @@ struct GameView: View {
                 model.tick()
             }
         }
+        .onChange(of: model.game.values) { _, _ in
+            practice?.evaluate()
+        }
+        .onChange(of: model.game.notes) { _, _ in
+            practice?.evaluate()
+        }
         .onChange(of: model.settings.mistakeLimitSetting) { _, _ in
             model.applyMistakeLimitSetting()
         }
         .onChange(of: model.game.isFinished) { _, isFinished in
-            guard isFinished else { return }
+            guard isFinished, practice == nil else { return }
             outcome = GameOutcome(game: model.game)
         }
         // Ticks aren't saved individually, so save the clock when leaving the foreground or the screen.
@@ -138,6 +146,16 @@ struct GameView: View {
                 model.pauseAutoSolve()
                 isShowingSettings = true
             }
+        }
+    }
+
+    /// The status bar, or the practice task in training.
+    @ViewBuilder
+    private var statusArea: some View {
+        if let practice {
+            PracticeBanner(practice: practice)
+        } else {
+            GameStatusView(model: model)
         }
     }
 

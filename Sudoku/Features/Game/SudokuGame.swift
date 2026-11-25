@@ -48,10 +48,16 @@ struct SudokuGame: Codable, Sendable {
     }
 
     init(puzzle: Puzzle, mistakeLimit: Int?) {
+        self.init(puzzle: puzzle, mistakeLimit: mistakeLimit, notes: Array(repeating: .empty, count: Geometry.cellCount))
+    }
+
+    /// A game that starts with notes already written (training positions). The notes aren't an
+    /// undoable move.
+    init(puzzle: Puzzle, mistakeLimit: Int?, notes: [CandidateSet]) {
         self.puzzle = puzzle
         self.mistakeLimit = mistakeLimit
         values = puzzle.givens
-        notes = Array(repeating: .empty, count: Geometry.cellCount)
+        self.notes = Geometry.cells.map { puzzle.givens[$0] == 0 ? notes[$0] : .empty }
         deducedEliminations = Array(repeating: .empty, count: Geometry.cellCount)
     }
 

@@ -85,20 +85,26 @@ final class GameModel {
     /// A game is recorded once, when it finishes.
     @ObservationIgnored private var hasRecordedResult: Bool
 
-    init(game: SudokuGame, settings: AppSettings, store: GameStore? = nil, recorder: GameRecorder? = nil) {
+    /// Whether the mistake-limit setting applies to this game (not in training).
+    @ObservationIgnored private let followsMistakeLimitSetting: Bool
+
+    init(game: SudokuGame, settings: AppSettings, store: GameStore? = nil, recorder: GameRecorder? = nil, followsMistakeLimitSetting: Bool = true) {
         self.game = game
         elapsedSeconds = game.elapsedSeconds
         self.settings = settings
         self.store = store
         self.recorder = recorder
+        self.followsMistakeLimitSetting = followsMistakeLimitSetting
         hasRecordedResult = game.isFinished
         // A saved game picks up the limit set since it was started.
-        self.game.setMistakeLimit(settings.mistakeLimitSetting)
+        if followsMistakeLimitSetting {
+            self.game.setMistakeLimit(settings.mistakeLimitSetting)
+        }
     }
 
     /// Applies the current mistake-limit setting to the game in progress.
     func applyMistakeLimitSetting() {
-        guard game.mistakeLimit != settings.mistakeLimitSetting else { return }
+        guard followsMistakeLimitSetting, game.mistakeLimit != settings.mistakeLimitSetting else { return }
         update { $0.setMistakeLimit(settings.mistakeLimitSetting) }
     }
 

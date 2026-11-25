@@ -35,6 +35,23 @@
         }
       }
     },
+    "%lld of %lld": {
+      "comment": "Practice banner: position number out of all positions",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld of %2$lld"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld / %2$lld"
+          }
+        }
+      }
+    },
     "%lld of %lld cells": {
       "comment": "Pause screen: cells filled out of those that started empty",
       "localizations": {
@@ -65,6 +82,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "%2$lld bulmacanın %1$lld tanesinde kendi başına"
+          }
+        }
+      }
+    },
+    "%lld of %lld solved": {
+      "comment": "Training library: accessibility of the progress ring",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld of %2$lld solved"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%2$lld pozisyonun %1$lld tanesi çözüldü"
           }
         }
       }
@@ -1459,6 +1493,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Geri Bildirim"
+          }
+        }
+      }
+    },
+    "Find the %@": {
+      "comment": "Practice task, e.g. Find the X-Wing",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Find the %@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ yöntemini bul"
           }
         }
       }
@@ -3384,6 +3435,23 @@
         }
       }
     },
+    "Place the digit it gives.": {
+      "comment": "Practice task detail for placement techniques",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Place the digit it gives."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yöntemin verdiği rakamı yerleştir."
+          }
+        }
+      }
+    },
     "Play": {
       "comment": "Visual explanation: play",
       "localizations": {
@@ -3431,6 +3499,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Oynanan"
+          }
+        }
+      }
+    },
+    "Positions: %lld": {
+      "comment": "Technique page: how many practice positions exist",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Positions: %lld"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pozisyon sayısı: %lld"
+          }
+        }
+      }
+    },
+    "Practice positions for this technique are coming soon.": {
+      "comment": "Technique page when there are no positions yet",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Practice positions for this technique are coming soon."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu yöntem için alıştırma pozisyonları yakında gelecek."
           }
         }
       }
@@ -3584,6 +3686,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Notları Otomatik Sil"
+          }
+        }
+      }
+    },
+    "Remove the candidates it rules out (%lld of %lld).": {
+      "comment": "Practice task detail for elimination techniques, with progress",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove the candidates it rules out (%1$lld of %2$lld)."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yöntemin elediği adayları sil (%1$lld / %2$lld)."
           }
         }
       }
@@ -4081,6 +4200,23 @@
         }
       }
     },
+    "Start Practice": {
+      "comment": "Technique page: opens practice",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start Practice"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alıştırmaya Başla"
+          }
+        }
+      }
+    },
     "Start at a cell with two notes and keep stepping to a cell it sees that shares one of its digits.": {
       "comment": "Technique guide (detailed hint explanation and training)",
       "localizations": {
@@ -4298,6 +4434,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Yöntemler"
+          }
+        }
+      }
+    },
+    "That move isn't part of this %@.": {
+      "comment": "Practice: the last move doesn't belong to the technique",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "That move isn't part of this %@."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu hamle bu %@ yönteminin parçası değil."
           }
         }
       }
@@ -5033,6 +5186,40 @@
         }
       }
     },
+    "Undo it and look again, or ask for a hint.": {
+      "comment": "Practice: after a wrong move",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Undo it and look again, or ask for a hint."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geri al ve tekrar bak ya da ipucu iste."
+          }
+        }
+      }
+    },
+    "Well done!": {
+      "comment": "Practice: position solved",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Well done!"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aferin!"
+          }
+        }
+      }
+    },
     "When a box's candidates for a digit all lie on one row and one column of the box, the box's copy of that digit is on that row or on that column. Combined with a house elsewhere where the digit has only two spots, this rules out the cell where both possibilities meet.": {
       "comment": "Technique guide (detailed hint explanation and training)",
       "localizations": {
@@ -5148,6 +5335,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Yüzgeçli X-Wing"
+          }
+        }
+      }
+    },
+    "You found it.": {
+      "comment": "Practice: after solving",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You found it."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buldun."
           }
         }
       }

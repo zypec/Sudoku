@@ -8,8 +8,8 @@ import SwiftUI
 
 /// Home screen: the daily puzzle with its streak, training and statistics, and at the bottom the
 /// buttons to continue or start a game. New Game opens as a Liquid Glass sheet that zooms out of
-/// its button; Settings opens as a standard sheet. Daily and Training are placeholders for now and say
-/// so when tapped.
+/// its button; Settings opens as a standard sheet. Daily is a placeholder for now and says so when
+/// tapped.
 struct HomeView: View {
     @Environment(AppSettings.self) private var settings
     @Environment(\.modelContext) private var modelContext
@@ -26,6 +26,7 @@ struct HomeView: View {
 
     @State private var isShowingComingSoon = false
     @State private var isShowingStats = false
+    @State private var isShowingTraining = false
 
     var body: some View {
         NavigationStack {
@@ -38,9 +39,10 @@ struct HomeView: View {
                             title: "Training",
                             subtitle: "Learn every technique",
                             systemImage: "graduationcap.fill",
-                            tint: .purple,
-                            action: showComingSoon
-                        )
+                            tint: .purple
+                        ) {
+                            isShowingTraining = true
+                        }
                         FeatureTile(
                             title: "Statistics",
                             subtitle: "Your progress",
@@ -82,6 +84,9 @@ struct HomeView: View {
             }
             .navigationDestination(isPresented: $isShowingStats) {
                 StatsView()
+            }
+            .navigationDestination(isPresented: $isShowingTraining) {
+                TrainingView()
             }
             .sheet(isPresented: $isShowingNewGame, onDismiss: openPendingGame) {
                 NewGameSheet(replacesGameInProgress: savedGame != nil) { difficulty in
