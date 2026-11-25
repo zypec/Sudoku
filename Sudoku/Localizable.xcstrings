@@ -18,6 +18,23 @@
         }
       }
     },
+    "%lld of %lld cells": {
+      "comment": "Pause screen: cells filled out of those that started empty",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld of %2$lld cells"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%2$lld hücreden %1$lld"
+          }
+        }
+      }
+    },
     "%lld of %lld on your own": {
       "comment": "Statistics: puzzles needing a technique that the player solved without a hint for it",
       "localizations": {
@@ -1157,6 +1174,23 @@
         }
       }
     },
+    "Hints": {
+      "comment": "Pause screen: hints used",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hints"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İpuçları"
+          }
+        }
+      }
+    },
     "Hints per Game": {
       "comment": "Statistics tile",
       "localizations": {
@@ -1731,6 +1765,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Hata Limiti"
+          }
+        }
+      }
+    },
+    "Mistakes": {
+      "comment": "Pause screen: mistakes made",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mistakes"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hatalar"
           }
         }
       }
@@ -2377,6 +2428,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Süreyi Göster"
+          }
+        }
+      }
+    },
+    "Shows the tries left": {
+      "comment": "Accessibility hint of the hearts chip",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shows the tries left"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kalan hakları gösterir"
           }
         }
       }
@@ -3129,6 +3197,23 @@
         }
       }
     },
+    "Time": {
+      "comment": "Pause screen: elapsed time",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Time"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Süre"
+          }
+        }
+      }
+    },
     "Training": {
       "comment": "Home: training section",
       "localizations": {
@@ -3278,6 +3363,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bu hücrelerden ikisi %1$@ içinde, yani ikisi birden %2$lld olamaz."
+          }
+        }
+      }
+    },
+    "Typical Time": {
+      "comment": "Pause screen: estimated time for a typical player",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Typical Time"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tahmini Süre"
           }
         }
       }

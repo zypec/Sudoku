@@ -16,6 +16,8 @@ final class GameModel {
     private(set) var isPreparingNewGame = false
     private(set) var activeHint: ActiveHint?
     private(set) var autoSolve: AutoSolveState?
+    /// The clock is stopped and the board hidden until the player resumes.
+    private(set) var isPaused = false
 
     @ObservationIgnored let settings: AppSettings
     /// `nil` keeps the game in memory only (previews, tests).
@@ -196,6 +198,19 @@ final class GameModel {
         activeHint = nil
     }
 
+    // MARK: Pause
+
+    func pause() {
+        guard !game.isFinished else { return }
+        isPaused = true
+        pauseAutoSolve()
+        save()
+    }
+
+    func resume() {
+        isPaused = false
+    }
+
     // MARK: Auto solve
 
     /// Solves the rest of the puzzle step by step: each step is shown on the board for a moment
@@ -374,6 +389,7 @@ final class GameModel {
         let puzzle = await PuzzleSource.shared.puzzle(game.puzzle.difficulty)
         game = SudokuGame(puzzle: puzzle, mistakeLimit: settings.mistakeLimitForNewGame)
         hasRecordedResult = false
+        isPaused = false
         selectedCell = nil
         isNotesMode = false
         activeHint = nil

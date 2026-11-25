@@ -26,7 +26,7 @@ struct GameView: View {
                 HStack(spacing: 24) {
                     BoardView(model: model)
                     VStack(spacing: 16) {
-                        GameStatusView(game: model.game, settings: model.settings)
+                        GameStatusView(game: model.game, settings: model.settings, onPause: model.pause)
                         inputArea(keypadColumns: 3)
                     }
                     .frame(maxWidth: 360)
@@ -34,7 +34,7 @@ struct GameView: View {
                 .padding()
             } else {
                 VStack(spacing: 16) {
-                    GameStatusView(game: model.game, settings: model.settings)
+                    GameStatusView(game: model.game, settings: model.settings, onPause: model.pause)
                     BoardView(model: model)
                         .layoutPriority(1)
                     inputArea(keypadColumns: 9)
@@ -54,8 +54,15 @@ struct GameView: View {
         }
         .navigationTitle(Text(model.game.puzzle.difficulty.title))
         .navigationBarTitleDisplayMode(.inline)
-        // Dragging across the board must not go back; only the edge swipe does.
-        .disablesContentSwipeBack()
+        // Swipes never leave a game (they're easy to trigger on the board); only the back button does.
+        .disablesSwipeBack()
+        .overlay {
+            if model.isPaused {
+                PauseView(model: model)
+                    .transition(.opacity)
+            }
+        }
+        .animation(.snappy, value: model.isPaused)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 optionsMenu
@@ -78,7 +85,10 @@ struct GameView: View {
         }
         // Ticks aren't saved individually, so save the clock when leaving the foreground or the screen.
         .onChange(of: scenePhase) { _, phase in
-            if phase != .active {
+            // Leaving the app pauses the game; it waits on the pause screen when the player returns.
+            if phase == .background {
+                model.pause()
+            } else if phase != .active {
                 model.pauseAutoSolve()
                 model.save()
             }
@@ -175,63 +185,61 @@ struct GameView: View {
     /// The clock only runs while the app is in the foreground, the game is in progress and the
     /// board is visible (not covered by Settings).
     private var isClockRunning: Bool {
-        scenePhase == .active && !model.game.isFinished && !model.isPreparingNewGame && !isShowingSettings
+        scenePhase == .active && !model.game.isFinished && !model.isPreparingNewGame && !isShowingSettings && !model.isPaused
     }
 }
 
-/// Mistake counter and elapsed time above the board, each in a small capsule. With a mistake limit
-/// the counter shows the remaining tries as hearts.
+/// Mistake counter, elapsed time and the pause button above the board.
 struct GameStatusView: View {
     let game: SudokuGame
     let settings: AppSettings
+    var onPause: (() -> Void)?
 
     var body: some View {
-        HStack {
+        HStack(spacing: 8) {
             // A game with a mistake limit always shows the counter, even if mistakes were hidden
             // after it started, so the player is never surprised by a loss.
-            if settings.showsMistakes || game.mistakeLimit != nil {
-                mistakes
+            if let limit = game.mistakeLimit {
+                HeartsChip(limit: limit, mistakes: game.mistakeCount)
+            } else if settings.showsMistakes {
+                mistakeCount
             }
             Spacer()
             if settings.showsTimer {
                 timer
+            }
+            if let onPause {
+                Button(action: onPause) {
+                    Image(systemName: "pause.fill")
+                        .font(.subheadline.weight(.bold))
+                        .frame(width: 32, height: 32)
+                        .background(.fill.tertiary, in: .circle)
+                }
+                .buttonStyle(.pressable)
+                .disabled(game.isFinished)
+                .accessibilityLabel(Text("Pause"))
             }
         }
         .font(.subheadline.weight(.semibold))
         .frame(minHeight: 32)
     }
 
-    @ViewBuilder
-    private var mistakes: some View {
-        Group {
-            if let limit = game.mistakeLimit {
-                HStack(spacing: 3) {
-                    ForEach(0..<limit, id: \.self) { index in
-                        let isLost = index >= limit - game.mistakeCount
-                        Image(systemName: isLost ? "heart" : "heart.fill")
-                            .foregroundStyle(isLost ? AnyShapeStyle(.tertiary) : AnyShapeStyle(Color.red))
-                            .symbolEffect(.bounce, value: isLost)
-                    }
-                }
-                .accessibilityElement(children: .ignore)
-                .accessibilityLabel(Text("Mistakes: \(game.mistakeCount)/\(limit)"))
-            } else {
-                HStack(spacing: 5) {
-                    Image(systemName: "xmark.circle.fill")
-                        .foregroundStyle(game.mistakeCount > 0 ? AnyShapeStyle(Color.red) : AnyShapeStyle(.tertiary))
-                    Text(verbatim: "\(game.mistakeCount)")
-                        .fontDesign(.rounded)
-                        .monospacedDigit()
-                        .contentTransition(.numericText())
-                }
-                .accessibilityElement(children: .ignore)
-                .accessibilityLabel(Text("Mistakes: \(game.mistakeCount)"))
-            }
+    /// Without a limit, mistakes are just counted.
+    private var mistakeCount: some View {
+        HStack(spacing: 5) {
+            Image(systemName: "xmark.circle.fill")
+                .foregroundStyle(game.mistakeCount > 0 ? AnyShapeStyle(Color.red) : AnyShapeStyle(.tertiary))
+            Text(verbatim: "\(game.mistakeCount)")
+                .fontDesign(.rounded)
+                .monospacedDigit()
+                .contentTransition(.numericText())
         }
         .padding(.horizontal, 12)
         .padding(.vertical, 6)
         .background(.fill.tertiary, in: .capsule)
         .animation(.snappy, value: game.mistakeCount)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text("Mistakes: \(game.mistakeCount)"))
     }
 
     private var timer: some View {
@@ -252,6 +260,61 @@ struct GameStatusView: View {
 
     static func formattedTime(_ seconds: Int) -> String {
         Duration.seconds(seconds).formatted(.time(pattern: seconds >= 3600 ? .hourMinuteSecond : .minuteSecond))
+    }
+}
+
+/// The tries left before the mistake limit. Normally a single heart; after each mistake (or when
+/// tapped) it opens for a moment to show every heart, the lost ones empty, then closes again. The
+/// heart turns gray when only the last try is left.
+private struct HeartsChip: View {
+    let limit: Int
+    let mistakes: Int
+
+    @State private var isOpen = false
+    /// Bumped to open the chip; a new bump restarts the timer.
+    @State private var openRequest = 0
+
+    private var remaining: Int {
+        max(0, limit - mistakes)
+    }
+
+    var body: some View {
+        Button {
+            openRequest += 1
+        } label: {
+            HStack(spacing: 3) {
+                if isOpen {
+                    ForEach(0..<limit, id: \.self) { index in
+                        let isLost = index >= remaining
+                        Image(systemName: isLost ? "heart" : "heart.fill")
+                            .foregroundStyle(isLost ? AnyShapeStyle(.tertiary) : AnyShapeStyle(Color.red))
+                            .transition(.scale.combined(with: .opacity))
+                    }
+                } else {
+                    Image(systemName: "heart.fill")
+                        .foregroundStyle(remaining <= 1 ? AnyShapeStyle(.tertiary) : AnyShapeStyle(Color.red))
+                        .symbolEffect(.bounce, value: mistakes)
+                }
+            }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 6)
+            .background(.fill.tertiary, in: .capsule)
+        }
+        .buttonStyle(.pressable)
+        .animation(.spring(duration: 0.35, bounce: 0.3), value: isOpen)
+        .onChange(of: mistakes) { _, _ in
+            openRequest += 1
+        }
+        .task(id: openRequest) {
+            guard openRequest > 0 else { return }
+            isOpen = true
+            try? await Task.sleep(for: .seconds(2))
+            guard !Task.isCancelled else { return }
+            isOpen = false
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text("Mistakes: \(mistakes)/\(limit)"))
+        .accessibilityHint(Text("Shows the tries left"))
     }
 }
 
