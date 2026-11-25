@@ -323,6 +323,51 @@ struct HintTests {
         #expect(!model.showsHintCandidates)
     }
 
+    @Test func visualProofOfAnXYWingTriesBothCases() throws {
+        // Pivot r1c1 {1,2}, pincers r1c5 {1,3} and r3c1 {2,3}: 3 leaves the cells seeing both.
+        var board = Board()
+        for (cell, digits) in [(0, [1, 2]), (4, [1, 3]), (18, [2, 3])] as [(CellIndex, CandidateSet)] {
+            board.eliminate(CandidateSet.all.subtracting(digits), from: cell)
+        }
+        let step = try #require(XYWing().findStep(in: board))
+        let frames = VisualProof.frames(for: .step(step, board: board))
+        let cases = frames.filter { $0.text.hasPrefix("Case") }
+        #expect(cases.count == 2)
+        // Each case ends with 3 placed in a pincer (green) and the targets struck with a reason line.
+        let firstCaseEnd = try #require(frames.first { $0.text.hasPrefix("In this case") })
+        #expect(firstCaseEnd.highlights.style(for: 4)?.ghostDigit == 3)
+        #expect(firstCaseEnd.highlights.style(for: 1)?.marks[3] == .eliminated)
+        #expect(firstCaseEnd.highlights.links.contains { $0.from == 4 && $0.to == 1 && $0.fromDigit == 3 })
+        let conclusion = try #require(frames.last)
+        #expect(conclusion.kind == .result)
+        #expect(step.eliminations.allSatisfy { conclusion.highlights.style(for: $0.cell)?.marks[3] == .eliminated })
+    }
+
+    @MainActor
+    @Test func panelSwitchesToTheVisualExplanationAndBack() throws {
+        let model = GameModel(game: generatedGame(.hard, seed: 1), settings: AppSettings(defaults: try #require(UserDefaults(suiteName: "HintTests.\(UUID().uuidString)"))))
+        var hint = HintFinder.hint(for: model.game)
+        // Skip to a hint with real reasoning.
+        var game = model.game
+        while case .step(let step, _) = hint, step.technique.level == 1 {
+            game.apply(step)
+            hint = HintFinder.hint(for: game)
+        }
+        let model2 = GameModel(game: game, settings: model.settings)
+        model2.requestHint()
+        let pages = try #require(model2.activeHint?.count)
+        model2.startVisualExplanation()
+        #expect(model2.activeHint?.isVisual == true)
+        let frames = try #require(model2.activeHint?.count)
+        #expect(frames >= 2)
+        model2.showNextHintPage()
+        #expect(model2.activeHint?.index == 1)
+        #expect(model2.hintHighlights == model2.activeHint?.visualFrames?[1].highlights)
+        model2.endVisualExplanation()
+        #expect(model2.activeHint?.isVisual == false)
+        #expect(model2.activeHint?.count == pages)
+    }
+
     // MARK: Walkthrough
 
     /// Every hint of a hard puzzle starts with a nudge, ends with the result, and has wording on
@@ -345,6 +390,13 @@ struct HintTests {
                 for page in pages {
                     #expect(!page.text.isEmpty, "\(name) has an empty page")
                     #expect(!page.text.contains("%"), "\(name): \(page.text)")
+                }
+                // The visual explanation plays at least one frame and ends with the result.
+                let frames = VisualProof.frames(for: hint)
+                #expect(frames.count >= 2, "\(name) has no visual frames")
+                #expect(frames.last?.kind == .result)
+                for frame in frames {
+                    #expect(!frame.text.isEmpty && !frame.text.contains("%"), "\(name): \(frame.text)")
                 }
                 for step in hint.steps {
                     game.apply(step)

@@ -39,22 +39,41 @@ final class GameModel {
     /// eliminations remembered by the hint system, which the regular undo doesn't track).
     @ObservationIgnored private var autoSolveHistory: [SudokuGame] = []
 
-    /// A hint being shown and the page the player is on.
+    /// A hint being shown and the page the player is on. While the visual explanation is open,
+    /// its frames replace the pages.
     struct ActiveHint: Equatable {
         let hint: Hint
         let pages: [HintPage]
         var pageIndex = 0
+        var visualFrames: [HintPage]?
+        var visualIndex = 0
 
+        var isVisual: Bool {
+            visualFrames != nil
+        }
+
+        /// What's on screen: a page, or a frame of the visual explanation.
         var page: HintPage {
-            pages[pageIndex]
+            if let visualFrames {
+                return visualFrames[visualIndex]
+            }
+            return pages[pageIndex]
+        }
+
+        var index: Int {
+            isVisual ? visualIndex : pageIndex
+        }
+
+        var count: Int {
+            visualFrames?.count ?? pages.count
         }
 
         var canGoBack: Bool {
-            pageIndex > 0
+            index > 0
         }
 
         var canGoForward: Bool {
-            pageIndex < pages.count - 1
+            index < count - 1
         }
     }
 
@@ -203,12 +222,31 @@ final class GameModel {
 
     func showNextHintPage() {
         guard let activeHint, activeHint.canGoForward else { return }
-        self.activeHint?.pageIndex += 1
+        if activeHint.isVisual {
+            self.activeHint?.visualIndex += 1
+        } else {
+            self.activeHint?.pageIndex += 1
+        }
     }
 
     func showPreviousHintPage() {
         guard let activeHint, activeHint.canGoBack else { return }
-        self.activeHint?.pageIndex -= 1
+        if activeHint.isVisual {
+            self.activeHint?.visualIndex -= 1
+        } else {
+            self.activeHint?.pageIndex -= 1
+        }
+    }
+
+    /// Plays the hint as a visual proof on the board (`VisualProof`).
+    func startVisualExplanation() {
+        guard let hint = activeHint?.hint, !hint.steps.isEmpty else { return }
+        activeHint?.visualFrames = VisualProof.frames(for: hint)
+        activeHint?.visualIndex = 0
+    }
+
+    func endVisualExplanation() {
+        activeHint?.visualFrames = nil
     }
 
     func applyHint() {

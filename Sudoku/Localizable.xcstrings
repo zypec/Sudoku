@@ -120,6 +120,23 @@
         }
       }
     },
+    "...or with the two digits swapped. Both would fit, so the puzzle would have two solutions.": {
+      "comment": "Visual proof, Unique Rectangle: the swapped filling",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "...or with the two digits swapped. Both would fit, so the puzzle would have two solutions."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "...ya da iki rakam yer değiştirerek. İkisi de uyardı, yani bulmacanın iki çözümü olurdu."
+          }
+        }
+      }
+    },
     "3 Mistakes": {
       "comment": "Mistake limit option",
       "localizations": {
@@ -286,6 +303,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bir satır ve bir sütunun her birinde bir rakam tam iki hücreye girebiliyor ve her çiftin bir hücresi aynı kutuda. Bu ikisi birlikte rakamı alamaz, yani uzak uçlardan en az biri alır. İki uzak ucu birden gören bir hücre rakamı alamaz."
+          }
+        }
+      }
+    },
+    "About the Technique": {
+      "comment": "Hint panel: opens the written guide",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "About the Technique"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yöntem Hakkında"
           }
         }
       }
@@ -626,6 +660,108 @@
           "stringUnit": {
             "state": "translated",
             "value": "Boş Dikdörtgen"
+          }
+        }
+      }
+    },
+    "But two cells of this color see each other, so they can't both be %lld. This case is impossible.": {
+      "comment": "Visual proof, Simple Coloring: color wrap",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "But two cells of this color see each other, so they can't both be %lld. This case is impossible."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ama bu renkteki iki hücre birbirini görüyor; ikisi birden %1$lld olamaz. Bu durum imkânsız."
+          }
+        }
+      }
+    },
+    "Case %lld of %lld: suppose %lld is in the cell at %@.": {
+      "comment": "Visual proof: case assumption, candidate on",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Case %1$lld of %2$lld: suppose %3$lld is in the cell at %4$@."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld. durum (%2$lld durumdan): %4$@ hücresinin %3$lld olduğunu varsay."
+          }
+        }
+      }
+    },
+    "Case %lld of %lld: suppose %lld is not in the cell at %@.": {
+      "comment": "Visual proof: case assumption, candidate off",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Case %1$lld of %2$lld: suppose %3$lld is not in the cell at %4$@."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld. durum (%2$lld durumdan): %4$@ hücresinin %3$lld olmadığını varsay."
+          }
+        }
+      }
+    },
+    "Case %lld of 2: %lld is not in this group. Its other digits must then fill its cells, %lld included.": {
+      "comment": "Visual proof, ALS-XZ: a case",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Case %1$lld of 2: %2$lld is not in this group. Its other digits must then fill its cells, %3$lld included."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld. durum (2 durumdan): %2$lld bu grupta değil. O zaman grubun diğer rakamları hücrelerini doldurmak zorunda; %3$lld de dahil."
+          }
+        }
+      }
+    },
+    "Case 1 of 2: suppose the fin isn't %lld. Then the rest is an ordinary %@, and its lines can't have %lld anywhere else.": {
+      "comment": "Visual proof, finned fish: case without the fin",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Case 1 of 2: suppose the fin isn't %1$lld. Then the rest is an ordinary %2$@, and its lines can't have %3$lld anywhere else."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1. durum (2 durumdan): yüzgecin %1$lld olmadığını varsay. O zaman geri kalanı sıradan bir %2$@ olur ve çizgileri başka hiçbir yerde %3$lld alamaz."
+          }
+        }
+      }
+    },
+    "Case 2 of 2: suppose the fin is %lld. Then every cell it sees can't be %lld.": {
+      "comment": "Visual proof, finned fish: case with the fin",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Case 2 of 2: suppose the fin is %1$lld. Then every cell it sees can't be %2$lld."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2. durum (2 durumdan): yüzgecin %1$lld olduğunu varsay. O zaman gördüğü hiçbir hücre %2$lld olamaz."
           }
         }
       }
@@ -987,6 +1123,23 @@
         }
       }
     },
+    "Each strong link then rules %lld out of the cells of the other color.": {
+      "comment": "Visual proof, Simple Coloring",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Each strong link then rules %lld out of the cells of the other color."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O zaman her güçlü bağ diğer rengin hücrelerinden %1$lld adayını eler."
+          }
+        }
+      }
+    },
     "Easy": {
       "comment": "Difficulty level",
       "localizations": {
@@ -1119,6 +1272,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bir kümedeki her %1$lld diğer kümedeki her %2$lld adayını görüyor; yani %3$lld en fazla birinde olabilir. %4$lld olmayan kümede hücre sayısı kadar rakam kalır, bu yüzden hepsini almak zorundadır; %5$lld de dahil."
+          }
+        }
+      }
+    },
+    "Every case rules it out, so %@ can be removed from the cells marked in red.": {
+      "comment": "Visual proof conclusion: eliminations",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Every case rules it out, so %@ can be removed from the cells marked in red."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Her durumda elendiği için %1$@ kırmızıyla işaretli hücrelerden silinebilir."
+          }
+        }
+      }
+    },
+    "Every digit in its row, column and box rules itself out of the cell at %@.": {
+      "comment": "Visual proof, Naked Single",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Every digit in its row, column and box rules itself out of the cell at %@."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Satırındaki, sütunundaki ve kutusundaki her rakam kendini %1$@ hücresinden eler."
           }
         }
       }
@@ -1752,6 +1939,23 @@
         }
       }
     },
+    "If the four corners held only %lld and %lld, they could be filled like this...": {
+      "comment": "Visual proof, Unique Rectangle: one filling",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "If the four corners held only %1$lld and %2$lld, they could be filled like this..."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dört köşede yalnızca %1$lld ve %2$lld olsaydı, şöyle doldurulabilirdi..."
+          }
+        }
+      }
+    },
     "If, inside a box, a digit can only go in cells that are all in one row or column, the box's copy of that digit is in that line. So no cell of that line outside the box can hold it.": {
       "comment": "Technique guide (detailed hint explanation and training)",
       "localizations": {
@@ -1850,6 +2054,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "%1$@ içinde %2$@ yalnızca işaretli %3$lld hücreye girebilir. Bu hücrelerde yalnızca bu rakamlar olabilir; diğer adayları silinebilir."
+          }
+        }
+      }
+    },
+    "In %@, %lld can only go in the cells marked in green.": {
+      "comment": "Visual proof: where a digit can go in a house",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In %1$@, %2$lld can only go in the cells marked in green."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ içinde %2$lld yalnızca yeşille işaretli hücrelere girebilir."
           }
         }
       }
@@ -2109,6 +2330,23 @@
         }
       }
     },
+    "In this case, %@ can't go in the cells marked in red.": {
+      "comment": "Visual proof: what one case rules out",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In this case, %@ can't go in the cells marked in red."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu durumda %1$@ kırmızıyla işaretli hücrelere giremez."
+          }
+        }
+      }
+    },
     "Incorrect Digits": {
       "comment": "Hint panel title when the board has wrong digits",
       "localizations": {
@@ -2241,6 +2479,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tam iki notu olan hücrelere bak. İki başka hücreyle birer rakam paylaşan ve o iki hücrenin de üçüncü bir rakamı paylaştığı bir hücre bir kanat (wing) oluşturur."
+          }
+        }
+      }
+    },
+    "Look at every empty cell: all of them have exactly two candidates except one.": {
+      "comment": "Visual proof, BUG+1",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Look at every empty cell: all of them have exactly two candidates except one."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tüm boş hücrelere bak: biri hariç hepsinin tam iki adayı var."
           }
         }
       }
@@ -3010,6 +3265,23 @@
         }
       }
     },
+    "Play": {
+      "comment": "Visual explanation: play",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Play"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oynat"
+          }
+        }
+      }
+    },
     "Play Today's Puzzle": {
       "comment": "Home: starts the daily puzzle",
       "localizations": {
@@ -3367,6 +3639,23 @@
         }
       }
     },
+    "So %lld goes in the cell at %@.": {
+      "comment": "Visual proof conclusion: placement",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "So %1$lld goes in the cell at %2$@."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yani %2$@ hücresine %1$lld gelir."
+          }
+        }
+      }
+    },
     "So %lld is at %@ or at %@, and a cell that sees both can't be %lld.": {
       "comment": "Hint walkthrough page: chain conclusion when both ends are the same digit",
       "localizations": {
@@ -3401,6 +3690,23 @@
         }
       }
     },
+    "So %lld is in one of the cells marked in green.": {
+      "comment": "Visual proof: the digit is somewhere among the green cells",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "So %lld is in one of the cells marked in green."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yani %1$lld yeşille işaretli hücrelerden birinde."
+          }
+        }
+      }
+    },
     "So %lld is on one of the two diagonals of the highlighted rectangle. Either way %@ and %@ each get a %lld here, so it can be removed from the rest of them.": {
       "comment": "Hint walkthrough page: X-Wing, conclusion",
       "localizations": {
@@ -3431,6 +3737,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Yani diğer iki uçtan en az biri, %1$@ ya da %2$@, %3$lld olmalı. İkisini birden gören bir hücre %4$lld olamaz."
+          }
+        }
+      }
+    },
+    "So inside %@, %lld is on %@.": {
+      "comment": "Visual proof, Empty Rectangle: box, digit, kept line",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "So inside %1$@, %2$lld is on %3$@."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yani %1$@ içinde %2$lld, %3$@ üzerindedir."
           }
         }
       }
@@ -3758,6 +4081,23 @@
         }
       }
     },
+    "Suppose every cell of one color holds %lld.": {
+      "comment": "Visual proof, Simple Coloring: a case",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suppose every cell of one color holds %lld."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bir rengin bütün hücrelerinin %1$lld olduğunu varsay."
+          }
+        }
+      }
+    },
     "Swordfish with a fin": {
       "comment": "Technique subtitle: Finned Swordfish",
       "localizations": {
@@ -3805,6 +4145,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Yöntemler"
+          }
+        }
+      }
+    },
+    "The %lld in the cell at %@ rules %lld out of the cells it sees.": {
+      "comment": "Visual proof, Hidden Single: one blocking digit",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The %1$lld in the cell at %2$@ rules %3$lld out of the cells it sees."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%2$@ hücresindeki %1$lld, gördüğü hücrelerden %3$lld adayını eler."
           }
         }
       }
@@ -4060,6 +4417,74 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tema"
+          }
+        }
+      }
+    },
+    "Then %lld can't be in the other cell of either line.": {
+      "comment": "Visual proof, X-Wing: consequence of the first corner",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Then %lld can't be in the other cell of either line."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O zaman %1$lld iki çizginin diğer hücresinde olamaz."
+          }
+        }
+      }
+    },
+    "Then %lld can't be on %@ inside %@.": {
+      "comment": "Visual proof, Empty Rectangle: digit, crossed line, box",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Then %1$lld can't be on %2$@ inside %3$@."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O zaman %1$lld, %3$@ içinde %2$@ üzerinde olamaz."
+          }
+        }
+      }
+    },
+    "Then the cell at %@ can't be %lld.": {
+      "comment": "Visual proof: a weak link rules out a digit",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Then the cell at %1$@ can't be %2$lld."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O zaman %1$@ hücresi %2$lld olamaz."
+          }
+        }
+      }
+    },
+    "Then the cell at %@ must be %lld.": {
+      "comment": "Visual proof: a strong link forces a digit",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Then the cell at %1$@ must be %2$lld."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O zaman %1$@ hücresi %2$lld olmak zorunda."
           }
         }
       }
