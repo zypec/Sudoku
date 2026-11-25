@@ -37,16 +37,6 @@ jobs:
           path: kit-source
           sparse-checkout: kit
 
-      - uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '25'
-
-      - uses: gradle/actions/setup-gradle@v4
-
-      - name: Build the page
-        run: ./gradlew site -Pkit="$GITHUB_WORKSPACE/kit-source/kit"
-
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
