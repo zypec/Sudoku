@@ -1,0 +1,11 @@
+# Project notes for Claude Code (kept local)
+CLAUDE.md
+
+# Xcode per-user state
+xcuserdata/
+*.xcuserstate
+DerivedData/
+build/
+
+# macOS
+.DS_Store
