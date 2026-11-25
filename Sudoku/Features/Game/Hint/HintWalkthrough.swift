@@ -37,6 +37,22 @@ enum HintWalkthrough {
             let text = String(localized: "Some digits on the board are incorrect. Fix them before looking for the next step.")
             return [HintPage(kind: .message, text: text, highlights: highlights)]
 
+        case .impossibleNotes(let eliminations, let blockers):
+            var highlights = HintHighlights()
+            for elimination in eliminations {
+                highlights.fill([elimination.cell], .target)
+                highlights.mark(elimination.digits, in: elimination.cell, as: .eliminated)
+            }
+            highlights.fill(blockers, .blocker)
+            let text = String(localized: "Some notes can't be right: each crossed-out digit is already placed in the same row, column or box (highlighted).")
+            return [HintPage(kind: .message, text: text, highlights: highlights)]
+
+        case .notesMissingSolution(let cells):
+            var highlights = HintHighlights()
+            highlights.fill(cells, .incorrect)
+            let text = String(localized: "The notes in the highlighted cells leave out a digit that can still go there, so hints can't build on them. Fixing them refills those cells with every digit still possible.")
+            return [HintPage(kind: .message, text: text, highlights: highlights)]
+
         case .unavailable:
             let text = String(localized: "The next step needs a technique that isn't available yet. You can reveal a cell instead.")
             return [HintPage(kind: .message, text: text, highlights: HintHighlights())]

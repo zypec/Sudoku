@@ -68,6 +68,13 @@ struct HintPanel: View {
             .buttonStyle(.glassProminent)
             .controlSize(.large)
             .frame(maxWidth: .infinity, alignment: .trailing)
+        case .impossibleNotes, .notesMissingSolution:
+            Button("Fix Notes") {
+                model.fixNotes()
+            }
+            .buttonStyle(.glassProminent)
+            .controlSize(.large)
+            .frame(maxWidth: .infinity, alignment: .trailing)
         case .unavailable:
             EmptyView()
         case .step, .chain:

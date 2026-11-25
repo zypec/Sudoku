@@ -7,6 +7,11 @@
 enum Hint: Equatable, Sendable {
     /// The board has wrong entries; logic can't continue until they are fixed.
     case incorrectEntries([CellIndex])
+    /// Notes for digits already placed in the same row, column or box: they can never be right.
+    /// `blockers` are placed digits that rule them out, one per wrong note.
+    case impossibleNotes([Elimination], blockers: [CellIndex])
+    /// Cells whose notes leave out the digit that belongs there, so the notes can't be trusted.
+    case notesMissingSolution([CellIndex])
     /// The easiest next deduction, and the candidates it was found on.
     case step(SolveStep, board: Board)
     /// Eliminations the player can't act on (they aren't in their notes), followed by the placement
@@ -20,7 +25,7 @@ enum Hint: Equatable, Sendable {
         switch self {
         case .step(let step, _): [step]
         case .chain(let links): links.map(\.step)
-        case .incorrectEntries, .unavailable: []
+        case .incorrectEntries, .impossibleNotes, .notesMissingSolution, .unavailable: []
         }
     }
 
@@ -47,6 +52,11 @@ enum HintFinder {
     static func hint(for game: SudokuGame, solver: LogicalSolver = LogicalSolver(), chainsEliminations: Bool = true) -> Hint {
         let incorrect = game.incorrectCells
         guard incorrect.isEmpty else { return .incorrectEntries(incorrect) }
+        // Problems in the notes come before logic: the player is working from them.
+        let impossible = impossibleNotes(in: game)
+        guard impossible.isEmpty else { return .impossibleNotes(impossible, blockers: blockers(of: impossible, in: game)) }
+        let missing = cellsWhoseNotesMissTheSolution(in: game)
+        guard missing.isEmpty else { return .notesMissingSolution(missing) }
 
         let board = candidateBoard(for: game)
         guard let step = solver.nextStep(on: board) else { return .unavailable }
@@ -67,6 +77,36 @@ enum HintFinder {
             current.apply(next)
         }
         return .step(step, board: board)
+    }
+
+    /// Notes for digits already placed in a peer, per cell.
+    static func impossibleNotes(in game: SudokuGame) -> [Elimination] {
+        Geometry.cells.compactMap { cell in
+            guard game.values[cell] == 0, !game.notes[cell].isEmpty else { return nil }
+            let placed = CandidateSet(Geometry.peers[cell].map { game.values[$0] }.filter { $0 != 0 })
+            let wrong = game.notes[cell].intersection(placed)
+            return wrong.isEmpty ? nil : Elimination(cell: cell, digits: wrong)
+        }
+    }
+
+    /// For every impossible note, a peer where that digit is placed.
+    static func blockers(of notes: [Elimination], in game: SudokuGame) -> [CellIndex] {
+        var result: [CellIndex] = []
+        for elimination in notes {
+            for digit in elimination.digits {
+                if let blocker = Geometry.peers[elimination.cell].first(where: { game.values[$0] == digit }), !result.contains(blocker) {
+                    result.append(blocker)
+                }
+            }
+        }
+        return result
+    }
+
+    /// Empty cells that have notes, but not the digit of the solution.
+    static func cellsWhoseNotesMissTheSolution(in game: SudokuGame) -> [CellIndex] {
+        Geometry.cells.filter { cell in
+            game.values[cell] == 0 && !game.notes[cell].isEmpty && !game.notes[cell].contains(game.puzzle.solution[cell])
+        }
     }
 
     /// Whether the step removes at least one candidate that the player has written as a note, so the

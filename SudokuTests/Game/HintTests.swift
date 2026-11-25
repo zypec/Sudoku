@@ -228,6 +228,63 @@ struct HintTests {
         #expect(game.values[3] == 0)
     }
 
+    // MARK: Note problems
+
+    @Test func impossibleNotesComeBeforeLogic() throws {
+        var game = try easyGame()
+        // Cell 2 (row 1) can't be 5: the 5 at r1c1 is in the same row and box.
+        game.toggleNote(5, at: 2)
+        game.toggleNote(4, at: 2)
+        guard case .impossibleNotes(let notes, let blockers) = HintFinder.hint(for: game) else {
+            Issue.record("Expected impossible notes")
+            return
+        }
+        #expect(notes == [Elimination(cell: 2, digits: [5])])
+        #expect(blockers.allSatisfy { game.values[$0] == 5 && Geometry.sees($0, 2) })
+
+        game.removeNotes(notes)
+        #expect(game.notes[2] == [4])
+        #expect(HintFinder.impossibleNotes(in: game).isEmpty)
+    }
+
+    @Test func notesMissingTheSolutionAreFlaggedAndRefilled() throws {
+        var game = try easyGame()
+        // Cell 2's solution is 4; noting only 1 and 2 leaves it out.
+        game.toggleNote(1, at: 2)
+        game.toggleNote(2, at: 2)
+        #expect(HintFinder.hint(for: game) == .notesMissingSolution([2]))
+
+        game.refillNotes(in: [2])
+        #expect(game.notes[2] == Board(values: game.values).candidates(at: 2))
+        #expect(game.notes[2].contains(4))
+        // Fixed: back to logic.
+        guard case .step = HintFinder.hint(for: game) else {
+            Issue.record("Expected a step after fixing the notes")
+            return
+        }
+        game.undo()
+        #expect(game.notes[2] == [1, 2])
+    }
+
+    @Test func wrongDigitsComeBeforeNoteProblems() throws {
+        var game = try easyGame()
+        game.toggleNote(5, at: 3)
+        game.enter(1, at: 2) // wrong
+        #expect(HintFinder.hint(for: game) == .incorrectEntries([2]))
+    }
+
+    @MainActor
+    @Test func modelFixesTheNotesTheHintPointsOut() throws {
+        var game = try easyGame()
+        game.toggleNote(5, at: 2)
+        let model = GameModel(game: game, settings: AppSettings(defaults: try #require(UserDefaults(suiteName: "HintTests.\(UUID().uuidString)"))))
+        model.requestHint()
+        #expect(HintWalkthrough.pages(for: try #require(model.activeHint?.hint)).first?.highlights.style(for: 2)?.marks[5] == .eliminated)
+        model.fixNotes()
+        #expect(model.game.notes[2].isEmpty)
+        #expect(model.activeHint == nil)
+    }
+
     // MARK: Walkthrough
 
     /// Every hint of a hard puzzle starts with a nudge, ends with the result, and has wording on

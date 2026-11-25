@@ -170,6 +170,19 @@ final class GameModel {
         activeHint = nil
     }
 
+    /// Fixes the note problem the active hint points out.
+    func fixNotes() {
+        switch activeHint?.hint {
+        case .impossibleNotes(let eliminations, _)?:
+            update { $0.removeNotes(eliminations) }
+        case .notesMissingSolution(let cells)?:
+            update { $0.refillNotes(in: cells) }
+        default:
+            return
+        }
+        activeHint = nil
+    }
+
     func eraseMistakes() {
         update { $0.eraseIncorrectEntries() }
         activeHint = nil
@@ -238,8 +251,10 @@ final class GameModel {
             step.placements.first?.cell ?? step.eliminations.first?.cell
         case .chain?:
             autoSolve?.hint?.placement?.cell
-        case .incorrectEntries(let cells)?:
+        case .incorrectEntries(let cells)?, .notesMissingSolution(let cells)?:
             cells.first
+        case .impossibleNotes(let eliminations, _)?:
+            eliminations.first?.cell
         default:
             nil
         }
@@ -293,8 +308,15 @@ final class GameModel {
             // Auto solve shows every step on its own, eliminations included.
             let hint = HintFinder.hint(for: game, chainsEliminations: false)
             var page = HintWalkthrough.pages(for: hint).last
-            if case .incorrectEntries = hint, let highlights = page?.highlights {
-                page = HintPage(kind: .result, text: String(localized: "The incorrect digits will be erased."), highlights: highlights)
+            if let highlights = page?.highlights {
+                switch hint {
+                case .incorrectEntries:
+                    page = HintPage(kind: .result, text: String(localized: "The incorrect digits will be erased."), highlights: highlights)
+                case .impossibleNotes, .notesMissingSolution:
+                    page = HintPage(kind: .result, text: String(localized: "The notes in the highlighted cells will be fixed."), highlights: highlights)
+                default:
+                    break
+                }
             }
             autoSolve?.hint = hint
             autoSolve?.page = page
@@ -331,6 +353,10 @@ final class GameModel {
                 }
             case .incorrectEntries:
                 update { $0.eraseIncorrectEntries() }
+            case .impossibleNotes(let eliminations, _):
+                update { $0.removeNotes(eliminations) }
+            case .notesMissingSolution(let cells):
+                update { $0.refillNotes(in: cells) }
             case .unavailable:
                 break
             }

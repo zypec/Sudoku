@@ -204,6 +204,33 @@ struct SudokuGame: Codable, Sendable {
         return true
     }
 
+    /// Removes the given digits from the notes of their cells. Returns whether anything changed.
+    @discardableResult
+    mutating func removeNotes(_ eliminations: [Elimination]) -> Bool {
+        var updated = notes
+        for elimination in eliminations {
+            updated[elimination.cell] = updated[elimination.cell].subtracting(elimination.digits)
+        }
+        guard !isFinished, updated != notes else { return false }
+        recordUndo()
+        notes = updated
+        return true
+    }
+
+    /// Rewrites the notes of `cells` with every digit not yet placed in their row, column or box.
+    @discardableResult
+    mutating func refillNotes(in cells: [CellIndex]) -> Bool {
+        let board = Board(values: values)
+        var updated = notes
+        for cell in cells where values[cell] == 0 {
+            updated[cell] = board.candidates(at: cell)
+        }
+        guard !isFinished, updated != notes else { return false }
+        recordUndo()
+        notes = updated
+        return true
+    }
+
     /// Clears every wrong entry. Returns whether anything changed.
     @discardableResult
     mutating func eraseIncorrectEntries() -> Bool {

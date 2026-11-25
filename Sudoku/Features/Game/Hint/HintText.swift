@@ -12,6 +12,10 @@ enum HintText {
         switch hint {
         case .incorrectEntries:
             String(localized: "Incorrect Digits")
+        case .impossibleNotes:
+            String(localized: "Impossible Notes")
+        case .notesMissingSolution:
+            String(localized: "Notes Missing a Digit")
         case .unavailable:
             String(localized: "No Hint Available")
         case .step, .chain:

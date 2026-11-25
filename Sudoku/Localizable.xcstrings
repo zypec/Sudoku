@@ -1004,6 +1004,23 @@
         }
       }
     },
+    "Fix Notes": {
+      "comment": "Hint button: fixes the note problem shown",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fix Notes"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notları Düzelt"
+          }
+        }
+      }
+    },
     "Follow the strong links of %lld: in each linked house it fits in only two cells, so exactly one of them is %lld. Coloring the cells alternately gives two groups, and exactly one group holds %lld.": {
       "comment": "Hint walkthrough page: Simple Coloring chain",
       "localizations": {
@@ -1323,6 +1340,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Yüzgeç %1$lld değilse bu sıradan bir %2$@ olur ve %3$lld, %4$@ boyunca diğer hücrelerden silinir. Yüzgeç %5$lld ise %6$lld, %7$@ içinde yüzgecin gördüğü hücrelerden silinir. Her iki durumda da etkilenen hücreler %8$lld olamaz."
+          }
+        }
+      }
+    },
+    "Impossible Notes": {
+      "comment": "Hint title: notes for digits already placed in the same house",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impossible Notes"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İmkânsız Notlar"
           }
         }
       }
@@ -1952,6 +1986,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Notlar"
+          }
+        }
+      }
+    },
+    "Notes Missing a Digit": {
+      "comment": "Hint title: notes that leave out the digit that belongs in the cell",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notes Missing a Digit"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eksik Rakamlı Notlar"
           }
         }
       }
@@ -2653,6 +2704,23 @@
         }
       }
     },
+    "Some notes can't be right: each crossed-out digit is already placed in the same row, column or box (highlighted).": {
+      "comment": "Hint message for impossible notes",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Some notes can't be right: each crossed-out digit is already placed in the same row, column or box (highlighted)."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bazı notlar doğru olamaz: üstü çizili her rakam aynı satır, sütun ya da kutuda zaten yerleşmiş (işaretli)."
+          }
+        }
+      }
+    },
     "Soon": {
       "comment": "Badge on difficulties that aren't available yet",
       "localizations": {
@@ -3006,6 +3074,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sonraki adım henüz bilinmeyen bir yöntem gerektiriyor. Bunun yerine bir hücreyi açabilirsin."
+          }
+        }
+      }
+    },
+    "The notes in the highlighted cells leave out a digit that can still go there, so hints can't build on them. Fixing them refills those cells with every digit still possible.": {
+      "comment": "Hint message for notes missing the solution digit",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The notes in the highlighted cells leave out a digit that can still go there, so hints can't build on them. Fixing them refills those cells with every digit still possible."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İşaretli hücrelerdeki notlar oraya hâlâ gelebilecek bir rakamı dışarıda bırakıyor; bu yüzden ipuçları bu notlara dayanamaz. Düzeltince bu hücreler hâlâ mümkün olan tüm rakamlarla yeniden doldurulur."
+          }
+        }
+      }
+    },
+    "The notes in the highlighted cells will be fixed.": {
+      "comment": "Auto solve: the next step fixes notes",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The notes in the highlighted cells will be fixed."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İşaretli hücrelerdeki notlar düzeltilecek."
           }
         }
       }
