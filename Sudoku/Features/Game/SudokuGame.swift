@@ -28,6 +28,11 @@ struct SudokuGame: Codable, Sendable {
     var elapsedSeconds = 0
     private(set) var hintCount = 0
     private(set) var revealCount = 0
+    /// The technique of every hint asked for, for per-technique statistics. Optional so games saved
+    /// before it existed still load.
+    private(set) var hintedTechniques: [TechniqueKind]?
+    /// Steps applied by auto solve. A game finished this way doesn't count as a win.
+    private(set) var autoSolvedSteps: Int?
     /// Candidates proven impossible by applied hints. Kept separately from the player's notes so
     /// the hint system remembers them even for players who don't take notes.
     private(set) var deducedEliminations: [CandidateSet]
@@ -147,7 +152,20 @@ struct SudokuGame: Codable, Sendable {
 
     // MARK: Hints
 
-    mutating func registerHint() {
+    mutating func registerAutoSolvedStep() {
+        autoSolvedSteps = (autoSolvedSteps ?? 0) + 1
+    }
+
+    /// Whether auto solve did any of the work.
+    var usedAutoSolve: Bool {
+        (autoSolvedSteps ?? 0) > 0
+    }
+
+    /// Counts a hint, and remembers which technique it was about.
+    mutating func registerHint(for technique: TechniqueKind? = nil) {
+        if let technique {
+            hintedTechniques = (hintedTechniques ?? []) + [technique]
+        }
         hintCount += 1
     }
 

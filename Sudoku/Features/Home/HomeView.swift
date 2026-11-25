@@ -3,14 +3,16 @@
 //  Sudoku
 //
 
+import SwiftData
 import SwiftUI
 
 /// Home screen: the daily puzzle with its streak, training and statistics, and at the bottom the
 /// buttons to continue or start a game. New Game and Settings open as Liquid Glass sheets that
-/// zoom out of the buttons that present them. Daily, Training and Statistics are placeholders for
-/// now and say so when tapped.
+/// zoom out of the buttons that present them. Daily and Training are placeholders for now and say
+/// so when tapped.
 struct HomeView: View {
     @Environment(AppSettings.self) private var settings
+    @Environment(\.modelContext) private var modelContext
     @Namespace private var namespace
 
     @State private var activeGame: GameModel?
@@ -23,6 +25,7 @@ struct HomeView: View {
     private let store = GameStore.shared
 
     @State private var isShowingComingSoon = false
+    @State private var isShowingStats = false
 
     var body: some View {
         NavigationStack {
@@ -42,9 +45,10 @@ struct HomeView: View {
                             title: "Statistics",
                             subtitle: "Your progress",
                             systemImage: "chart.bar.fill",
-                            tint: .teal,
-                            action: showComingSoon
-                        )
+                            tint: .teal
+                        ) {
+                            isShowingStats = true
+                        }
                     }
                 }
                 .padding()
@@ -76,6 +80,9 @@ struct HomeView: View {
             }
             .navigationDestination(item: $activeGame) { model in
                 GameView(model: model)
+            }
+            .navigationDestination(isPresented: $isShowingStats) {
+                StatsView()
             }
             .sheet(isPresented: $isShowingNewGame, onDismiss: openPendingGame) {
                 NewGameSheet(replacesGameInProgress: savedGame != nil) { difficulty in
@@ -115,13 +122,17 @@ struct HomeView: View {
         }
     }
 
+    private var recorder: GameRecorder {
+        GameRecorder(context: modelContext)
+    }
+
     private func showComingSoon() {
         isShowingComingSoon = true
     }
 
     private func continueButton(for game: SudokuGame) -> some View {
         Button {
-            activeGame = GameModel(game: game, settings: settings, store: store)
+            activeGame = GameModel(game: game, settings: settings, store: store, recorder: recorder)
         } label: {
             // One line: the action on the left, the saved game's difficulty and time on the right.
             HStack(spacing: 8) {
@@ -162,7 +173,7 @@ struct HomeView: View {
     }
 
     private func startGame(_ difficulty: Difficulty) async {
-        let model = await GameModel.make(difficulty: difficulty, settings: settings, store: store)
+        let model = await GameModel.make(difficulty: difficulty, settings: settings, store: store, recorder: recorder)
         savedGame = model.game
         if isShowingNewGame {
             pendingGame = model

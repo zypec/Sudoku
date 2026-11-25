@@ -26,8 +26,9 @@ enum PuzzleGenerator {
         while true {
             let solution = makeSolvedGrid(using: &generator)
             let givens = removeClues(from: solution, difficulty: difficulty, using: &generator)
-            if hardestLevel(of: givens) == difficulty.level {
-                return Puzzle(givens: givens, solution: solution, difficulty: difficulty)
+            let result = LogicalSolver().solve(Board(values: givens))
+            if result.isSolved, (result.hardestTechnique?.level ?? 1) == difficulty.level {
+                return Puzzle.graded(givens: givens, solution: solution, difficulty: difficulty, result: result)
             }
         }
     }

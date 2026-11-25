@@ -95,7 +95,11 @@ struct GameView: View {
         } message: { outcome in
             switch outcome {
             case .solved:
-                Text("You solved it in \(GameStatusView.formattedTime(model.game.elapsedSeconds)).")
+                if let share = model.shareOfSlowerPlayers {
+                    Text("You solved it in \(GameStatusView.formattedTime(model.game.elapsedSeconds)), faster than an estimated \(share.formatted(.percent.precision(.fractionLength(0)))) of players.")
+                } else {
+                    Text("You solved it in \(GameStatusView.formattedTime(model.game.elapsedSeconds)).")
+                }
             case .lost:
                 Text("You reached the mistake limit.")
             }

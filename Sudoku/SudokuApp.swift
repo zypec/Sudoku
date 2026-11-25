@@ -5,6 +5,7 @@
 //  Created by Emre Kaya on 26.10.2024.
 //
 
+import SwiftData
 import SwiftUI
 
 @main
@@ -17,5 +18,6 @@ struct SudokuApp: App {
                 .environment(settings)
                 .preferredColorScheme(settings.theme.colorScheme)
         }
+        .modelContainer(for: GameRecord.self)
     }
 }

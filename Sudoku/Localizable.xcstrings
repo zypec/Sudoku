@@ -18,6 +18,40 @@
         }
       }
     },
+    "%lld of %lld on your own": {
+      "comment": "Statistics: puzzles needing a technique that the player solved without a hint for it",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld of %2$lld on your own"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%2$lld bulmacanın %1$lld tanesinde kendi başına"
+          }
+        }
+      }
+    },
+    "%lld of %lld won": {
+      "comment": "Statistics tile detail: wins of games played",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld of %2$lld won"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%2$lld oyunun %1$lld tanesi kazanıldı"
+          }
+        }
+      }
+    },
     "%lld remaining": {
       "comment": "Accessibility value of a number pad key: how many of this digit are still missing",
       "localizations": {
@@ -116,6 +150,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Uzak Çift"
+          }
+        }
+      }
+    },
+    "All": {
+      "comment": "Statistics filter: every difficulty",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tümü"
           }
         }
       }
@@ -256,6 +307,57 @@
         }
       }
     },
+    "Auto Solved": {
+      "comment": "Statistics: game finished by auto solve",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auto Solved"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Otomatik Çözüldü"
+          }
+        }
+      }
+    },
+    "Average": {
+      "comment": "Statistics chart: average line",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Average"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ortalama"
+          }
+        }
+      }
+    },
+    "Average Time": {
+      "comment": "Statistics tile",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Average Time"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ortalama Süre"
+          }
+        }
+      }
+    },
     "Avoiding a second solution": {
       "comment": "Technique subtitle: Unique Rectangle",
       "localizations": {
@@ -286,6 +388,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Geri"
+          }
+        }
+      }
+    },
+    "Best Streak": {
+      "comment": "Statistics tile: longest run of consecutive wins",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Best Streak"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En İyi Seri"
+          }
+        }
+      }
+    },
+    "Best Time": {
+      "comment": "Statistics tile",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Best Time"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En İyi Süre"
           }
         }
       }
@@ -422,6 +558,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Devam Et"
+          }
+        }
+      }
+    },
+    "Current Streak": {
+      "comment": "Statistics tile: consecutive wins up to now",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Current Streak"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mevcut Seri"
+          }
+        }
+      }
+    },
+    "Daily Streak": {
+      "comment": "Statistics section",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daily Streak"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Günlük Seri"
           }
         }
       }
@@ -749,6 +919,23 @@
         }
       }
     },
+    "Faster than %@": {
+      "comment": "Statistics: estimated share of slower players, e.g. 65%",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Faster than %@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oyuncuların %@ kadarından hızlı"
+          }
+        }
+      }
+    },
     "Feedback": {
       "comment": "Settings section",
       "localizations": {
@@ -762,6 +949,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Geri Bildirim"
+          }
+        }
+      }
+    },
+    "Finish a game to see your statistics here.": {
+      "comment": "Statistics empty state message",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finish a game to see your statistics here."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İstatistiklerini görmek için bir oyunu bitir."
           }
         }
       }
@@ -949,6 +1153,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "İpucu"
+          }
+        }
+      }
+    },
+    "Hints per Game": {
+      "comment": "Statistics tile",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hints per Game"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oyun Başına İpucu"
           }
         }
       }
@@ -1429,6 +1650,23 @@
         }
       }
     },
+    "Lost": {
+      "comment": "Statistics: game lost at the mistake limit",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lost"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kaybedildi"
+          }
+        }
+      }
+    },
     "Master": {
       "comment": "Difficulty level",
       "localizations": {
@@ -1459,6 +1697,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Orta"
+          }
+        }
+      }
+    },
+    "Minutes": {
+      "comment": "Statistics chart axis",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Minutes"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dakika"
           }
         }
       }
@@ -1582,6 +1837,23 @@
         }
       }
     },
+    "No Games Yet": {
+      "comment": "Statistics empty state title",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Games Yet"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Henüz Oyun Yok"
+          }
+        }
+      }
+    },
     "No Hint Available": {
       "comment": "Hint panel title when no known technique applies",
       "localizations": {
@@ -1595,6 +1867,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "İpucu Bulunamadı"
+          }
+        }
+      }
+    },
+    "None": {
+      "comment": "Statistics value when there is nothing to show yet",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "None"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yok"
           }
         }
       }
@@ -1803,6 +2092,23 @@
         }
       }
     },
+    "Played": {
+      "comment": "Statistics tile: games finished",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Played"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oynanan"
+          }
+        }
+      }
+    },
     "Preparing puzzle…": {
       "comment": "Accessibility label while a puzzle is being generated",
       "localizations": {
@@ -1867,6 +2173,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bulmaca Çözüldü!"
+          }
+        }
+      }
+    },
+    "Recent Games": {
+      "comment": "Statistics section",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recent Games"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Son Oyunlar"
           }
         }
       }
@@ -2194,6 +2517,40 @@
         }
       }
     },
+    "Solve Times": {
+      "comment": "Statistics section: chart of recent solve times",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solve Times"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çözüm Süreleri"
+          }
+        }
+      }
+    },
+    "Solved": {
+      "comment": "Statistics: game outcome",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solved"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çözüldü"
+          }
+        }
+      }
+    },
     "Some cells outside the chain see a cell of each color. Whichever color holds %lld, they see it, so they can't be %lld.": {
       "comment": "Hint walkthrough page: Simple Coloring, color trap",
       "localizations": {
@@ -2428,6 +2785,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sistem"
+          }
+        }
+      }
+    },
+    "Techniques": {
+      "comment": "Statistics section: success per technique",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Techniques"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yöntemler"
           }
         }
       }
@@ -2942,6 +3316,23 @@
         }
       }
     },
+    "Win Rate": {
+      "comment": "Statistics tile",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Win Rate"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kazanma Oranı"
+          }
+        }
+      }
+    },
     "X-Wing and wings": {
       "comment": "Hard difficulty description",
       "localizations": {
@@ -2993,6 +3384,23 @@
         }
       }
     },
+    "You solved it in %@, faster than an estimated %@ of players.": {
+      "comment": "Puzzle solved alert: time and estimated share of slower players",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You solved it in %1$@, faster than an estimated %2$@ of players."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ içinde çözdün; tahminen oyuncuların %2$@ kadarından daha hızlısın."
+          }
+        }
+      }
+    },
     "You solved it in %@.": {
       "comment": "Alert message when solved; %@ is the elapsed time, e.g. 4:32",
       "localizations": {
@@ -3006,6 +3414,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bulmacayı %@ sürede çözdün."
+          }
+        }
+      }
+    },
+    "Your daily streak history will appear here once Daily Sudoku arrives.": {
+      "comment": "Statistics: placeholder for the daily streak history",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your daily streak history will appear here once Daily Sudoku arrives."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Günlük Sudoku geldiğinde günlük seri geçmişin burada görünecek."
           }
         }
       }

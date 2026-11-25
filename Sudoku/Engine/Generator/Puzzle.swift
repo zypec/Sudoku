@@ -23,12 +23,31 @@ struct Puzzle: Hashable, Codable, Sendable {
     let givens: [Digit]
     let solution: [Digit]
     let difficulty: Difficulty
+    /// Estimated seconds for a typical player (`SolveTimeEstimate`). `nil` in games saved before
+    /// estimates existed.
+    var estimatedSeconds: Int?
+    /// Techniques the logical solver needs for this puzzle, easiest first. `nil` in older saves.
+    var requiredTechniques: [TechniqueKind]?
 
-    init(givens: [Digit], solution: [Digit], difficulty: Difficulty) {
+    init(givens: [Digit], solution: [Digit], difficulty: Difficulty, estimatedSeconds: Int? = nil, requiredTechniques: [TechniqueKind]? = nil) {
         precondition(givens.count == Geometry.cellCount && solution.count == Geometry.cellCount, "A puzzle needs 81 cells")
         self.givens = givens
         self.solution = solution
         self.difficulty = difficulty
+        self.estimatedSeconds = estimatedSeconds
+        self.requiredTechniques = requiredTechniques
+    }
+
+    /// The puzzle with its estimate and required techniques worked out by the logical solver.
+    static func graded(givens: [Digit], solution: [Digit], difficulty: Difficulty, result: SolveResult) -> Puzzle {
+        let used = Set(result.steps.map(\.technique))
+        return Puzzle(
+            givens: givens,
+            solution: solution,
+            difficulty: difficulty,
+            estimatedSeconds: SolveTimeEstimate.seconds(givens: givens, result: result),
+            requiredTechniques: TechniqueKind.allCases.filter(used.contains)
+        )
     }
 
     var givenCount: Int {

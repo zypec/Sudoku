@@ -48,20 +48,28 @@ final class GameModel {
         }
     }
 
-    init(game: SudokuGame, settings: AppSettings, store: GameStore? = nil) {
+    /// Records the game in the statistics when it finishes; `nil` in previews and most tests.
+    @ObservationIgnored private let recorder: GameRecorder?
+    /// A game is recorded once, when it finishes.
+    @ObservationIgnored private var hasRecordedResult: Bool
+
+    init(game: SudokuGame, settings: AppSettings, store: GameStore? = nil, recorder: GameRecorder? = nil) {
         self.game = game
         self.settings = settings
         self.store = store
+        self.recorder = recorder
+        hasRecordedResult = game.isFinished
     }
 
     /// Generates a new puzzle in the background and wraps it in a saved model. The mistake limit
     /// comes from the current settings and stays fixed for the whole game.
-    static func make(difficulty: Difficulty, settings: AppSettings, store: GameStore? = nil) async -> GameModel {
+    static func make(difficulty: Difficulty, settings: AppSettings, store: GameStore? = nil, recorder: GameRecorder? = nil) async -> GameModel {
         let puzzle = await PuzzleGenerator.generate(difficulty)
         let model = GameModel(
             game: SudokuGame(puzzle: puzzle, mistakeLimit: settings.mistakeLimitForNewGame),
             settings: settings,
-            store: store
+            store: store,
+            recorder: recorder
         )
         model.save()
         return model
@@ -132,8 +140,8 @@ final class GameModel {
 
     func requestHint() {
         guard !game.isFinished else { return }
-        update { $0.registerHint() }
         let hint = HintFinder.hint(for: game)
+        update { $0.registerHint(for: hint.mainTechnique) }
         activeHint = ActiveHint(hint: hint, pages: HintWalkthrough.pages(for: hint))
     }
 
@@ -294,12 +302,14 @@ final class GameModel {
             switch hint {
             case .step(let step, _):
                 update {
-                    $0.registerHint()
+                    $0.registerHint(for: step.technique)
+                    $0.registerAutoSolvedStep()
                     $0.apply(step)
                 }
             case .chain(let links):
                 update {
-                    $0.registerHint()
+                    $0.registerHint(for: hint.mainTechnique)
+                    $0.registerAutoSolvedStep()
                     for link in links {
                         $0.apply(link.step)
                     }
@@ -363,6 +373,7 @@ final class GameModel {
         isPreparingNewGame = true
         let puzzle = await PuzzleGenerator.generate(game.puzzle.difficulty)
         game = SudokuGame(puzzle: puzzle, mistakeLimit: settings.mistakeLimitForNewGame)
+        hasRecordedResult = false
         selectedCell = nil
         isNotesMode = false
         activeHint = nil
@@ -375,6 +386,16 @@ final class GameModel {
     private func update(_ change: (inout SudokuGame) -> some Any) {
         _ = change(&game)
         save()
+        if game.isFinished, !hasRecordedResult {
+            hasRecordedResult = true
+            recorder?.record(game)
+        }
+    }
+
+    /// Estimated share of players slower than this game's time, once it is solved.
+    var shareOfSlowerPlayers: Double? {
+        guard game.isSolved, let estimate = game.puzzle.estimatedSeconds else { return nil }
+        return SolveTimeEstimate.shareOfSlowerPlayers(than: game.elapsedSeconds, estimate: estimate)
     }
 }
 
