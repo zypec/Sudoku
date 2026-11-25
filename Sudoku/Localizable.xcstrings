@@ -1,6 +1,23 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "%@ puzzle": {
+      "comment": "Score breakdown: base points for the difficulty, e.g. Hard puzzle",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ puzzle"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ bulmaca"
+          }
+        }
+      }
+    },
     "%lld day streak": {
       "comment": "Home: daily streak in days",
       "localizations": {
@@ -116,6 +133,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "%lld, hatalı"
+          }
+        }
+      }
+    },
+    "+%@ points": {
+      "comment": "Statistics: points earned in a recent game",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "+%@ points"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "+%@ puan"
           }
         }
       }
@@ -609,6 +643,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Geri"
+          }
+        }
+      }
+    },
+    "Best Score": {
+      "comment": "Statistics tile",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Best Score"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En İyi Puan"
           }
         }
       }
@@ -1480,6 +1531,23 @@
         }
       }
     },
+    "Flawless": {
+      "comment": "Score breakdown: bonus for no mistakes, hints or reveals",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Flawless"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kusursuz"
+          }
+        }
+      }
+    },
     "Follow the houses where a digit has exactly two spots, and color the cells along them alternately in two colors. One color holds the digit everywhere, the other nowhere. If two cells of the same color see each other, that color is the false one. A cell that sees both colors can't hold the digit.": {
       "comment": "Technique guide (detailed hint explanation and training)",
       "localizations": {
@@ -1599,6 +1667,23 @@
         }
       }
     },
+    "Games finished by auto solve don't earn points or count as wins.": {
+      "comment": "Result sheet message after auto solve",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Games finished by auto solve don't earn points or count as wins."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Otomatik çözümle biten oyunlar puan kazandırmaz ve galibiyet sayılmaz."
+          }
+        }
+      }
+    },
     "Haptics": {
       "comment": "Settings toggle",
       "localizations": {
@@ -1697,6 +1782,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "İpuçları"
+          }
+        }
+      }
+    },
+    "Hints (%lld)": {
+      "comment": "Score breakdown: hint penalty with count",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hints (%lld)"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İpuçları (%lld)"
           }
         }
       }
@@ -2857,6 +2959,23 @@
         }
       }
     },
+    "Mistakes (%lld)": {
+      "comment": "Score breakdown: mistake penalty with count",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mistakes (%lld)"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hatalar (%lld)"
+          }
+        }
+      }
+    },
     "Mistakes: %lld": {
       "comment": "Mistake counter when there is no mistake limit",
       "localizations": {
@@ -3503,6 +3622,23 @@
         }
       }
     },
+    "Revealed cells (%lld)": {
+      "comment": "Score breakdown: reveal penalty with count",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Revealed cells (%lld)"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Açılan hücreler (%lld)"
+          }
+        }
+      }
+    },
     "Row %lld, column %lld": {
       "comment": "Accessibility label of a board cell",
       "localizations": {
@@ -3839,6 +3975,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Çözüldü"
+          }
+        }
+      }
+    },
+    "Solved by Auto Solve": {
+      "comment": "Result sheet title when auto solve finished the game",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solved by Auto Solve"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Otomatik Çözüm Bitirdi"
           }
         }
       }
@@ -4642,6 +4795,23 @@
         }
       }
     },
+    "Total Score": {
+      "comment": "Statistics tile",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total Score"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toplam Puan"
+          }
+        }
+      }
+    },
     "Training": {
       "comment": "Home: training section",
       "localizations": {
@@ -5097,6 +5267,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "%lld. sütun"
+          }
+        }
+      }
+    },
+    "points": {
+      "comment": "Result sheet: unit under the score",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "points"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "puan"
           }
         }
       }

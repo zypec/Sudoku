@@ -86,6 +86,16 @@ private struct SummaryGrid: View {
 
     var body: some View {
         LazyVGrid(columns: [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)], spacing: 12) {
+            StatTile(title: "Total Score", systemImage: "star") {
+                Text(summary.totalScore, format: .number)
+            }
+            StatTile(title: "Best Score", systemImage: "star.circle") {
+                if let best = summary.bestScore {
+                    Text(best, format: .number)
+                } else {
+                    Text("None")
+                }
+            }
             StatTile(title: "Played", systemImage: "square.grid.3x3") {
                 Text(verbatim: "\(summary.played)")
             }
@@ -308,6 +318,11 @@ private struct RecentGames: View {
                 Text(verbatim: GameStatusView.formattedTime(result.elapsedSeconds))
                     .font(.subheadline.weight(.semibold))
                     .monospacedDigit()
+                if result.isWin {
+                    Text("+\(result.score.total.formatted(.number)) points")
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(.tint)
+                }
                 if result.isWin, let estimate = result.estimatedSeconds {
                     let share = SolveTimeEstimate.shareOfSlowerPlayers(than: result.elapsedSeconds, estimate: estimate)
                     Text("Faster than \(share.formatted(.percent.precision(.fractionLength(0))))")

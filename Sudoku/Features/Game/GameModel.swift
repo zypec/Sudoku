@@ -528,7 +528,7 @@ final class GameModel {
 
     /// Estimated share of players slower than this game's time, once it is solved.
     var shareOfSlowerPlayers: Double? {
-        guard game.isSolved, let estimate = game.puzzle.estimatedSeconds else { return nil }
+        guard game.isSolved, !game.usedAutoSolve, let estimate = game.puzzle.estimatedSeconds else { return nil }
         return SolveTimeEstimate.shareOfSlowerPlayers(than: game.elapsedSeconds, estimate: estimate)
     }
 }

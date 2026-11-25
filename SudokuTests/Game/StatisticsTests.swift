@@ -71,6 +71,50 @@ struct StatisticsTests {
         #expect(stats[1] == TechniqueStat(technique: .xWing, needed: 3, solvedAlone: 1))
     }
 
+    // MARK: Score
+
+    private func scored(_ difficulty: Difficulty, seconds: Int = 1200, estimate: Int? = 1200, mistakes: Int = 0, hints: Int = 0,
+                        reveals: Int = 0, autoSolved: Int = 0, solved: Bool = true) -> GameScore {
+        GameResult(finishedAt: start, difficulty: difficulty, isSolved: solved, elapsedSeconds: seconds, mistakeCount: mistakes,
+                   hintCount: hints, revealCount: reveals, autoSolvedSteps: autoSolved, estimatedSeconds: estimate).score
+    }
+
+    @Test func flawlessGameAtTheEstimateEarnsBasePlusBonus() {
+        let score = scored(.hard)
+        #expect(score.total == 4200)  // 3500 + 0 speed + 700 flawless
+        #expect(score.lines.map(\.kind) == [.base, .speed, .flawless])
+    }
+
+    @Test func harderPuzzlesPayMore() {
+        let totals = Difficulty.allCases.map { scored($0).total }
+        #expect(totals == totals.sorted())
+        #expect(Set(totals).count == totals.count)
+    }
+
+    @Test func speedMistakesAndHintsMoveTheScore() {
+        let base = scored(.expert).total
+        #expect(scored(.expert, seconds: 600).total > base)
+        #expect(scored(.expert, seconds: 4800).total < base)
+        #expect(scored(.expert, mistakes: 1).total < base)
+        #expect(scored(.expert, hints: 2).total < scored(.expert, hints: 1).total)
+        #expect(scored(.expert, reveals: 1).total < base)
+        // Penalties are capped and a solved game keeps a floor.
+        #expect(scored(.expert, seconds: 100_000, mistakes: 20, hints: 20, reveals: 20).total == 550)
+    }
+
+    @Test func lostAndAutoSolvedGamesEarnNothing() {
+        #expect(scored(.master, solved: false).total == 0)
+        #expect(scored(.master, autoSolved: 10).total == 0)
+        #expect(scored(.master, estimate: nil).total == 9600)  // no estimate: no speed line
+    }
+
+    @Test func summaryAddsUpScoresOfWins() {
+        let results = [result(1, seconds: 600), result(2, solved: false), result(3, seconds: 600, autoSolved: 5)]
+        let summary = StatsSummary(results: results)
+        #expect(summary.totalScore == results[0].score.total)
+        #expect(summary.bestScore == results[0].score.total)
+    }
+
     // MARK: Estimates
 
     @Test func shareOfSlowerPlayersFollowsTheTime() {

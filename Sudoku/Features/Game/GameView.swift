@@ -12,13 +12,9 @@ struct GameView: View {
 
     @Environment(\.dismiss) private var dismiss
     @Environment(\.scenePhase) private var scenePhase
-    @State private var outcome: Outcome?
+    @State private var outcome: GameOutcome?
     @State private var isShowingSettings = false
 
-    private enum Outcome {
-        case solved
-        case lost
-    }
 
     var body: some View {
         GeometryReader { proxy in
@@ -84,7 +80,7 @@ struct GameView: View {
         }
         .onChange(of: model.game.isFinished) { _, isFinished in
             guard isFinished else { return }
-            outcome = model.game.isSolved ? .solved : .lost
+            outcome = GameOutcome(game: model.game)
         }
         // Ticks aren't saved individually, so save the clock when leaving the foreground or the screen.
         .onChange(of: scenePhase) { _, phase in
@@ -100,23 +96,13 @@ struct GameView: View {
             model.stopAutoSolve()
             model.save()
         }
-        .alert(outcomeTitle, item: $outcome) { _ in
-            Button("New Game") {
+        .sheet(item: $outcome) { outcome in
+            GameResultSheet(model: model, outcome: outcome) {
+                self.outcome = nil
                 Task { await model.startNewGame() }
-            }
-            Button("Home", role: .cancel) {
+            } onHome: {
+                self.outcome = nil
                 dismiss()
-            }
-        } message: { outcome in
-            switch outcome {
-            case .solved:
-                if let share = model.shareOfSlowerPlayers {
-                    Text("You solved it in \(GameStatusView.formattedTime(model.game.elapsedSeconds)), faster than an estimated \(share.formatted(.percent.precision(.fractionLength(0)))) of players.")
-                } else {
-                    Text("You solved it in \(GameStatusView.formattedTime(model.game.elapsedSeconds)).")
-                }
-            case .lost:
-                Text("You reached the mistake limit.")
             }
         }
         .sensoryFeedback(trigger: model.selectedCell) { _, _ in
@@ -181,9 +167,6 @@ struct GameView: View {
         .frame(maxHeight: .infinity, alignment: .bottom)
     }
 
-    private var outcomeTitle: LocalizedStringKey {
-        outcome == .lost ? "Game Over" : "Puzzle Solved!"
-    }
 
     /// The clock only runs while the app is in the foreground, the game is in progress and the
     /// board is visible (not covered by Settings).

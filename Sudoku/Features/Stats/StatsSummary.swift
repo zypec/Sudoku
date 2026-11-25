@@ -15,6 +15,9 @@ struct StatsSummary: Equatable {
     let currentStreak: Int
     let bestStreak: Int
     let hintsPerGame: Double?
+    /// Points from every game (see `GameScore`).
+    let totalScore: Int
+    let bestScore: Int?
 
     init(results: [GameResult]) {
         let ordered = results.sorted { $0.finishedAt < $1.finishedAt }
@@ -24,6 +27,9 @@ struct StatsSummary: Equatable {
         bestSeconds = winTimes.min()
         averageSeconds = winTimes.isEmpty ? nil : winTimes.reduce(0, +) / winTimes.count
         hintsPerGame = ordered.isEmpty ? nil : Double(ordered.reduce(0) { $0 + $1.hintCount }) / Double(ordered.count)
+        let scores = ordered.filter(\.isWin).map(\.score.total)
+        totalScore = scores.reduce(0, +)
+        bestScore = scores.max()
 
         var current = 0
         var best = 0
