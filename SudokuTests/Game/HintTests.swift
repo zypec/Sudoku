@@ -27,8 +27,11 @@ struct HintTests {
     private func solveWithHints(_ game: inout SudokuGame) -> Int {
         var count = 0
         while !game.isFinished, count < 500 {
-            guard case .step(let step, _) = HintFinder.hint(for: game) else { break }
-            game.apply(step)
+            let steps = HintFinder.hint(for: game).steps
+            guard !steps.isEmpty else { break }
+            for step in steps {
+                game.apply(step)
+            }
             count += 1
         }
         return count
@@ -87,8 +90,8 @@ struct HintTests {
         let hints = solveWithHints(&game)
         #expect(game.isSolved)
         #expect(game.mistakeCount == 0)
-        // Every empty cell needs one placement; eliminations add a few more steps.
-        #expect(hints >= game.puzzle.givens.count { $0 == 0 })
+        // Without notes every hint ends in a placement, so there is exactly one hint per empty cell.
+        #expect(hints == game.puzzle.givens.count { $0 == 0 })
     }
 
     @Test func applyingHintsSolvesThePuzzleWithFullNotes() {
@@ -99,23 +102,77 @@ struct HintTests {
         #expect(game.mistakeCount == 0)
     }
 
-    @Test func eliminationHintsAreRememberedWithoutNotes() {
-        var game = generatedGame(.medium, seed: 1)
-        // Play until the first elimination step.
-        while case .step(let step, _) = HintFinder.hint(for: game), step.eliminations.isEmpty {
+    /// Without notes, an elimination is useless on its own: the hint follows it to the placement it
+    /// enables, and applying the hint remembers the eliminations.
+    @Test(arguments: [(Difficulty.medium, UInt64(1)), (.hard, 1), (.expert, 3)])
+    func withoutNotesHintsChainEliminationsIntoAPlacement(difficulty: Difficulty, seed: UInt64) throws {
+        var game = generatedGame(difficulty, seed: seed)
+        // Play until the first hint that needs an elimination.
+        var hint = HintFinder.hint(for: game)
+        while case .step(let step, _) = hint, !step.placements.isEmpty {
             game.apply(step)
+            hint = HintFinder.hint(for: game)
         }
-        guard case .step(let elimination, _) = HintFinder.hint(for: game) else {
-            Issue.record("Expected an elimination step")
+        guard case .chain(let links) = hint else {
+            Issue.record("Expected a chained hint, got \(hint)")
             return
         }
-        game.apply(elimination)
-        for item in elimination.eliminations {
-            #expect(game.deducedEliminations[item.cell].isSuperset(of: item.digits))
+        let placement = try #require(links.last?.step.placements.first)
+        #expect(game.puzzle.solution[placement.cell] == placement.digit)
+        for link in links.dropLast() {
+            #expect(link.step.placements.isEmpty)
+            #expect(!link.step.eliminations.isEmpty)
+            for elimination in link.step.eliminations {
+                #expect(!elimination.digits.contains(game.puzzle.solution[elimination.cell]))
+            }
         }
-        // The same deduction is not offered again.
-        guard case .step(let next, _) = HintFinder.hint(for: game) else { return }
-        #expect(next != elimination)
+
+        // The walkthrough explains every link and names each page's technique.
+        let pages = HintWalkthrough.pages(for: hint)
+        #expect(pages.first?.kind == .nudge)
+        #expect(pages.last?.kind == .result)
+        #expect(pages.allSatisfy { $0.technique != nil })
+        #expect(Set(pages.compactMap(\.technique)) == Set(links.map(\.step.technique)))
+
+        for step in hint.steps {
+            game.apply(step)
+        }
+        #expect(game.values[placement.cell] == placement.digit)
+        for link in links.dropLast() {
+            for elimination in link.step.eliminations {
+                #expect(game.deducedEliminations[elimination.cell].isSuperset(of: elimination.digits))
+            }
+        }
+    }
+
+    @Test func notedEliminationsAreOfferedOnTheirOwn() {
+        var game = generatedGame(.medium, seed: 1)
+        game.fillNotes()
+        var hint = HintFinder.hint(for: game)
+        while case .step(let step, _) = hint, !step.placements.isEmpty {
+            game.apply(step)
+            hint = HintFinder.hint(for: game)
+        }
+        // The player can remove these notes, so the elimination is the hint.
+        guard case .step(let step, _) = hint else {
+            Issue.record("Expected a plain elimination step, got \(hint)")
+            return
+        }
+        #expect(step.placements.isEmpty)
+    }
+
+    @Test func autoSolveSeesEveryStepOnItsOwn() {
+        var game = generatedGame(.medium, seed: 1)
+        var hint = HintFinder.hint(for: game, chainsEliminations: false)
+        while case .step(let step, _) = hint, !step.placements.isEmpty {
+            game.apply(step)
+            hint = HintFinder.hint(for: game, chainsEliminations: false)
+        }
+        guard case .step(let step, _) = hint else {
+            Issue.record("Expected a plain step")
+            return
+        }
+        #expect(step.placements.isEmpty)
     }
 
     @Test func eliminationHintsUpdateNotesAndCanBeUndone() {
@@ -177,19 +234,28 @@ struct HintTests {
     /// every page with all placeholders filled in.
     @Test(arguments: [(Difficulty.hard, UInt64(1)), (.hard, 2), (.hard, 3), (.expert, 3), (.expert, 12)])
     func everyStepOfAHardPuzzleHasAWalkthrough(difficulty: Difficulty, seed: UInt64) {
-        var game = generatedGame(difficulty, seed: seed)
         var seen = Set<TechniqueKind>()
-        while !game.isFinished, case .step(let step, _) = HintFinder.hint(for: game) {
-            let pages = HintWalkthrough.pages(for: HintFinder.hint(for: game))
-            seen.insert(step.technique)
-            #expect(pages.count >= 3, "\(step.technique) has no explanation")
-            #expect(pages.first?.kind == .nudge)
-            #expect(pages.last?.kind == .result)
-            for page in pages {
-                #expect(!page.text.isEmpty, "\(step.technique) has an empty page")
-                #expect(!page.text.contains("%"), "\(step.technique): \(page.text)")
+        // Auto solve's view of the hints, so elimination steps get their own walkthrough too.
+        for chains in [false, true] {
+            var game = generatedGame(difficulty, seed: seed)
+            while !game.isFinished {
+                let hint = HintFinder.hint(for: game, chainsEliminations: chains)
+                guard !hint.steps.isEmpty else { break }
+                let pages = HintWalkthrough.pages(for: hint)
+                let name = hint.mainTechnique.map(\.rawValue) ?? "?"
+                seen.formUnion(hint.steps.map(\.technique))
+                #expect(pages.count >= 3, "\(name) has no explanation")
+                #expect(pages.first?.kind == .nudge)
+                #expect(pages.last?.kind == .result)
+                for page in pages {
+                    #expect(!page.text.isEmpty, "\(name) has an empty page")
+                    #expect(!page.text.contains("%"), "\(name): \(page.text)")
+                }
+                for step in hint.steps {
+                    game.apply(step)
+                }
             }
-            game.apply(step)
+            #expect(game.isSolved)
         }
         #expect(seen.contains { $0.level == difficulty.level })
     }

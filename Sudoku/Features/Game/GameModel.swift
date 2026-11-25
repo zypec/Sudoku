@@ -148,9 +148,13 @@ final class GameModel {
     }
 
     func applyHint() {
-        guard case .step(let step, _)? = activeHint?.hint else { return }
-        update { $0.apply(step) }
-        if let placement = step.placements.first {
+        guard let hint = activeHint?.hint, !hint.steps.isEmpty else { return }
+        update { game in
+            for step in hint.steps {
+                game.apply(step)
+            }
+        }
+        if let placement = hint.placement {
             selectedCell = placement.cell
         }
         activeHint = nil
@@ -171,8 +175,8 @@ final class GameModel {
         if let selectedCell, !game.isGiven(selectedCell), game.values[selectedCell] != game.puzzle.solution[selectedCell] {
             return selectedCell
         }
-        if case .step(let step, _)? = activeHint?.hint {
-            return step.placements.first?.cell
+        if let placement = activeHint?.hint.placement {
+            return placement.cell
         }
         return nil
     }
@@ -209,6 +213,8 @@ final class GameModel {
         switch autoSolve?.hint {
         case .step(let step, _)?:
             step.placements.first?.cell ?? step.eliminations.first?.cell
+        case .chain?:
+            autoSolve?.hint?.placement?.cell
         case .incorrectEntries(let cells)?:
             cells.first
         default:
@@ -261,7 +267,8 @@ final class GameModel {
             }
         }
         while !Task.isCancelled, autoSolve != nil, !game.isFinished {
-            let hint = HintFinder.hint(for: game)
+            // Auto solve shows every step on its own, eliminations included.
+            let hint = HintFinder.hint(for: game, chainsEliminations: false)
             var page = HintWalkthrough.pages(for: hint).last
             if case .incorrectEntries = hint, let highlights = page?.highlights {
                 page = HintPage(kind: .result, text: String(localized: "The incorrect digits will be erased."), highlights: highlights)
@@ -289,6 +296,13 @@ final class GameModel {
                 update {
                     $0.registerHint()
                     $0.apply(step)
+                }
+            case .chain(let links):
+                update {
+                    $0.registerHint()
+                    for link in links {
+                        $0.apply(link.step)
+                    }
                 }
             case .incorrectEntries:
                 update { $0.eraseIncorrectEntries() }

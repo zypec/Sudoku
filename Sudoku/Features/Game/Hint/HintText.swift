@@ -14,14 +14,13 @@ enum HintText {
             String(localized: "Incorrect Digits")
         case .unavailable:
             String(localized: "No Hint Available")
-        case .step(let step, _):
-            step.technique.title
+        case .step, .chain:
+            hint.mainTechnique.map(\.title) ?? ""
         }
     }
 
     static func subtitle(for hint: Hint) -> String? {
-        guard case .step(let step, _) = hint else { return nil }
-        return String(localized: step.technique.subtitle)
+        hint.mainTechnique.map { String(localized: $0.subtitle) }
     }
 
     // MARK: Names
@@ -49,6 +48,14 @@ enum HintText {
     /// "1, 2 and 3" (or "1, 2 or 3") in the current language.
     static func digitList(_ digits: CandidateSet, type: ListFormatStyle<StringStyle, [String]>.ListType = .and) -> String {
         digits.map(String.init).formatted(.list(type: type))
+    }
+}
+
+extension Hint {
+    /// The technique a hint is about: the hardest one in a chain (the singles at its end are the
+    /// easy part).
+    var mainTechnique: TechniqueKind? {
+        steps.max { $0.technique.level < $1.technique.level }?.technique
     }
 }
 

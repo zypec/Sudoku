@@ -21,6 +21,8 @@ struct HintPage: Equatable {
     let kind: Kind
     let text: String
     let highlights: HintHighlights
+    /// The technique this page explains; changes from page to page in a chained hint.
+    var technique: TechniqueKind?
 }
 
 /// Turns a hint into pages the player can step through: the technique and where to look, the
@@ -45,6 +47,25 @@ enum HintWalkthrough {
             builder.addExplanation()
             builder.addResult()
             return builder.pages
+
+        case .chain(let links):
+            // Each elimination is explained and ends with what it rules out; the last link places
+            // the digit those eliminations made possible.
+            var pages: [HintPage] = []
+            for (index, link) in links.enumerated() {
+                var builder = WalkthroughBuilder(step: link.step, board: link.board)
+                if index == 0 {
+                    builder.addNudge()
+                }
+                builder.addExplanation()
+                if index == links.count - 1 {
+                    builder.addResult()
+                } else {
+                    builder.addConsequence()
+                }
+                pages += builder.pages
+            }
+            return pages
         }
     }
 }
@@ -78,7 +99,7 @@ private struct WalkthroughBuilder {
             nudge.fill([pivot], .pattern)
             text = String(localized: "Look for \(title) around the cell at \(HintText.cellName(pivot)).")
         }
-        pages.append(HintPage(kind: .nudge, text: text, highlights: nudge))
+        pages.append(HintPage(kind: .nudge, text: text, highlights: nudge, technique: step.technique))
     }
 
     mutating func addResult() {
@@ -96,6 +117,15 @@ private struct WalkthroughBuilder {
             String(localized: "Remove \(HintText.digitList(removedDigits)) from the highlighted cells.")
         }
         add(text, kind: .result)
+    }
+
+    /// Ends an elimination that leads on to a later step: shows what it rules out without applying it.
+    mutating func addConsequence() {
+        for elimination in step.eliminations {
+            highlights.fill([elimination.cell], .target)
+            highlights.mark(elimination.digits, in: elimination.cell, as: .eliminated)
+        }
+        add(String(localized: "So \(HintText.digitList(removedDigits)) can't go in the cells marked in red."))
     }
 
     mutating func addExplanation() {
@@ -147,7 +177,7 @@ private struct WalkthroughBuilder {
     }
 
     private mutating func add(_ text: String, kind: HintPage.Kind = .explanation) {
-        pages.append(HintPage(kind: kind, text: text, highlights: highlights))
+        pages.append(HintPage(kind: kind, text: text, highlights: highlights, technique: step.technique))
     }
 
     /// Marks the pattern cells and emphasizes the pattern digits among their candidates.

@@ -1939,6 +1939,23 @@
         }
       }
     },
+    "So %@ can't go in the cells marked in red.": {
+      "comment": "Hint walkthrough page: what an elimination rules out, before the step it leads to",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "So %@ can't go in the cells marked in red."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yani %@ kırmızıyla işaretli hücrelere giremez."
+          }
+        }
+      }
+    },
     "So %lld is on one of the two diagonals of the highlighted rectangle. Either way %@ and %@ each get a %lld here, so it can be removed from the rest of them.": {
       "comment": "Hint walkthrough page: X-Wing, conclusion",
       "localizations": {

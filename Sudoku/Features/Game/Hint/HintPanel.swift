@@ -37,9 +37,11 @@ struct HintPanel: View {
     private var header: some View {
         HStack(alignment: .top, spacing: 8) {
             VStack(alignment: .leading, spacing: 2) {
-                Text(verbatim: HintText.title(for: activeHint.hint))
+                // In a chain the title follows the technique of the page being read.
+                Text(verbatim: activeHint.page.technique?.title ?? HintText.title(for: activeHint.hint))
                     .font(.title3.bold())
-                if let subtitle = HintText.subtitle(for: activeHint.hint) {
+                    .contentTransition(.opacity)
+                if let subtitle = activeHint.page.technique.map({ String(localized: $0.subtitle) }) ?? HintText.subtitle(for: activeHint.hint) {
                     Text(verbatim: subtitle)
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
@@ -68,7 +70,7 @@ struct HintPanel: View {
             .frame(maxWidth: .infinity, alignment: .trailing)
         case .unavailable:
             EmptyView()
-        case .step:
+        case .step, .chain:
             HStack(spacing: 12) {
                 Button {
                     model.showPreviousHintPage()
