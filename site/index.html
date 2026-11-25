@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sudoku</title>
+<meta name="description" content="A Sudoku for iPhone and iPad whose hints explain the next step the way a good player would take it, and play the reasoning on the board. Built with Claude.">
+<meta property="og:title" content="Sudoku">
+<meta property="og:description" content="A Sudoku that explains itself: human-like hints, visual proofs and training for 32 techniques.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Crect width='30' height='30' rx='7' fill='%23f4f6fb'/%3E%3Cpath stroke='%23c3c9d8' stroke-width='1.4' d='M10 0v30M20 0v30M0 10h30M0 20h30'/%3E%3Crect x='11' y='11' width='8' height='8' rx='2' fill='%230a66d8'/%3E%3C/svg%3E">
+<script>
+try {
+  const theme = localStorage.getItem('zypec-theme') || localStorage.getItem('pp-theme');
+  if (theme === 'light' || theme === 'dark') document.documentElement.setAttribute('data-theme', theme);
+} catch (unavailable) {}
+</script>
+<link rel="stylesheet" href="kit/front.css">
+<style>
+/* Sudoku, drawn the way the app draws a hint: a flat, legible board with the pattern marked on it, and the
+   reasoning beside it in plain words. The bar along the top is the kit's, as on every other page. Everything
+   it says is in content.md beside it. */
+
+/* ── Settings: the values worth changing by hand. ── */
+:root{
+  /* The name in a rounded face, as the app sets its digits; SF Pro Rounded on Apple devices. */
+  --font-logo:ui-rounded,"SF Pro Rounded","Nunito","Helvetica Neue",Arial,sans-serif;
+  --size-title:clamp(52px,6.4vw,82px);
+  /* The app's blue, from its icon. Brighter than MetroCrafter's navy, so the two never read as one. */
+  --accent:#0a66d8; --accent-ink:#0855b5; --accent-soft:#0a66d812; --accent-line:#0a66d840;
+  /* The hint colors of the app: one case of a pattern in green, the other in blue, what goes in red. */
+  --case-a:#2f9e55; --case-b:#2f7bf0; --struck:#d93a3a;
+  --house:#f6d36b33; --cornerfill:#f39a4a3d; --target:#d93a3a1f;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){
+  --accent:#5aa7ff; --accent-ink:#7cb9ff; --accent-soft:#5aa7ff17; --accent-line:#5aa7ff45;
+  --house:#f6d36b1f; --cornerfill:#f39a4a2e; --target:#ff5b5b24; --struck:#ff6b6b}}
+:root[data-theme=dark]{--accent:#5aa7ff; --accent-ink:#7cb9ff; --accent-soft:#5aa7ff17; --accent-line:#5aa7ff45;
+  --house:#f6d36b1f; --cornerfill:#f39a4a2e; --target:#ff5b5b24; --struck:#ff6b6b}
+
+header .home{font-family:var(--font-logo);font-weight:800;letter-spacing:-.01em}
+header .home svg{width:18px;height:18px}
+
+/* The board takes the wider half, so its notes stay readable. */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px;align-items:center;padding:64px 0 24px}
+.hero h1{margin:6px 0 18px;font:800 var(--size-title)/.95 var(--font-logo);letter-spacing:-.03em}
+.hero p{color:var(--ink-2);font-size:18px;line-height:1.6;margin:0 0 22px}
+.hero .actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.hero .badge{font-size:13px;color:var(--accent-ink);background:var(--accent-soft);border:1px solid var(--accent-line);
+  border-radius:999px;padding:5px 12px}
+
+.board{margin:0}
+.board svg{display:block;width:100%;height:auto;border-radius:14px;background:var(--panel);
+  box-shadow:0 0 0 1px var(--line),0 24px 48px -28px #0a1b3a59}
+.board figcaption{font-size:13.5px;line-height:1.55;color:var(--muted);margin-top:10px}
+.board .given{font:600 22px var(--font-logo);fill:var(--ink)}
+.board .note{font:600 9px var(--font-logo);fill:var(--muted)}
+.board .note.on{fill:#fff}
+.board .grid{stroke:var(--line-2);stroke-width:1}
+.board .box{stroke:var(--ink);stroke-width:2;fill:none}
+.board .link{stroke:var(--accent);stroke-width:2.2;stroke-linecap:round}
+.board .strike{stroke:var(--struck);stroke-width:1.6}
+.board .ring{fill:none;stroke:var(--struck);stroke-width:1.2}
+/* The two diagonals light up in turn, the way the app plays the two cases; held still with reduced motion. */
+.board .case-a{fill:var(--case-a);animation:caseA 6s ease-in-out infinite}
+.board .case-b{fill:var(--case-b);animation:caseB 6s ease-in-out infinite}
+@keyframes caseA{0%,40%{opacity:1}50%,90%{opacity:.25}100%{opacity:1}}
+@keyframes caseB{0%,40%{opacity:.25}50%,90%{opacity:1}100%{opacity:.25}}
+@media (prefers-reduced-motion:reduce){.board .case-a,.board .case-b{animation:none;opacity:1}}
+
+section{margin-top:56px}
+.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-top:18px}
+.feature{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px 20px 6px}
+.feature .label{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.02em;color:var(--accent-ink);
+  background:var(--accent-soft);border-radius:999px;padding:3px 10px}
+.feature h3{font:700 20px/1.25 var(--font-logo);margin:12px 0 8px}
+.feature p{color:var(--ink-2);margin:0 0 14px;font-size:15.5px}
+
+.shots{margin:28px 0 0}
+.shots img{display:block;width:100%;height:auto;border-radius:18px;border:1px solid var(--line);background:var(--stage)}
+.shots figcaption{font-size:13.5px;color:var(--muted);margin-top:10px}
+
+section p,section li{color:var(--ink-2)}
+section ul{padding-left:20px}
+section li{margin-bottom:10px}
+
+@media (max-width:840px){
+  .hero{grid-template-columns:1fr;gap:28px;padding-top:40px}
+  .hero p{font-size:17px}
+}
+</style>
+</head>
+<body>
+<header>
+  <a class="home" href="./"><svg viewBox="0 0 30 30" aria-hidden="true"><rect width="30" height="30" rx="7" fill="var(--panel)"/><path stroke="var(--line-2)" stroke-width="1.6" d="M10 0v30M20 0v30M0 10h30M0 20h30"/><rect x="11" y="11" width="8" height="8" rx="2" fill="var(--accent)"/></svg>Sudoku</a>
+  <nav>
+    <a href="../">Portfolio</a>
+    <button id="theme" type="button" aria-live="polite"><span class="icon" aria-hidden="true"></span><span class="text"></span></button>
+  </nav>
+</header>
+<script src="kit/island.js"></script>
+
+<!-- What this page says is in content.md beside it; this file only draws it. -->
+<main data-content="content.md"></main>
+
+<script src="kit/content.js"></script>
+<script>
+const {escape, inline} = Content;
+
+/** The hero, with the board beside it: the board is drawn by the hero, wherever it is written in the file. */
+Content.kind('hero', (block, _, blocks) => {
+  const board = blocks.find(one => one.kind === 'board');
+  const links = block.pairs('link').map(([words, href]) =>
+    `<a class="btn primary" href="${escape(href)}" target="_blank" rel="noopener">${inline(words)}</a>`).join('');
+  return `<section class="hero"><div><p class="kicker">${inline(block.one('kicker'))}</p>`
+    + `<h1>${inline(block.one('title'))}</h1>${block.html}`
+    + `<div class="actions">${links}${block.one('badge') ? `<span class="badge">${inline(block.one('badge'))}</span>` : ''}</div></div>`
+    + (board ? boardOf(board) : '') + '</section>';
+});
+Content.kind('board', () => '');
+
+/*
+ * The board: a real X-Wing on 7, taken from the solved grid of Wikipedia's example puzzle with cells emptied
+ * so that rows 1 and 5 hold 7 only in columns 5 and 7. The corners alternate between the two cases, as in
+ * the app's visual explanation, and the 7s the X-Wing removes from those columns are struck.
+ */
+const GIVENS = '.346.8.12672.95348198342.6.859..14234268...91.1392485696.537284.8.41.635345.861.9';
+/** The candidates of each empty cell, by cell index (row * 9 + column). */
+const NOTES = {0: '5', 4: '7', 6: '579', 12: '1', 24: '57', 26: '7', 30: '7', 31: '67', 40: '57', 41: '3', 42: '7',
+  45: '7', 56: '1', 63: '27', 65: '7', 68: '9', 75: '2', 79: '7'};
+const CORNERS = {4: 'case-a', 42: 'case-a', 6: 'case-b', 40: 'case-b'};
+const TARGETS = [24, 31];
+const ROWS = [0, 4], COLUMNS = [4, 6];
+
+function boardOf(block) {
+  const size = 40, out = [];
+  const at = cell => [cell % 9 * size, Math.floor(cell / 9) * size];
+  const notePoint = (cell, digit) => {
+    const [x, y] = at(cell);
+    return [x + ((digit - 1) % 3 + .5) * size / 3, y + (Math.floor((digit - 1) / 3) + .5) * size / 3];
+  };
+  // The two rows and the two columns of the pattern, then its corners and the cells that lose the 7.
+  for (const row of ROWS) out.push(`<rect x="0" y="${row * size}" width="${9 * size}" height="${size}" fill="var(--house)"/>`);
+  for (const column of COLUMNS) out.push(`<rect x="${column * size}" y="0" width="${size}" height="${9 * size}" fill="var(--house)"/>`);
+  for (const cell of Object.keys(CORNERS)) { const [x, y] = at(+cell); out.push(`<rect x="${x}" y="${y}" width="${size}" height="${size}" fill="var(--cornerfill)"/>`); }
+  for (const cell of TARGETS) { const [x, y] = at(cell); out.push(`<rect x="${x}" y="${y}" width="${size}" height="${size}" fill="var(--target)"/>`); }
+  for (let i = 1; i < 9; i++) {
+    out.push(`<line class="grid" x1="${i * size}" y1="0" x2="${i * size}" y2="${9 * size}"/>`, `<line class="grid" x1="0" y1="${i * size}" x2="${9 * size}" y2="${i * size}"/>`);
+  }
+  // The strong links: in each row, 7 fits only in its two corners.
+  for (const row of ROWS) {
+    const [x1, y1] = notePoint(row * 9 + COLUMNS[0], 7), [x2, y2] = notePoint(row * 9 + COLUMNS[1], 7);
+    out.push(`<line class="link" x1="${x1 + 5}" y1="${y1}" x2="${x2 - 5}" y2="${y2}"/>`);
+  }
+  [...GIVENS].forEach((digit, cell) => {
+    const [x, y] = at(cell);
+    if (digit !== '.') { out.push(`<text class="given" x="${x + size / 2}" y="${y + size / 2 + 8}" text-anchor="middle">${digit}</text>`); return; }
+    for (const note of NOTES[cell] || '') {
+      const [nx, ny] = notePoint(cell, +note);
+      const corner = note === '7' && CORNERS[cell], target = note === '7' && TARGETS.includes(cell);
+      if (corner) out.push(`<circle class="${corner}" cx="${nx}" cy="${ny}" r="5.6"/>`);
+      if (target) out.push(`<circle class="ring" cx="${nx}" cy="${ny}" r="5.4"/>`);
+      out.push(`<text class="note${corner ? ' on' : ''}" x="${nx}" y="${ny + 3.2}" text-anchor="middle">${note}</text>`);
+      if (target) out.push(`<line class="strike" x1="${nx - 4}" y1="${ny}" x2="${nx + 4}" y2="${ny}"/>`);
+    }
+  });
+  for (let i = 0; i <= 3; i++) {
+    out.push(`<line class="box" x1="${i * 3 * size}" y1="0" x2="${i * 3 * size}" y2="${9 * size}"/>`, `<line class="box" x1="0" y1="${i * 3 * size}" x2="${9 * size}" y2="${i * 3 * size}"/>`);
+  }
+  return `<figure class="board"><svg viewBox="-1 -1 ${9 * size + 2} ${9 * size + 2}" role="img" aria-label="${escape(block.one('caption'))}">${out.join('')}</svg>`
+    + `<figcaption>${inline(block.one('caption'))}</figcaption></figure>`;
+}
+
+Content.kind('feature', block => `<article class="feature"><span class="label">${inline(block.one('label'))}</span>`
+  + `<h3>${inline(block.one('name'))}</h3>${block.html}</article>`, 'features');
+
+Content.kind('shots', block => `<figure class="shots"><img src="${escape(block.one('image'))}" alt="${escape(block.one('caption'))}" loading="lazy" width="1920" height="1080">`
+  + `<figcaption>${inline(block.one('caption'))}</figcaption></figure>`);
+</script>
+<script src="kit/theme.js"></script>
+</body>
+</html>
