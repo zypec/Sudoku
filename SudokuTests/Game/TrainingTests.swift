@@ -85,8 +85,11 @@ struct TrainingTests {
             Issue.record("Expected a hidden single")
             return
         }
+        // Singles are practiced without notes.
+        let hasNotes = practice.game.game.notes.contains { !$0.isEmpty }
+        #expect(!hasNotes)
         // A wrong digit first.
-        let wrong = try #require(practice.game.game.notes[placement.cell].subtracting([placement.digit]).min())
+        let wrong = placement.digit % 9 + 1
         practice.game.select(placement.cell)
         practice.game.input(wrong)
         practice.evaluate()
@@ -113,11 +116,24 @@ struct TrainingTests {
         #expect(done == 0)
     }
 
-    @Test func applyingTheHintAlsoSolvesIt() throws {
+    @Test func hintsInPracticeOnlyPointAtTheCells() throws {
         let practice = try #require(PracticeModel(technique: .nakedPair, settings: settings, progress: progress, transform: false))
+        guard case .step(let step, _) = HintFinder.hint(for: practice.game.game) else { return }
         practice.game.requestHint()
-        practice.game.applyHint()
-        practice.evaluate()
-        #expect(practice.status == .solved)
+        let hint = try #require(practice.game.activeHint)
+        #expect(hint.count == 1)
+        #expect(hint.hint.steps.isEmpty)  // nothing to apply or play
+        for elimination in step.eliminations {
+            #expect(hint.page.highlights.style(for: elimination.cell)?.fill == .pattern)
+        }
+    }
+
+    @Test func practiceResumesWhereThePlayerLeftOff() throws {
+        let practice = try #require(PracticeModel(technique: .pointing, settings: settings, progress: progress))
+        practice.nextPosition()
+        practice.nextPosition()
+        let reached = practice.positionIndex
+        let resumed = try #require(PracticeModel(technique: .pointing, settings: settings, progress: progress))
+        #expect(resumed.positionIndex == reached)
     }
 }

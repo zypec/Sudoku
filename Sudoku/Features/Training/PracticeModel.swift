@@ -25,6 +25,15 @@ final class TrainingProgress {
         Set(defaults.array(forKey: key(technique)) as? [Int] ?? [])
     }
 
+    /// The position the player was last on, to resume there.
+    func currentPosition(of technique: TechniqueKind) -> Int {
+        defaults.integer(forKey: "training.current.\(technique.rawValue)")
+    }
+
+    func setCurrentPosition(_ index: Int, of technique: TechniqueKind) {
+        defaults.set(index, forKey: "training.current.\(technique.rawValue)")
+    }
+
     func markSolved(_ index: Int, of technique: TechniqueKind) {
         var solved = solvedPositions(of: technique)
         guard solved.insert(index).inserted else { return }
@@ -32,8 +41,10 @@ final class TrainingProgress {
     }
 }
 
-/// A practice position turned into a playable game: notes filled in with every candidate, and the
-/// step the solver expects there (which is exactly the technique being practiced).
+/// A practice position turned into a playable game, and the step the solver expects there (which
+/// is exactly the technique being practiced). Singles are practiced without notes, as they're
+/// found in a real game; every other technique starts with all candidates noted, since its
+/// result is candidates to remove.
 struct PracticeSetup {
     let game: SudokuGame
     let expected: SolveStep
@@ -45,7 +56,8 @@ struct PracticeSetup {
               expected.technique == technique
         else { return nil }
         let puzzle = Puzzle(givens: board.values, solution: solution, difficulty: Difficulty(rawValue: technique.level) ?? .easy)
-        game = SudokuGame(puzzle: puzzle, mistakeLimit: nil, notes: Geometry.cells.map(board.candidates(at:)))
+        let notes = technique.level > 1 ? Geometry.cells.map(board.candidates(at:)) : Array(repeating: CandidateSet.empty, count: Geometry.cellCount)
+        game = SudokuGame(puzzle: puzzle, mistakeLimit: nil, notes: notes)
         self.expected = expected
     }
 }
@@ -91,7 +103,9 @@ final class PracticeModel {
     /// `nil` when there is nothing to practice for this technique yet.
     init?(technique: TechniqueKind, settings: AppSettings, positions: TrainingPositions = .bundled, progress: TrainingProgress = .shared, transform: Bool = true) {
         let list = positions.positions(for: technique)
-        guard let (index, setup) = Self.firstSetup(in: list, from: 0, technique: technique, transform: transform) else { return nil }
+        // Resume where the player left off.
+        let start = list.isEmpty ? 0 : progress.currentPosition(of: technique) % list.count
+        guard let (index, setup) = Self.firstSetup(in: list, from: start, technique: technique, transform: transform) else { return nil }
         self.technique = technique
         self.positions = list
         self.settings = settings
@@ -100,6 +114,14 @@ final class PracticeModel {
         game = GameModel(game: setup.game, settings: settings, followsMistakeLimitSetting: false)
         expected = setup.expected
         initialNotes = setup.game.notes
+        prepare()
+    }
+
+    /// Points hints at the step's cells and remembers the position.
+    private func prepare() {
+        let cells = isPlacement ? expected.placements.map(\.cell) : expected.eliminations.map(\.cell)
+        game.practiceFocus = (technique, cells, isPlacement)
+        progress.setCurrentPosition(positionIndex, of: technique)
         evaluate()
     }
 
@@ -132,7 +154,7 @@ final class PracticeModel {
         expected = setup.expected
         initialNotes = setup.game.notes
         loadID += 1
-        evaluate()
+        prepare()
     }
 
     /// Compares the board with the technique's step. Called after every change.

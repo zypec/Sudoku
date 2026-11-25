@@ -4506,6 +4506,23 @@
         }
       }
     },
+    "The candidates to remove are in the highlighted cells.": {
+      "comment": "Practice hint for elimination techniques: only points at the cells",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The candidates to remove are in the highlighted cells."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Silinecek adaylar işaretli hücrelerde."
+          }
+        }
+      }
+    },
     "The cell at %@ can only be %@.": {
       "comment": "Hint walkthrough page: XY-Wing and XYZ-Wing, the pivot and its digits as an 'or' list",
       "localizations": {
@@ -4536,6 +4553,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "%1$@ ve %2$@ hücreleri yalnızca %3$lld ya da %4$lld olabilir."
+          }
+        }
+      }
+    },
+    "The digit to place goes in the highlighted cell.": {
+      "comment": "Practice hint for placement techniques: only points at the cell",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The digit to place goes in the highlighted cell."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yerleştirilecek rakam işaretli hücreye gelir."
           }
         }
       }

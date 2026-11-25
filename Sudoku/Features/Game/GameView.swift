@@ -131,17 +131,19 @@ struct GameView: View {
     /// mark), Auto Solve and Settings.
     private var optionsMenu: some View {
         Menu("More", systemImage: "ellipsis") {
-            if model.settings.showsAutoNotesButton {
+            if model.settings.showsAutoNotesButton, !model.isPractice {
                 Button("Auto Notes", systemImage: "square.grid.3x3") {
                     model.fillNotes()
                 }
                 .disabled(model.game.isFinished)
             }
-            Button("Auto Solve", systemImage: "play.circle") {
-                model.startAutoSolve()
+            if !model.isPractice {
+                Button("Auto Solve", systemImage: "play.circle") {
+                    model.startAutoSolve()
+                }
+                .disabled(model.game.isFinished || model.autoSolve != nil)
+                Divider()
             }
-            .disabled(model.game.isFinished || model.autoSolve != nil)
-            Divider()
             Button("Settings", systemImage: "gearshape") {
                 model.pauseAutoSolve()
                 isShowingSettings = true

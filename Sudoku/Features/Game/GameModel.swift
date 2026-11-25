@@ -85,6 +85,14 @@ final class GameModel {
     /// A game is recorded once, when it finishes.
     @ObservationIgnored private var hasRecordedResult: Bool
 
+    /// In training: the technique being practiced and the cells it acts on. A hint then only
+    /// points at those cells instead of explaining the technique.
+    @ObservationIgnored var practiceFocus: (technique: TechniqueKind, cells: [CellIndex], isPlacement: Bool)?
+
+    var isPractice: Bool {
+        practiceFocus != nil
+    }
+
     /// Whether the mistake-limit setting applies to this game (not in training).
     @ObservationIgnored private let followsMistakeLimitSetting: Bool
 
@@ -233,6 +241,15 @@ final class GameModel {
 
     func requestHint() {
         guard !game.isFinished else { return }
+        if let focus = practiceFocus {
+            var highlights = HintHighlights()
+            highlights.fill(focus.cells, .pattern)
+            let text = focus.isPlacement
+                ? String(localized: "The digit to place goes in the highlighted cell.")
+                : String(localized: "The candidates to remove are in the highlighted cells.")
+            activeHint = ActiveHint(hint: .unavailable, pages: [HintPage(kind: .message, text: text, highlights: highlights, technique: focus.technique)])
+            return
+        }
         let hint = HintFinder.hint(for: game)
         update { $0.registerHint(for: hint.mainTechnique) }
         activeHint = ActiveHint(hint: hint, pages: HintWalkthrough.pages(for: hint))

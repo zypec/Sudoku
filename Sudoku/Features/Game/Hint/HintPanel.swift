@@ -86,10 +86,12 @@ struct HintPanel: View {
                     }
                 }
             }
-            PanelIconButton(title: "Reveal Cell", systemImage: "eye") {
-                model.revealCell()
+            if !model.isPractice {
+                PanelIconButton(title: "Reveal Cell", systemImage: "eye") {
+                    model.revealCell()
+                }
+                .disabled(model.revealTarget == nil)
             }
-            .disabled(model.revealTarget == nil)
             PanelIconButton(title: "Close", systemImage: "xmark") {
                 model.closeHint()
             }
@@ -243,7 +245,8 @@ private struct PageIndicator: View {
 
     var body: some View {
         Group {
-            if count <= 10 {
+            // Kept narrow enough to clear the Next capsule beside it.
+            if count <= 6 {
                 HStack(spacing: 5) {
                     ForEach(0..<count, id: \.self) { item in
                         Capsule()
@@ -255,11 +258,11 @@ private struct PageIndicator: View {
             } else {
                 Capsule()
                     .fill(.fill.tertiary)
-                    .frame(width: 120, height: 4)
+                    .frame(width: 90, height: 4)
                     .overlay(alignment: .leading) {
                         Capsule()
                             .fill(.tint)
-                            .frame(width: 120 * CGFloat(index + 1) / CGFloat(max(count, 1)), height: 4)
+                            .frame(width: 90 * CGFloat(index + 1) / CGFloat(max(count, 1)), height: 4)
                     }
                     .matchedGeometryEffect(id: "progress", in: namespace)
             }
