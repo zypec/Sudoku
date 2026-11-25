@@ -5,8 +5,7 @@
 
 import SwiftUI
 
-/// Covers the game while it's paused, so the board can't be studied with the clock stopped, and
-/// sums up the game so far.
+/// Shown over the blurred game while it's paused; sums up the game so far.
 struct PauseView: View {
     let model: GameModel
 
@@ -60,7 +59,7 @@ struct PauseView: View {
                 }
             }
             .padding(.horizontal, 16)
-            .background(.fill.quaternary, in: .rect(cornerRadius: 20))
+            .background(.regularMaterial, in: .rect(cornerRadius: 20))
             .frame(maxWidth: 420)
 
             Spacer(minLength: 0)
@@ -76,7 +75,8 @@ struct PauseView: View {
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(.background)
+        // Lets the blurred game show through.
+        .background(Color(uiColor: .systemBackground).opacity(0.35))
     }
 
     /// Cells the player has filled, out of those that started empty.

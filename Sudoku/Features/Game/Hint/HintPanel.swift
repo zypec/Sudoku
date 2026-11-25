@@ -113,69 +113,75 @@ struct HintPanel: View {
         case .unavailable:
             EmptyView()
         case .step, .chain:
-            HStack(spacing: 12) {
-                Button {
-                    model.showPreviousHintPage()
-                } label: {
-                    Label("Back", systemImage: "chevron.left")
-                        .labelStyle(.iconOnly)
-                        .frame(width: 24, height: 24)
-                }
-                .buttonStyle(.glass)
-                .buttonBorderShape(.circle)
-                .disabled(!activeHint.canGoBack)
-
-                Spacer(minLength: 0)
-                if activeHint.isVisual {
+            ZStack {
+                HStack(spacing: 12) {
                     Button {
-                        isPlaying.toggle()
+                        model.showPreviousHintPage()
                     } label: {
-                        Label(isPlaying ? "Pause" : "Play", systemImage: isPlaying ? "pause.fill" : "play.fill")
+                        Label("Back", systemImage: "chevron.left")
                             .labelStyle(.iconOnly)
                             .frame(width: 24, height: 24)
-                            .contentTransition(.symbolEffect(.replace))
                     }
                     .buttonStyle(.glass)
                     .buttonBorderShape(.circle)
-                    Text(verbatim: "\(activeHint.index + 1) / \(activeHint.count)")
-                        .font(.subheadline.weight(.semibold))
-                        .monospacedDigit()
-                        .foregroundStyle(.secondary)
-                } else {
-                    PageIndicator(index: activeHint.index, count: activeHint.count)
-                }
-                Spacer(minLength: 0)
+                    .disabled(!activeHint.canGoBack)
 
-                if activeHint.canGoForward, activeHint.isVisual {
-                    // The visual row also holds play and a counter, so Next is just an arrow.
-                    Button {
-                        model.showNextHintPage()
-                    } label: {
-                        Label("Next", systemImage: "chevron.right")
-                            .labelStyle(.iconOnly)
-                            .frame(width: 24, height: 24)
-                    }
-                    .buttonStyle(.glassProminent)
-                    .buttonBorderShape(.circle)
-                } else if activeHint.canGoForward {
-                    Button {
-                        model.showNextHintPage()
-                    } label: {
-                        HStack(spacing: 4) {
-                            Text("Next")
-                            Image(systemName: "chevron.right")
-                                .font(.body.weight(.semibold))
+                    Spacer(minLength: 0)
+                    forwardButton
+                }
+                // Centered between back and forward regardless of their widths.
+                VStack(spacing: 8) {
+                    PageIndicator(index: activeHint.index, count: activeHint.count)
+                    if activeHint.isVisual {
+                        Button {
+                            isPlaying.toggle()
+                        } label: {
+                            Label(isPlaying ? "Pause" : "Play", systemImage: isPlaying ? "pause.fill" : "play.fill")
+                                .labelStyle(.iconOnly)
+                                .frame(width: 24, height: 24)
+                                .contentTransition(.symbolEffect(.replace))
                         }
+                        .buttonStyle(.glass)
+                        .buttonBorderShape(.circle)
                     }
-                    .buttonStyle(.glassProminent)
-                } else {
-                    Button("Apply") {
-                        model.applyHint()
-                    }
-                    .buttonStyle(.glassProminent)
                 }
             }
             .controlSize(.large)
+        }
+    }
+}
+
+extension HintPanel {
+    /// Next, or Apply on the last page. In the visual explanation it's just an arrow, since the
+    /// row also holds the play button.
+    @ViewBuilder
+    fileprivate var forwardButton: some View {
+        if activeHint.canGoForward, activeHint.isVisual {
+            Button {
+                model.showNextHintPage()
+            } label: {
+                Label("Next", systemImage: "chevron.right")
+                    .labelStyle(.iconOnly)
+                    .frame(width: 24, height: 24)
+            }
+            .buttonStyle(.glassProminent)
+            .buttonBorderShape(.circle)
+        } else if activeHint.canGoForward {
+            Button {
+                model.showNextHintPage()
+            } label: {
+                HStack(spacing: 4) {
+                    Text("Next")
+                    Image(systemName: "chevron.right")
+                        .font(.body.weight(.semibold))
+                }
+            }
+            .buttonStyle(.glassProminent)
+        } else {
+            Button("Apply") {
+                model.applyHint()
+            }
+            .buttonStyle(.glassProminent)
         }
     }
 }
@@ -204,19 +210,34 @@ struct PanelIconButton: View {
     }
 }
 
-/// One short bar per page; the current and earlier pages are filled.
+/// Progress through the pages. One short bar per page; with many pages (a visual explanation)
+/// it becomes a single bar that fills up, so it always fits.
 private struct PageIndicator: View {
     let index: Int
     let count: Int
 
     var body: some View {
-        HStack(spacing: 5) {
-            ForEach(0..<count, id: \.self) { item in
+        Group {
+            if count <= 10 {
+                HStack(spacing: 5) {
+                    ForEach(0..<count, id: \.self) { item in
+                        Capsule()
+                            .fill(item <= index ? AnyShapeStyle(.tint) : AnyShapeStyle(.fill.tertiary))
+                            .frame(width: item == index ? 18 : 8, height: 4)
+                    }
+                }
+            } else {
                 Capsule()
-                    .fill(item <= index ? AnyShapeStyle(.tint) : AnyShapeStyle(.fill.tertiary))
-                    .frame(width: item == index ? 18 : 8, height: 4)
+                    .fill(.fill.tertiary)
+                    .frame(width: 120, height: 4)
+                    .overlay(alignment: .leading) {
+                        Capsule()
+                            .fill(.tint)
+                            .frame(width: 120 * CGFloat(index + 1) / CGFloat(max(count, 1)), height: 4)
+                    }
             }
         }
+        .animation(.snappy, value: index)
         .accessibilityElement()
         .accessibilityLabel(Text("Step \(index + 1) of \(count)"))
     }

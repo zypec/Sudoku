@@ -38,6 +38,9 @@ struct GameView: View {
                 .padding()
             }
         }
+        // Paused: the game stays in view but blurred, so it can't be studied with the clock stopped.
+        .blur(radius: model.isPaused ? 14 : 0)
+        .allowsHitTesting(!model.isPaused)
         .animation(.snappy, value: model.activeHint != nil)
         .animation(.snappy, value: model.autoSolve != nil)
         .overlay {
@@ -266,7 +269,12 @@ private struct HeartsChip: View {
 
     var body: some View {
         Button {
-            openRequest += 1
+            // Tapping an open chip closes it.
+            if isOpen {
+                isOpen = false
+            } else {
+                openRequest += 1
+            }
         } label: {
             HStack(spacing: 3) {
                 if isOpen {
