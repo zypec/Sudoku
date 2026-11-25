@@ -12,6 +12,8 @@ struct HintPanel: View {
     let model: GameModel
     let activeHint: GameModel.ActiveHint
 
+    @State private var isShowingDetail = false
+
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             header
@@ -26,12 +28,27 @@ struct HintPanel: View {
             .scrollBounceBehavior(.basedOnSize)
             .frame(maxHeight: .infinity, alignment: .top)
 
+            if !activeHint.hint.steps.isEmpty {
+                Button {
+                    isShowingDetail = true
+                } label: {
+                    Label("Explain in Detail", systemImage: "book")
+                        .font(.subheadline.weight(.semibold))
+                }
+                .buttonStyle(.bordered)
+                .buttonBorderShape(.capsule)
+                .controlSize(.small)
+            }
+
             navigation
         }
         .padding(20)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .glassEffect(in: .rect(cornerRadius: 28))
         .animation(.snappy, value: activeHint.pageIndex)
+        .sheet(isPresented: $isShowingDetail) {
+            HintDetailSheet(model: model, hint: activeHint.hint)
+        }
     }
 
     private var header: some View {

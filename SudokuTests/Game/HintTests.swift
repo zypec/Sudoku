@@ -285,6 +285,44 @@ struct HintTests {
         #expect(model.activeHint == nil)
     }
 
+    // MARK: Detailed explanation
+
+    @Test func everyTechniqueHasAGuide() {
+        for technique in TechniqueKind.allCases {
+            let guide = technique.guide
+            #expect(!guide.howItWorks.isEmpty && !guide.howToSpot.isEmpty, "\(technique)")
+            #expect(!guide.howItWorks.contains("%"), "\(technique)")
+        }
+    }
+
+    @MainActor
+    @Test func detailedModeShowsAndAddsTheCandidatesAroundTheHint() throws {
+        let model = GameModel(game: generatedGame(.medium, seed: 1), settings: AppSettings(defaults: try #require(UserDefaults(suiteName: "HintTests.\(UUID().uuidString)"))))
+        model.requestHint()
+        let cells = model.hintCells
+        #expect(!cells.isEmpty)
+        let cell = try #require(cells.first)
+        #expect(model.hintHighlights.style(for: cell)?.marks.values.contains(.context) != true)
+
+        model.setShowsHintCandidates(true)
+        let board = HintFinder.candidateBoard(for: model.game)
+        let shown = try #require(model.hintHighlights.style(for: cell)).markedDigits
+        #expect(shown.isSuperset(of: board.candidates(at: cell)))
+
+        #expect(model.canAddHintCandidatesToNotes)
+        model.addHintCandidatesToNotes()
+        for cell in cells {
+            #expect(model.game.notes[cell] == board.candidates(at: cell))
+        }
+        #expect(!model.canAddHintCandidatesToNotes)
+        // Cells outside the hint keep their (empty) notes.
+        let outside = try #require(Geometry.cells.first { model.game.values[$0] == 0 && !cells.contains($0) })
+        #expect(model.game.notes[outside].isEmpty)
+
+        model.closeHint()
+        #expect(!model.showsHintCandidates)
+    }
+
     // MARK: Walkthrough
 
     /// Every hint of a hard puzzle starts with a nudge, ends with the result, and has wording on

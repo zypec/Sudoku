@@ -14,8 +14,16 @@ final class GameModel {
     private(set) var selectedCell: CellIndex?
     private(set) var isNotesMode = false
     private(set) var isPreparingNewGame = false
-    private(set) var activeHint: ActiveHint?
+    private(set) var activeHint: ActiveHint? {
+        didSet {
+            if activeHint == nil {
+                showsHintCandidates = false
+            }
+        }
+    }
     private(set) var autoSolve: AutoSolveState?
+    /// Whether the board shows every candidate around the active hint (detailed explanation).
+    private(set) var showsHintCandidates = false
     /// The clock is stopped and the board hidden until the player resumes.
     private(set) var isPaused = false
 
@@ -132,7 +140,45 @@ final class GameModel {
         if let page = autoSolve?.page {
             return page.highlights
         }
-        return activeHint?.page.highlights ?? HintHighlights()
+        guard let activeHint else { return HintHighlights() }
+        var highlights = activeHint.page.highlights
+        if showsHintCandidates {
+            let board = HintFinder.candidateBoard(for: game)
+            for cell in hintCells {
+                highlights.showCandidates(board.candidates(at: cell), in: cell)
+            }
+        }
+        return highlights
+    }
+
+    /// Empty cells the active hint involves: its houses, pattern, chain and targets.
+    var hintCells: [CellIndex] {
+        guard let activeHint else { return [] }
+        var cells = Set<CellIndex>()
+        for step in activeHint.hint.steps {
+            cells.formUnion(step.focusHouses.flatMap(\.cells))
+            cells.formUnion(step.patternCells)
+            cells.formUnion(step.chain.map(\.cell))
+            cells.formUnion(step.eliminations.map(\.cell))
+            cells.formUnion(step.placements.map(\.cell))
+        }
+        return cells.filter { game.values[$0] == 0 }.sorted()
+    }
+
+    func setShowsHintCandidates(_ shows: Bool) {
+        showsHintCandidates = shows
+    }
+
+    /// Whether some cell around the hint has no notes yet, so its candidates could be added.
+    var canAddHintCandidatesToNotes: Bool {
+        hintCells.contains { game.notes[$0].isEmpty }
+    }
+
+    /// Writes the candidates of the hint's cells into those that have no notes yet.
+    func addHintCandidatesToNotes() {
+        let board = HintFinder.candidateBoard(for: game)
+        let candidates = Dictionary(uniqueKeysWithValues: hintCells.map { ($0, board.candidates(at: $0)) })
+        update { $0.fillEmptyNotes(with: candidates) }
     }
 
     /// Whether a hint or auto solve is drawing on the board (selection highlighting is hidden then).

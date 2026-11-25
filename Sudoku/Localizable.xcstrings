@@ -154,6 +154,23 @@
         }
       }
     },
+    "A cell's candidates are the digits not yet in its row, column or box. When only one candidate is left, that digit goes in the cell.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A cell's candidates are the digits not yet in its row, column or box. When only one candidate is left, that digit goes in the cell."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bir hücrenin adayları, satırında, sütununda ve kutusunda henüz bulunmayan rakamlardır. Tek aday kaldığında o rakam hücreye gelir."
+          }
+        }
+      }
+    },
     "A chain of identical pairs": {
       "comment": "Technique subtitle: Remote Pair",
       "localizations": {
@@ -167,6 +184,125 @@
           "stringUnit": {
             "state": "translated",
             "value": "Uzak Çift"
+          }
+        }
+      }
+    },
+    "A chain of two-candidate cells, each sharing a digit with the next. If the first cell isn't X, the chain forces the last cell to be X. So one of the two ends is X, and a cell that sees both can't be X.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A chain of two-candidate cells, each sharing a digit with the next. If the first cell isn't X, the chain forces the last cell to be X. So one of the two ends is X, and a cell that sees both can't be X."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Her biri bir sonrakiyle bir rakam paylaşan iki adaylı hücrelerden oluşan bir zincir. İlk hücre X değilse zincir son hücreyi X olmaya zorlar. Yani iki uçtan biri X'tir ve ikisini birden gören bir hücre X olamaz."
+          }
+        }
+      }
+    },
+    "A chain on one digit alternates strong links (a house where the digit has exactly two spots) and weak links (two spots that see each other). If it starts and ends with a strong link, at least one of its ends holds the digit, so a cell that sees both ends can't.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A chain on one digit alternates strong links (a house where the digit has exactly two spots) and weak links (two spots that see each other). If it starts and ends with a strong link, at least one of its ends holds the digit, so a cell that sees both ends can't."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tek rakamlı bir zincir güçlü bağlarla (rakamın tam iki yeri olduğu bir birim) zayıf bağları (birbirini gören iki yer) sırayla dizer. Zincir güçlü bir bağla başlayıp bitiyorsa uçlarından en az biri rakamı alır; bu yüzden iki ucu birden gören bir hücre alamaz."
+          }
+        }
+      }
+    },
+    "A finned fish is an X-Wing or Swordfish with one or two extra cells, the fin, inside a single box. If the fin doesn't hold the digit, the fish works as usual; if it does, it rules out the cells it sees. Cells hit in both cases, in the fin's box and in the fish's columns, lose the digit.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A finned fish is an X-Wing or Swordfish with one or two extra cells, the fin, inside a single box. If the fin doesn't hold the digit, the fish works as usual; if it does, it rules out the cells it sees. Cells hit in both cases, in the fin's box and in the fish's columns, lose the digit."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yüzgeçli balık, tek bir kutu içinde bir ya da iki fazla hücresi (yüzgeç) olan bir X-Wing ya da Swordfish'tir. Yüzgeç rakamı almıyorsa balık her zamanki gibi çalışır; alıyorsa gördüğü hücreleri eler. Her iki durumda da etkilenen hücreler, yani yüzgecin kutusunda ve balığın sütunlarında olanlar, rakamı kaybeder."
+          }
+        }
+      }
+    },
+    "A pivot cell with two candidates, X and Y, sees two cells with XZ and YZ. Whatever the pivot holds, one of the two other cells becomes Z. So any cell that sees both of them can't be Z.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A pivot cell with two candidates, X and Y, sees two cells with XZ and YZ. Whatever the pivot holds, one of the two other cells becomes Z. So any cell that sees both of them can't be Z."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İki adaylı (X ve Y) bir merkez hücre, XZ ve YZ adaylı iki hücreyi görür. Merkez ne olursa olsun, diğer iki hücreden biri Z olur. Bu yüzden ikisini birden gören hiçbir hücre Z olamaz."
+          }
+        }
+      }
+    },
+    "A proper puzzle has exactly one solution. Four cells in two rows, two columns and two boxes that could all end up as only A or B would allow two solutions, since A and B could be swapped. So the solution must break the pattern, and depending on the other candidates in the corners, that rules out digits in the corners or around them.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A proper puzzle has exactly one solution. Four cells in two rows, two columns and two boxes that could all end up as only A or B would allow two solutions, since A and B could be swapped. So the solution must break the pattern, and depending on the other candidates in the corners, that rules out digits in the corners or around them."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Düzgün bir bulmacanın tam bir çözümü vardır. İki satır, iki sütun ve iki kutuya yayılan dört hücrenin hepsi yalnızca A ya da B olabilseydi, A ile B yer değiştirebileceği için iki çözüm olurdu. Bu yüzden çözüm bu deseni bozmak zorundadır; köşelerdeki diğer adaylara göre bu, köşelerde ya da çevrelerinde bazı rakamları eler."
+          }
+        }
+      }
+    },
+    "A row and a column each have a digit in exactly two cells, and one cell of each pair sits in the same box. Those two can't both hold the digit, so at least one of the far ends does. A cell that sees both far ends can't hold it.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A row and a column each have a digit in exactly two cells, and one cell of each pair sits in the same box. Those two can't both hold the digit, so at least one of the far ends does. A cell that sees both far ends can't hold it."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bir satır ve bir sütunun her birinde bir rakam tam iki hücreye girebiliyor ve her çiftin bir hücresi aynı kutuda. Bu ikisi birlikte rakamı alamaz, yani uzak uçlardan en az biri alır. İki uzak ucu birden gören bir hücre rakamı alamaz."
+          }
+        }
+      }
+    },
+    "Add Them to My Notes": {
+      "comment": "Detailed hint: write those candidates into the player's notes",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add Them to My Notes"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notlarıma Ekle"
           }
         }
       }
@@ -218,6 +354,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dönüşümlü Çıkarım Zinciri"
+          }
+        }
+      }
+    },
+    "An almost locked set is a group of cells in one house with one more candidate than cells. If two such groups share a digit X and every X in one sees every X in the other, at most one holds X. The other is then locked and holds all its other digits, so a digit Z they share is in at least one group, and a cell that sees every Z in both can't be Z.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "An almost locked set is a group of cells in one house with one more candidate than cells. If two such groups share a digit X and every X in one sees every X in the other, at most one holds X. The other is then locked and holds all its other digits, so a digit Z they share is in at least one group, and a cell that sees every Z in both can't be Z."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neredeyse kilitli küme, tek bir birimde hücre sayısından bir fazla adayı olan bir hücre grubudur. Böyle iki grup bir X rakamını paylaşıyorsa ve birindeki her X diğerindeki her X'i görüyorsa, en fazla biri X'i alır. Diğeri o zaman kilitlenir ve diğer tüm rakamlarını alır; bu yüzden paylaştıkları bir Z rakamı en az bir gruptadır ve iki gruptaki her Z'yi gören bir hücre Z olamaz."
+          }
+        }
+      }
+    },
+    "An alternating inference chain mixes every kind of link: strong links in houses or inside two-candidate cells, and weak links between candidates that can't both be true. Starting and ending with a strong link proves that one of its two ends is true, which rules out anything that contradicts both.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "An alternating inference chain mixes every kind of link: strong links in houses or inside two-candidate cells, and weak links between candidates that can't both be true. Starting and ending with a strong link proves that one of its two ends is true, which rules out anything that contradicts both."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dönüşümlü çıkarım zinciri her tür bağı birleştirir: birimlerdeki ya da iki adaylı hücrelerin içindeki güçlü bağlar ve ikisi birden doğru olamayan adaylar arasındaki zayıf bağlar. Güçlü bir bağla başlayıp bitmesi iki ucundan birinin doğru olduğunu kanıtlar; bu da iki uçla birden çelişen her şeyi eler."
           }
         }
       }
@@ -579,6 +749,23 @@
         }
       }
     },
+    "Count where each digit can go in a house. Digits limited to the same few cells point to a hidden subset, often hidden among many other notes.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Count where each digit can go in a house. Digits limited to the same few cells point to a hidden subset, often hidden among many other notes."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bir birimde her rakamın nereye girebileceğini say. Aynı birkaç hücreyle sınırlı rakamlar gizli bir alt kümeye işaret eder; bu küme genellikle başka notların arasında saklıdır."
+          }
+        }
+      }
+    },
     "Current Streak": {
       "comment": "Statistics tile: consecutive wins up to now",
       "localizations": {
@@ -643,6 +830,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Koyu"
+          }
+        }
+      }
+    },
+    "Detailed Explanation": {
+      "comment": "Detailed hint sheet title",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Detailed Explanation"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Detaylı Anlatım"
           }
         }
       }
@@ -728,6 +932,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tamamlanan Rakamları Soldur"
+          }
+        }
+      }
+    },
+    "Done": {
+      "comment": "Closes a sheet",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Done"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bitti"
           }
         }
       }
@@ -919,6 +1140,23 @@
         }
       }
     },
+    "Every house needs each digit exactly once. If a digit has only one cell left in a house, because every other empty cell already sees that digit, it must go there, even if the cell itself still has other candidates.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Every house needs each digit exactly once. If a digit has only one cell left in a house, because every other empty cell already sees that digit, it must go there, even if the cell itself still has other candidates."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Her birimde her rakam tam bir kez bulunur. Bir rakamın bir birimde girebileceği tek hücre kaldıysa (diğer tüm boş hücreler o rakamı zaten görüyorsa), hücrenin başka adayları olsa bile rakam oraya gelir."
+          }
+        }
+      }
+    },
     "Expert": {
       "comment": "Difficulty level",
       "localizations": {
@@ -932,6 +1170,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Uzman"
+          }
+        }
+      }
+    },
+    "Explain in Detail": {
+      "comment": "Hint panel button opening the detailed explanation",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Explain in Detail"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Detaylı Anlat"
           }
         }
       }
@@ -966,6 +1221,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Geri Bildirim"
+          }
+        }
+      }
+    },
+    "Find two identical two-note cells far apart, then a house where one of their digits has only two spots, one near each.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Find two identical two-note cells far apart, then a house where one of their digits has only two spots, one near each."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Birbirinden uzak, aynı iki notu taşıyan iki hücre bul, sonra rakamlarından birinin yalnızca iki yeri olduğu ve her yerin bu hücrelerden birine yakın olduğu bir birim ara."
           }
         }
       }
@@ -1017,6 +1289,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Notları Düzelt"
+          }
+        }
+      }
+    },
+    "Follow the houses where a digit has exactly two spots, and color the cells along them alternately in two colors. One color holds the digit everywhere, the other nowhere. If two cells of the same color see each other, that color is the false one. A cell that sees both colors can't hold the digit.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Follow the houses where a digit has exactly two spots, and color the cells along them alternately in two colors. One color holds the digit everywhere, the other nowhere. If two cells of the same color see each other, that color is the false one. A cell that sees both colors can't hold the digit."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bir rakamın tam iki yeri olduğu birimleri izle ve bu hücreleri sırayla iki renge boya. Renklerden biri rakamı her yerde alır, diğeri hiçbir yerde. Aynı renkteki iki hücre birbirini görüyorsa yanlış olan o renktir. İki rengi birden gören bir hücre rakamı alamaz."
+          }
+        }
+      }
+    },
+    "Follow the houses where a digit has two spots, hopping between them through cells that see each other.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Follow the houses where a digit has two spots, hopping between them through cells that see each other."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bir rakamın iki yeri olduğu birimleri izle ve birbirini gören hücreler üzerinden aralarında atla."
           }
         }
       }
@@ -1242,6 +1548,108 @@
         }
       }
     },
+    "How It Works": {
+      "comment": "Detailed hint and training: the rule",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How It Works"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nasıl Çalışır"
+          }
+        }
+      }
+    },
+    "How to Spot It": {
+      "comment": "Detailed hint and training: how to find it",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How to Spot It"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nasıl Fark Edilir"
+          }
+        }
+      }
+    },
+    "If %lld cells in a house together have only %lld candidates, those digits must fill exactly those cells. So none of them can go anywhere else in the house.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "If %1$lld cells in a house together have only %2$lld candidates, those digits must fill exactly those cells. So none of them can go anywhere else in the house."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bir birimde %1$lld hücrenin toplamda yalnızca %2$lld adayı varsa, bu rakamlar tam olarak o hücreleri doldurmak zorundadır. Bu yüzden hiçbiri birimde başka bir yere giremez."
+          }
+        }
+      }
+    },
+    "If %lld digits can only go in the same %lld cells of a house, those cells must hold exactly these digits. Any other candidate in those cells can be removed.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "If %1$lld digits can only go in the same %2$lld cells of a house, those cells must hold exactly these digits. Any other candidate in those cells can be removed."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bir birimde %1$lld rakam yalnızca aynı %2$lld hücreye girebiliyorsa, o hücreler tam olarak bu rakamları almak zorundadır. Bu hücrelerdeki diğer adaylar silinebilir."
+          }
+        }
+      }
+    },
+    "If a digit fits in exactly two cells in each of two rows, and those cells sit in the same two columns, the digit must take two opposite corners of that rectangle. Either way both columns get their copy there, so the digit can be removed from the rest of those columns. The same works with rows and columns swapped.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "If a digit fits in exactly two cells in each of two rows, and those cells sit in the same two columns, the digit must take two opposite corners of that rectangle. Either way both columns get their copy there, so the digit can be removed from the rest of those columns. The same works with rows and columns swapped."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bir rakam iki satırın her birinde tam iki hücreye girebiliyorsa ve bu hücreler aynı iki sütundaysa, rakam bu dikdörtgenin karşılıklı iki köşesine gelmek zorundadır. Her durumda iki sütun da rakamını burada alır, bu yüzden rakam o sütunların geri kalanından silinebilir. Satır ve sütunların yeri değişse de aynısı geçerlidir."
+          }
+        }
+      }
+    },
+    "If every empty cell had exactly two candidates, the puzzle would have two solutions. So when all cells but one have two candidates and that one has three, its extra digit, the one that appears three times in its house, must be its solution.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "If every empty cell had exactly two candidates, the puzzle would have two solutions. So when all cells but one have two candidates and that one has three, its extra digit, the one that appears three times in its house, must be its solution."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Her boş hücrenin tam iki adayı olsaydı bulmacanın iki çözümü olurdu. Bu yüzden biri hariç tüm hücrelerin iki adayı varsa ve o hücrenin üç adayı varsa, fazladan olan rakam (biriminde üç kez görünen rakam) o hücrenin çözümüdür."
+          }
+        }
+      }
+    },
     "If it is %lld, the cell at %@ can't be %lld, so it must be %lld.": {
       "comment": "Hint walkthrough page: XY-Wing and XYZ-Wing, one case of the pivot",
       "localizations": {
@@ -1340,6 +1748,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Yüzgeç %1$lld değilse bu sıradan bir %2$@ olur ve %3$lld, %4$@ boyunca diğer hücrelerden silinir. Yüzgeç %5$lld ise %6$lld, %7$@ içinde yüzgecin gördüğü hücrelerden silinir. Her iki durumda da etkilenen hücreler %8$lld olamaz."
+          }
+        }
+      }
+    },
+    "If, inside a box, a digit can only go in cells that are all in one row or column, the box's copy of that digit is in that line. So no cell of that line outside the box can hold it.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "If, inside a box, a digit can only go in cells that are all in one row or column, the box's copy of that digit is in that line. So no cell of that line outside the box can hold it."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bir kutuda bir rakam yalnızca aynı satır ya da sütundaki hücrelere girebiliyorsa, kutunun o rakamı bu çizgidedir. Bu yüzden çizginin kutu dışındaki hiçbir hücresi o rakamı alamaz."
+          }
+        }
+      }
+    },
+    "If, inside a row or column, a digit can only go in cells that are all in one box, the line's copy of that digit is in that box. So no other cell of the box can hold it.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "If, inside a row or column, a digit can only go in cells that are all in one box, the line's copy of that digit is in that box. So no other cell of the box can hold it."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bir satır ya da sütunda bir rakam yalnızca aynı kutudaki hücrelere girebiliyorsa, çizginin o rakamı bu kutudadır. Bu yüzden kutunun başka hiçbir hücresi o rakamı alamaz."
           }
         }
       }
@@ -1599,6 +2041,74 @@
         }
       }
     },
+    "In This Puzzle": {
+      "comment": "Detailed hint: the steps of this hint",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In This Puzzle"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu Bulmacada"
+          }
+        }
+      }
+    },
+    "In a chain of cells that all have the same two candidates, each seeing the next, the two digits alternate along the chain. Cells an odd number of steps apart hold different digits, so a cell that sees both can hold neither.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In a chain of cells that all have the same two candidates, each seeing the next, the two digits alternate along the chain. Cells an odd number of steps apart hold different digits, so a cell that sees both can hold neither."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hepsi aynı iki adaylı ve her biri bir sonrakini gören hücrelerden oluşan bir zincirde iki rakam zincir boyunca sırayla değişir. Aralarında tek sayıda adım olan hücreler farklı rakamları alır; bu yüzden ikisini birden gören bir hücre bu rakamlardan hiçbirini alamaz."
+          }
+        }
+      }
+    },
+    "In each box, check where a digit can go. If the spots form a straight line, look along that line outside the box.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In each box, check where a digit can go. If the spots form a straight line, look along that line outside the box."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Her kutuda bir rakamın nereye girebileceğine bak. Yerler düz bir çizgi oluşturuyorsa, o çizgi boyunca kutunun dışına bak."
+          }
+        }
+      }
+    },
+    "In each row and column, check where a digit can go. If all the spots fall in one box, the rest of that box loses the digit.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In each row and column, check where a digit can go. If all the spots fall in one box, the rest of that box loses the digit."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Her satır ve sütunda bir rakamın nereye girebileceğine bak. Yerlerin hepsi tek bir kutudaysa, kutunun geri kalanı o rakamı kaybeder."
+          }
+        }
+      }
+    },
     "Incorrect Digits": {
       "comment": "Hint panel title when the board has wrong digits",
       "localizations": {
@@ -1629,6 +2139,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Son Boş Hücre"
+          }
+        }
+      }
+    },
+    "Late in a puzzle, check whether almost every empty cell has just two notes.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Late in a puzzle, check whether almost every empty cell has just two notes."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bulmacanın sonlarına doğru, neredeyse her boş hücrenin yalnızca iki notu olup olmadığına bak."
           }
         }
       }
@@ -1667,6 +2194,23 @@
         }
       }
     },
+    "Like an XY-Wing, but the pivot has all three digits X, Y and Z. Then Z is in the pivot or in one of the other two cells, so only cells that see all three lose Z.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Like an XY-Wing, but the pivot has all three digits X, Y and Z. Then Z is in the pivot or in one of the other two cells, so only cells that see all three lose Z."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "XY-Wing gibidir, ama merkezde X, Y ve Z'nin üçü de vardır. O zaman Z ya merkezde ya da diğer iki hücreden birindedir; bu yüzden yalnızca üçünü birden gören hücreler Z'yi kaybeder."
+          }
+        }
+      }
+    },
     "Locked candidates and pairs": {
       "comment": "Medium difficulty description",
       "localizations": {
@@ -1680,6 +2224,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Kilitli adaylar ve ikililer"
+          }
+        }
+      }
+    },
+    "Look at cells with exactly two notes. One that shares a digit with each of two others, which in turn share a third digit, forms a wing.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Look at cells with exactly two notes. One that shares a digit with each of two others, which in turn share a third digit, forms a wing."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tam iki notu olan hücrelere bak. İki başka hücreyle birer rakam paylaşan ve o iki hücrenin de üçüncü bir rakamı paylaştığı bir hücre bir kanat (wing) oluşturur."
           }
         }
       }
@@ -1718,6 +2279,210 @@
         }
       }
     },
+    "Look for a box where a digit's notes form an L or a cross, then a row or column with only two spots for that digit.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Look for a box where a digit's notes form an L or a cross, then a row or column with only two spots for that digit."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bir rakamın notlarının L ya da artı şekli oluşturduğu bir kutuya, sonra o rakam için yalnızca iki yeri olan bir satır ya da sütuna bak."
+          }
+        }
+      }
+    },
+    "Look for a cell with three notes next to two cells with two notes that use only its digits.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Look for a cell with three notes next to two cells with two notes that use only its digits."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Üç notlu bir hücreye ve yalnızca onun rakamlarını kullanan iki notlu iki komşu hücreye bak."
+          }
+        }
+      }
+    },
+    "Look for a digit with two or three spots in several rows, all within the same few columns. Not every row needs a spot in every column.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Look for a digit with two or three spots in several rows, all within the same few columns. Not every row needs a spot in every column."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Birkaç satırda iki ya da üç yeri olan ve bu yerlerin hepsi aynı birkaç sütunda bulunan bir rakama bak. Her satırın her sütunda bir yeri olması gerekmez."
+          }
+        }
+      }
+    },
+    "Look for a row pair and a column pair on the same digit that meet in a box.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Look for a row pair and a column pair on the same digit that meet in a box."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aynı rakam için bir kutuda buluşan bir satır çiftine ve bir sütun çiftine bak."
+          }
+        }
+      }
+    },
+    "Look for an almost X-Wing where one row has an extra spot near a corner, in the same box as that corner.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Look for an almost X-Wing where one row has an extra spot near a corner, in the same box as that corner."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bir satırın, köşelerden birinin yanında ve aynı kutuda fazladan bir yeri olan neredeyse bir X-Wing'e bak."
+          }
+        }
+      }
+    },
+    "Look for cells whose row, column and box together already hold eight different digits, or cells with a single note.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Look for cells whose row, column and box together already hold eight different digits, or cells with a single note."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Satırı, sütunu ve kutusu birlikte sekiz farklı rakamı zaten içeren hücrelere ya da tek notu olan hücrelere bak."
+          }
+        }
+      }
+    },
+    "Look for cells with the same pair of notes forming three or four corners of a rectangle that spans two boxes.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Look for cells with the same pair of notes forming three or four corners of a rectangle that spans two boxes."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aynı not çiftini taşıyan ve iki kutuya yayılan bir dikdörtgenin üç ya da dört köşesini oluşturan hücrelere bak."
+          }
+        }
+      }
+    },
+    "Look for houses with eight digits already filled in.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Look for houses with eight digits already filled in."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sekiz rakamı zaten dolmuş birimlere bak."
+          }
+        }
+      }
+    },
+    "Look for several cells with the same pair of notes that link up through rows, columns and boxes.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Look for several cells with the same pair of notes that link up through rows, columns and boxes."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aynı not çiftini taşıyan ve satırlar, sütunlar ve kutular üzerinden birbirine bağlanan birkaç hücreye bak."
+          }
+        }
+      }
+    },
+    "Look for two cells with the same two notes, or three cells whose notes use only three digits between them. Each cell doesn't need every digit.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Look for two cells with the same two notes, or three cells whose notes use only three digits between them. Each cell doesn't need every digit."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aynı iki notu olan iki hücreye ya da notları toplamda yalnızca üç rakam kullanan üç hücreye bak. Her hücrede bu rakamların hepsinin olması gerekmez."
+          }
+        }
+      }
+    },
+    "Look for two rows (or columns) where a digit has only two spots, lined up at one end but not at the other.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Look for two rows (or columns) where a digit has only two spots, lined up at one end but not at the other."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bir rakamın yalnızca iki yeri olduğu, bir uçta hizalı ama diğer uçta hizasız iki satıra (ya da sütuna) bak."
+          }
+        }
+      }
+    },
+    "Look for two-note cells and small groups of cells with one extra candidate, connected by a digit they both contain.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Look for two-note cells and small groups of cells with one extra candidate, connected by a digit they both contain."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İki notlu hücrelere ve fazladan bir adayı olan küçük hücre gruplarına, ikisinde de bulunan bir rakamla bağlanmış olanlara bak."
+          }
+        }
+      }
+    },
     "Lost": {
       "comment": "Statistics: game lost at the mistake limit",
       "localizations": {
@@ -1731,6 +2496,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Kaybedildi"
+          }
+        }
+      }
+    },
+    "Many techniques only show up once every possible digit is written in the cells. Notes are added only to cells that have none.": {
+      "comment": "Detailed hint: explains the candidates toggle",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Many techniques only show up once every possible digit is written in the cells. Notes are added only to cells that have none."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Birçok yöntem ancak hücrelere tüm olası rakamlar yazıldığında görünür hale gelir. Notlar yalnızca hiç notu olmayan hücrelere eklenir."
           }
         }
       }
@@ -2143,6 +2925,57 @@
         }
       }
     },
+    "Pick a digit and a house, then rule out the cells that see that digit in their row, column or box. Boxes are usually the easiest place to start.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pick a digit and a house, then rule out the cells that see that digit in their row, column or box. Boxes are usually the easiest place to start."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bir rakam ve bir birim seç, sonra satırında, sütununda ya da kutusunda o rakamı gören hücreleri ele. Başlamak için en kolay yer genellikle kutulardır."
+          }
+        }
+      }
+    },
+    "Pick a digit and look for rows or columns where it has only two spots. Two of them lining up form an X-Wing.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pick a digit and look for rows or columns where it has only two spots. Two of them lining up form an X-Wing."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bir rakam seç ve yalnızca iki yere girebildiği satır ya da sütunlara bak. Bunlardan ikisi hizalanıyorsa bir X-Wing oluşur."
+          }
+        }
+      }
+    },
+    "Pick a digit that has many houses with only two spots and trace the chain they form.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pick a digit that has many houses with only two spots and trace the chain they form."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yalnızca iki yeri olan birçok birimi bulunan bir rakam seç ve bunların oluşturduğu zinciri izle."
+          }
+        }
+      }
+    },
     "Pivot with two pincers": {
       "comment": "Technique subtitle",
       "localizations": {
@@ -2449,6 +3282,23 @@
         }
       }
     },
+    "Show All Candidates": {
+      "comment": "Detailed hint: show every candidate around the hint on the board",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show All Candidates"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tüm Adayları Göster"
+          }
+        }
+      }
+    },
     "Show Mistakes": {
       "comment": "Settings toggle: color wrong digits and show the mistake counter",
       "localizations": {
@@ -2751,6 +3601,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Hız"
+          }
+        }
+      }
+    },
+    "Start at a cell with two notes and keep stepping to a cell it sees that shares one of its digits.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start at a cell with two notes and keep stepping to a cell it sees that shares one of its digits."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İki notlu bir hücreden başla ve her seferinde onun gördüğü ve rakamlarından birini paylaşan bir hücreye geç."
           }
         }
       }
@@ -3214,6 +4081,23 @@
         }
       }
     },
+    "This is an X-Wing with %lld lines. If, in %lld rows, a digit fits only in cells within the same %lld columns, those rows use up the digit in each of those columns. So it can be removed from the rest of the columns.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This is an X-Wing with %1$lld lines. If, in %2$lld rows, a digit fits only in cells within the same %3$lld columns, those rows use up the digit in each of those columns. So it can be removed from the rest of the columns."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu, %1$lld çizgili bir X-Wing'dir. %2$lld satırda bir rakam yalnızca aynı %3$lld sütundaki hücrelere girebiliyorsa, bu satırlar o sütunların her birindeki rakamı kullanır. Bu yüzden rakam sütunların geri kalanından silinebilir."
+          }
+        }
+      }
+    },
     "This part of the app isn't ready yet.": {
       "comment": "Alert message for sections that aren't built yet",
       "localizations": {
@@ -3367,6 +4251,23 @@
         }
       }
     },
+    "Two cells have the same two candidates, X and Y, but don't see each other. If X fits in only two cells of some house, one seeing each of them, then one of the two cells must be Y. A cell that sees both can't be Y.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Two cells have the same two candidates, X and Y, but don't see each other. If X fits in only two cells of some house, one seeing each of them, then one of the two cells must be Y. A cell that sees both can't be Y."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İki hücrenin adayları aynı (X ve Y) ama birbirlerini görmüyorlar. Bir birimde X yalnızca iki hücreye giriyorsa ve bunların her biri bu hücrelerden birini görüyorsa, iki hücreden biri Y olmak zorundadır. İkisini birden gören bir hücre Y olamaz."
+          }
+        }
+      }
+    },
     "Two cells of the same color see each other, so that color can't hold %lld. %lld can be removed from all its cells.": {
       "comment": "Hint walkthrough page: Simple Coloring, color wrap",
       "localizations": {
@@ -3469,6 +4370,23 @@
         }
       }
     },
+    "Two rows each have a digit in exactly two cells, and one end of each pair is in the same column. Those two ends see each other, so at most one of them holds the digit, which means at least one of the other two ends does. A cell that sees both of those ends can't hold it.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Two rows each have a digit in exactly two cells, and one end of each pair is in the same column. Those two ends see each other, so at most one of them holds the digit, which means at least one of the other two ends does. A cell that sees both of those ends can't hold it."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İki satırın her birinde bir rakam tam iki hücreye girebiliyor ve her çiftin bir ucu aynı sütunda. Bu iki uç birbirini görür, yani en fazla biri rakamı alır; bu da diğer iki uçtan en az birinin aldığı anlamına gelir. Bu iki ucu birden gören bir hücre rakamı alamaz."
+          }
+        }
+      }
+    },
     "Typical Time": {
       "comment": "Pause screen: estimated time for a typical player",
       "localizations": {
@@ -3499,6 +4417,57 @@
           "stringUnit": {
             "state": "translated",
             "value": "Geri Al"
+          }
+        }
+      }
+    },
+    "When a box's candidates for a digit all lie on one row and one column of the box, the box's copy of that digit is on that row or on that column. Combined with a house elsewhere where the digit has only two spots, this rules out the cell where both possibilities meet.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "When a box's candidates for a digit all lie on one row and one column of the box, the box's copy of that digit is on that row or on that column. Combined with a house elsewhere where the digit has only two spots, this rules out the cell where both possibilities meet."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bir kutuda bir rakamın tüm adayları kutunun bir satırında ve bir sütununda duruyorsa, kutunun o rakamı ya o satırda ya da o sütundadır. Başka bir yerde rakamın yalnızca iki yeri olan bir birimle birleşince, iki olasılığın buluştuğu hücre elenir."
+          }
+        }
+      }
+    },
+    "When a row, column or box has only one empty cell left, that cell gets the one digit the house is still missing.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "When a row, column or box has only one empty cell left, that cell gets the one digit the house is still missing."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bir satır, sütun ya da kutuda tek bir boş hücre kaldığında, o hücreye birimde eksik olan tek rakam gelir."
+          }
+        }
+      }
+    },
+    "When nothing simpler works, follow pairs and two-note cells and see where an assumption leads.": {
+      "comment": "Technique guide (detailed hint explanation and training)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "When nothing simpler works, follow pairs and two-note cells and see where an assumption leads."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daha basit hiçbir şey işe yaramadığında çiftleri ve iki notlu hücreleri izle ve bir varsayımın nereye götürdüğüne bak."
           }
         }
       }

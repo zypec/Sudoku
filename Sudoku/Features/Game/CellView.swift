@@ -119,8 +119,10 @@ struct CellView: View {
         case .eliminated: AnyShapeStyle(Color.red)
         case .alternativeA, .alternativeB: AnyShapeStyle(Color.white)
         case .emphasized: AnyShapeStyle(.primary)
+        case .context: AnyShapeStyle(.secondary)
         case nil: isHighlighted ? AnyShapeStyle(.tint) : AnyShapeStyle(.secondary)
         }
+        let isBold = (mark != nil && mark != .context) || isHighlighted
         // The two alternatives of a pattern sit on colored discs so they read apart at a glance.
         let disc: Color? = switch mark {
         case .alternativeA: Color.green
@@ -129,7 +131,7 @@ struct CellView: View {
         }
 
         return Text(verbatim: isShown ? "\(digit)" : " ")
-            .font(.system(size: side * 0.24, weight: mark != nil || isHighlighted ? .bold : .regular, design: .rounded))
+            .font(.system(size: side * 0.24, weight: isBold ? .bold : .regular, design: .rounded))
             .strikethrough(mark == .eliminated, color: .red)
             .foregroundStyle(style)
             .background {

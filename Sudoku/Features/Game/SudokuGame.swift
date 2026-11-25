@@ -217,6 +217,19 @@ struct SudokuGame: Codable, Sendable {
         return true
     }
 
+    /// Writes `candidates` as notes into cells that have no notes yet; cells with notes keep them.
+    @discardableResult
+    mutating func fillEmptyNotes(with candidates: [CellIndex: CandidateSet]) -> Bool {
+        var updated = notes
+        for (cell, digits) in candidates where values[cell] == 0 && notes[cell].isEmpty {
+            updated[cell] = digits
+        }
+        guard !isFinished, updated != notes else { return false }
+        recordUndo()
+        notes = updated
+        return true
+    }
+
     /// Rewrites the notes of `cells` with every digit not yet placed in their row, column or box.
     @discardableResult
     mutating func refillNotes(in cells: [CellIndex]) -> Bool {

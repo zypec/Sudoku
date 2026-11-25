@@ -25,8 +25,10 @@ struct HintHighlights: Equatable {
     }
 
     /// How a candidate is drawn. `alternativeA` and `alternativeB` color two mutually exclusive
-    /// cases, e.g. the two diagonals of an X-Wing.
+    /// cases, e.g. the two diagonals of an X-Wing. `context` shows a candidate the hint isn't about,
+    /// so players who don't take notes can see every possibility around the pattern.
     enum Mark: Equatable {
+        case context
         case emphasized
         case alternativeA
         case alternativeB
@@ -94,6 +96,13 @@ struct HintHighlights: Equatable {
         let link = Link(from: from.cell, fromDigit: from.digit, to: to.cell, toDigit: to.digit, isStrong: isStrong)
         if !links.contains(link) {
             links.append(link)
+        }
+    }
+
+    /// Adds `digits` as context candidates, leaving digits the hint already marks alone.
+    mutating func showCandidates(_ digits: CandidateSet, in cell: CellIndex) {
+        for digit in digits where styles[cell]?.marks[digit] == nil {
+            styles[cell, default: CellStyle()].marks[digit] = .context
         }
     }
 
