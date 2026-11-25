@@ -35,6 +35,9 @@ jobs:
           repository: zypec/zypec.github.io
           path: kit-source
           sparse-checkout: kit
+          
+      - name: Install shared kit
+        run: cp -R kit-source/kit site/kit
 
       - uses: actions/configure-pages@v5
       
