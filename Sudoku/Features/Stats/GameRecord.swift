@@ -85,7 +85,7 @@ extension GameResult {
             difficulty: game.puzzle.difficulty,
             isSolved: game.isSolved,
             elapsedSeconds: game.elapsedSeconds,
-            mistakeCount: game.mistakeCount,
+            mistakeCount: game.totalMistakes,
             hintCount: game.hintCount,
             revealCount: game.revealCount,
             autoSolvedSteps: game.autoSolvedSteps ?? 0,
@@ -105,8 +105,17 @@ final class GameRecorder {
         self.context = context
     }
 
-    func record(_ game: SudokuGame) {
-        context.insert(GameRecord(GameResult(game: game)))
+    @discardableResult
+    func record(_ game: SudokuGame) -> GameRecord {
+        let record = GameRecord(GameResult(game: game))
+        context.insert(record)
+        try? context.save()
+        return record
+    }
+
+    /// Takes back a recorded loss when the player plays on after it.
+    func discard(_ record: GameRecord) {
+        context.delete(record)
         try? context.save()
     }
 }

@@ -37,6 +37,9 @@ struct SudokuGame: Codable, Sendable {
     /// Candidates proven impossible by applied hints. Kept separately from the player's notes so
     /// the hint system remembers them even for players who don't take notes.
     private(set) var deducedEliminations: [CandidateSet]
+    /// Mistakes taken back after the game was lost, to play on. They still count in the statistics
+    /// and the score. Optional so games saved before it existed still load.
+    private(set) var takenBackMistakes: Int?
 
     private var undoStack: [Snapshot] = []
     private var redoStack: [Snapshot] = []
@@ -83,6 +86,34 @@ struct SudokuGame: Codable, Sendable {
 
     var isFinished: Bool {
         isSolved || isLost
+    }
+
+    /// Every mistake made, including those taken back after a loss.
+    var totalMistakes: Int {
+        mistakeCount + (takenBackMistakes ?? 0)
+    }
+
+    /// Whether the player has done anything: a game left this way and replaced counts as lost.
+    var hasProgress: Bool {
+        values != puzzle.givens || mistakeCount > 0 || notes.contains { !$0.isEmpty }
+    }
+
+    /// After a loss: takes back the move that made the last mistake, and the mistake with it, so
+    /// the game goes on with one try left.
+    mutating func takeBackLosingMistake() {
+        guard isLost else { return }
+        mistakeCount -= 1
+        takenBackMistakes = (takenBackMistakes ?? 0) + 1
+        if canUndo {
+            undo()
+            // Redo would bring the mistake back without counting it.
+            redoStack.removeAll()
+        } else {
+            // The history is capped; without it, the wrong digits are simply cleared.
+            for cell in incorrectCells {
+                values[cell] = 0
+            }
+        }
     }
 
     /// Cells holding a wrong entry.

@@ -36,7 +36,7 @@ struct NewGameSheet: View {
                     }
 
                     if replacesGameInProgress {
-                        Label("Starting a new game replaces the game in progress.", systemImage: "info.circle")
+                        Label("Starting a new game counts the game in progress as lost.", systemImage: "info.circle")
                             .font(.footnote)
                             .foregroundStyle(.secondary)
                             .frame(maxWidth: .infinity, alignment: .leading)

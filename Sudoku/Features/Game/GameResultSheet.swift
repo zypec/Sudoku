@@ -30,6 +30,10 @@ struct GameResultSheet: View {
     let outcome: GameOutcome
     let onNewGame: () -> Void
     let onHome: () -> Void
+    /// After a loss: take back the last mistake and play on.
+    var onTakeBack: () -> Void = {}
+    /// After a loss: the same puzzle from the start.
+    var onPlayAgain: () -> Void = {}
 
     private var result: GameResult {
         GameResult(game: model.game)
@@ -85,25 +89,57 @@ struct GameResultSheet: View {
 
             Spacer(minLength: 0)
 
-            VStack(spacing: 10) {
-                Button(action: onNewGame) {
-                    Label("New Game", systemImage: "plus")
-                        .font(.headline)
-                        .frame(maxWidth: .infinity)
+            if outcome == .lost {
+                lostActions
+            } else {
+                VStack(spacing: 10) {
+                    Button(action: onNewGame) {
+                        Label("New Game", systemImage: "plus")
+                            .font(.headline)
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.glassProminent)
+                    Button(action: onHome) {
+                        Text("Home")
+                            .font(.headline)
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.glass)
                 }
-                .buttonStyle(.glassProminent)
-                Button(action: onHome) {
-                    Text("Home")
-                        .font(.headline)
-                        .frame(maxWidth: .infinity)
-                }
-                .buttonStyle(.glass)
+                .controlSize(.large)
             }
-            .controlSize(.large)
         }
         .padding()
         .frame(maxWidth: 480)
         .presentationDetents([.large])
+    }
+
+    /// A loss is a way back in first: the last mistake taken back, or the same puzzle again. A new
+    /// game and the way home are still there, quieter.
+    private var lostActions: some View {
+        VStack(spacing: 10) {
+            Button(action: onTakeBack) {
+                Label("Undo Last Mistake", systemImage: "arrow.uturn.backward")
+                    .font(.headline)
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.glassProminent)
+            Button(action: onPlayAgain) {
+                Label("Play Again", systemImage: "arrow.clockwise")
+                    .font(.headline)
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.glass)
+            HStack(spacing: 32) {
+                Button("New Game", action: onNewGame)
+                Button("Home", action: onHome)
+            }
+            .buttonStyle(.borderless)
+            .font(.subheadline.weight(.semibold))
+            .frame(maxWidth: .infinity)
+            .padding(.top, 4)
+        }
+        .controlSize(.large)
     }
 
     private var symbol: String {

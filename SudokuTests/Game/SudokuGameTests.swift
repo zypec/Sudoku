@@ -190,4 +190,23 @@ struct SudokuGameTests {
         #expect(decoded.notes == game.notes)
         #expect(decoded.canUndo)
     }
+
+    @Test func aLostGameCanTakeBackItsLastMistake() throws {
+        var game = try makeGame(mistakeLimit: 1)
+        #expect(!game.hasProgress)
+        game.enter(1, at: 2) // the solution has 4 there
+        #expect(game.isLost)
+        #expect(game.hasProgress)
+        game.takeBackLosingMistake()
+        #expect(!game.isLost)
+        #expect(game.values[2] == 0)
+        #expect(game.mistakeCount == 0)
+        #expect(game.totalMistakes == 1)
+        #expect(!game.canRedo)
+        // Playing on works, and a new mistake ends the game again.
+        #expect(game.enter(4, at: 2) == .placed)
+        game.enter(1, at: 3)
+        #expect(game.isLost)
+        #expect(game.totalMistakes == 2)
+    }
 }

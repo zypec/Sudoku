@@ -50,10 +50,10 @@ struct BoardView: View {
                         .transition(.opacity)
                 }
             }
-            // A small radius keeps corner pencil marks (like a 3 in the top-right cell) uncut.
-            .clipShape(.rect(cornerRadius: 6))
+            // Square corners: a rounded frame curved away from the straight grid lines inside it.
+            .clipShape(.rect)
             .overlay {
-                RoundedRectangle(cornerRadius: 6)
+                Rectangle()
                     .strokeBorder(Color.primary, lineWidth: 1.5)
             }
             .frame(width: side, height: side)

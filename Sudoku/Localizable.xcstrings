@@ -766,6 +766,23 @@
         }
       }
     },
+    "Cancel": {
+      "comment": "Cancel button.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vazgeç"
+          }
+        }
+      }
+    },
     "Case %lld of %lld: suppose %lld is in the cell at %@.": {
       "comment": "Visual proof: case assumption, candidate on",
       "localizations": {
@@ -966,6 +983,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Devam Et"
+          }
+        }
+      }
+    },
+    "Copy Puzzle Code": {
+      "comment": "Game menu: copies a code that recreates this puzzle.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copy Puzzle Code"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bulmaca Kodunu Kopyala"
           }
         }
       }
@@ -3248,6 +3282,23 @@
         }
       }
     },
+    "Not a Puzzle Code": {
+      "comment": "Alert title when an entered puzzle code is invalid.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not a Puzzle Code"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geçerli Bir Kod Değil"
+          }
+        }
+      }
+    },
     "Notes": {
       "comment": "Toggle for pencil mark mode",
       "localizations": {
@@ -3380,6 +3431,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Yalnızca temel yöntemler"
+          }
+        }
+      }
+    },
+    "Paste a puzzle code copied from a game.": {
+      "comment": "Message of the Start with Code alert.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paste a puzzle code copied from a game."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bir oyundan kopyaladığın bulmaca kodunu yapıştır."
           }
         }
       }
@@ -3537,6 +3605,23 @@
         }
       }
     },
+    "Play Again": {
+      "comment": "Result sheet after a loss: the same puzzle from the start.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Play Again"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yeniden Oyna"
+          }
+        }
+      }
+    },
     "Play Today's Puzzle": {
       "comment": "Home: starts the daily puzzle",
       "localizations": {
@@ -3669,6 +3754,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bulmaca Çözüldü!"
+          }
+        }
+      }
+    },
+    "Puzzle code copied": {
+      "comment": "Shown briefly after copying the puzzle code.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Puzzle code copied"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bulmaca kodu kopyalandı"
           }
         }
       }
@@ -4285,6 +4387,23 @@
         }
       }
     },
+    "Start": {
+      "comment": "Button that opens the puzzle from the entered code.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Başlat"
+          }
+        }
+      }
+    },
     "Start Practice": {
       "comment": "Technique page: opens practice",
       "localizations": {
@@ -4319,19 +4438,36 @@
         }
       }
     },
-    "Starting a new game replaces the game in progress.": {
-      "comment": "Note in the New Game sheet when a saved game exists",
+    "Start with Code": {
+      "comment": "Home button and alert title: opens a puzzle from a puzzle code.",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Starting a new game replaces the game in progress."
+            "value": "Start with Code"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Yeni bir oyun başlatırsan devam eden oyunun silinir."
+            "value": "Kodla Başlat"
+          }
+        }
+      }
+    },
+    "Starting a new game counts the game in progress as lost.": {
+      "comment": "Note in the New Game sheet when a game is in progress.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Starting a new game counts the game in progress as lost."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yeni oyuna başlarsan devam eden oyun kaybedilmiş sayılır."
           }
         }
       }
@@ -4948,6 +5084,23 @@
         }
       }
     },
+    "This code doesn't make a puzzle with a single solution.": {
+      "comment": "Alert message when an entered puzzle code is invalid.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This code doesn't make a puzzle with a single solution."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu kod tek çözümlü bir bulmaca oluşturmuyor."
+          }
+        }
+      }
+    },
     "This is an X-Wing with %lld lines. If, in %lld rows, a digit fits only in cells within the same %lld columns, those rows use up the digit in each of those columns. So it can be removed from the rest of the columns.": {
       "comment": "Technique guide (detailed hint explanation and training)",
       "localizations": {
@@ -5301,6 +5454,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Geri Al"
+          }
+        }
+      }
+    },
+    "Undo Last Mistake": {
+      "comment": "Result sheet after a loss: takes back the last mistake and plays on.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Undo Last Mistake"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Son Hatayı Geri Al"
           }
         }
       }

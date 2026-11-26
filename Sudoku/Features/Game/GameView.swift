@@ -16,6 +16,8 @@ struct GameView: View {
     @Environment(\.scenePhase) private var scenePhase
     @State private var outcome: GameOutcome?
     @State private var isShowingSettings = false
+    /// Briefly shows that the puzzle code was copied.
+    @State private var isShowingCodeCopied = false
 
 
     var body: some View {
@@ -107,6 +109,21 @@ struct GameView: View {
             model.stopAutoSolve()
             model.save()
         }
+        .overlay(alignment: .top) {
+            if isShowingCodeCopied {
+                Label("Puzzle code copied", systemImage: "checkmark.circle.fill")
+                    .font(.subheadline.weight(.semibold))
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 10)
+                    .glassEffect()
+                    .transition(.move(edge: .top).combined(with: .opacity))
+                    .task {
+                        try? await Task.sleep(for: .seconds(1.6))
+                        withAnimation(.snappy) { isShowingCodeCopied = false }
+                    }
+            }
+        }
+        .sensoryFeedback(.success, trigger: isShowingCodeCopied) { _, shown in shown && haptics }
         .sheet(item: $outcome) { outcome in
             GameResultSheet(model: model, outcome: outcome) {
                 self.outcome = nil
@@ -114,6 +131,12 @@ struct GameView: View {
             } onHome: {
                 self.outcome = nil
                 dismiss()
+            } onTakeBack: {
+                self.outcome = nil
+                model.takeBackLosingMistake()
+            } onPlayAgain: {
+                self.outcome = nil
+                model.playAgain()
             }
         }
         .sensoryFeedback(trigger: model.selectedCell) { _, _ in
@@ -142,6 +165,10 @@ struct GameView: View {
                     model.startAutoSolve()
                 }
                 .disabled(model.game.isFinished || model.autoSolve != nil)
+                Button("Copy Puzzle Code", systemImage: "doc.on.doc") {
+                    UIPasteboard.general.string = PuzzleCode.code(for: model.game.puzzle.givens)
+                    withAnimation(.snappy) { isShowingCodeCopied = true }
+                }
                 Divider()
             }
             Button("Settings", systemImage: "gearshape") {

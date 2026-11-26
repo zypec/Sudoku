@@ -84,6 +84,8 @@ final class GameModel {
     @ObservationIgnored private let recorder: GameRecorder?
     /// A game is recorded once, when it finishes.
     @ObservationIgnored private var hasRecordedResult: Bool
+    /// The record of the game's end, so a loss can be taken back.
+    @ObservationIgnored private var lastRecord: GameRecord?
 
     /// In training: the technique being practiced and the cells it acts on. A hint then only
     /// points at those cells instead of explaining the technique.
@@ -547,7 +549,30 @@ final class GameModel {
     func startNewGame() async {
         isPreparingNewGame = true
         let puzzle = await PuzzleSource.shared.puzzle(game.puzzle.difficulty)
+        restart(with: puzzle)
+        isPreparingNewGame = false
+    }
+
+    /// The same puzzle again, from the start.
+    func playAgain() {
+        restart(with: game.puzzle)
+    }
+
+    /// After a loss: takes back the last mistake and plays on. The recorded loss is removed, so the
+    /// game is recorded once, when it really ends.
+    func takeBackLosingMistake() {
+        guard game.isLost else { return }
+        if let lastRecord {
+            recorder?.discard(lastRecord)
+            self.lastRecord = nil
+        }
+        hasRecordedResult = false
+        update { $0.takeBackLosingMistake() }
+    }
+
+    private func restart(with puzzle: Puzzle) {
         game = SudokuGame(puzzle: puzzle, mistakeLimit: settings.mistakeLimitSetting)
+        lastRecord = nil
         elapsedSeconds = 0
         hasRecordedResult = false
         isPaused = false
@@ -555,7 +580,6 @@ final class GameModel {
         isNotesMode = false
         activeHint = nil
         stopAutoSolve()
-        isPreparingNewGame = false
         save()
     }
 
@@ -565,7 +589,7 @@ final class GameModel {
         save()  // also copies the clock in, before a finished game is recorded
         if game.isFinished, !hasRecordedResult {
             hasRecordedResult = true
-            recorder?.record(game)
+            lastRecord = recorder?.record(game)
         }
     }
 
