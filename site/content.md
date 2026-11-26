@@ -44,11 +44,13 @@ step: Suppose instead it is in row 1, column 7. Then row 5 has it in column 5.
 step: Either way both columns get their **7** in these rows, so **7** goes from the rest of them.
 shot: gallery/hint.jpg | See the proof, case by case
 shot: gallery/steps.jpg | Every step explained
+shot: gallery/daily.jpg | A new puzzle every day, and a streak
+shot: gallery/race.jpg | Race your friends on the same puzzle
 shot: gallery/autosolve.jpg | Watch it solve, one step at a time
 shot: gallery/library.jpg | 32 techniques to learn
 shot: gallery/training.jpg | Practice on real positions
 shot: gallery/stats.jpg | Follow your progress
-shot: gallery/home.jpg | Pick up where you left off
+shot: gallery/home.jpg | Everything a tap away
 shot: gallery/dark.jpg | Light and dark
 :::
 
@@ -67,6 +69,10 @@ has an animated example and practice positions where the next step is exactly th
 Puzzles are graded by the hardest technique they need, not by how many digits they give, so a hard puzzle is
 hard for the right reason. Your statistics, streaks and scores are kept per difficulty.
 
+A new puzzle comes every day, the same for everyone, from easy on Mondays to expert on Sundays; solve it
+on its day to keep your streak. Race your friends on the same puzzle: share a code, and whoever finishes
+first before the time is up wins.
+
 Other things you may like: notes with automatic cleanup, undo and redo, a mistake limit and a hint limit
 of your choice, auto solve to watch a puzzle solved step by step, puzzle codes to share a puzzle, and light
 and dark mode.
@@ -78,10 +84,11 @@ and dark mode.
 version: In development
 date: November 2026
 
-- Puzzle codes: copy one from a game, start it again from New Game.
-- After a loss, take back the last mistake and play on, or play the same puzzle again.
-- A hint limit, and hints that pick out the cells and digits they talk about.
-- Practice positions for 31 techniques.
+- Daily Sudoku: the same puzzle for everyone each day, a streak and a calendar.
+- Race a friend: one code, the same puzzle, first to finish wins.
+- Smart hints: your notes are checked and completed before the next step.
+- Random practice, with codes to share a position.
+- Short puzzle codes, a calmer home screen, a new icon and a new typeface.
 :::
 
 ## Information
