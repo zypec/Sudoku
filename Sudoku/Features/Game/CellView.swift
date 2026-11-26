@@ -120,7 +120,9 @@ struct CellView: View {
         case .alternativeA, .alternativeB: AnyShapeStyle(Color.white)
         case .emphasized: AnyShapeStyle(.primary)
         case .context: AnyShapeStyle(.secondary)
-        case nil: isHighlighted ? AnyShapeStyle(.tint) : AnyShapeStyle(.secondary)
+        // A note of the selected digit stands out in weight and ink, not in the accent color, which
+        // belongs to the player's entries.
+        case nil: isHighlighted ? AnyShapeStyle(.primary) : AnyShapeStyle(.secondary)
         }
         let isBold = (mark != nil && mark != .context) || isHighlighted
         // The two alternatives of a pattern sit on colored discs so they read apart at a glance.

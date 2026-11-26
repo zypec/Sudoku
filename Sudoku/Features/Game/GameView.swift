@@ -323,6 +323,16 @@ private struct HeartsChip: View {
         max(0, limit - mistakes)
     }
 
+    /// Open, the first heart is one of the row; closed, it stands for all of them and turns gray
+    /// on the last try.
+    private func firstHeartStyle(isLost: Bool) -> AnyShapeStyle {
+        if isOpen {
+            isLost ? AnyShapeStyle(.tertiary) : AnyShapeStyle(Color.red)
+        } else {
+            remaining <= 1 ? AnyShapeStyle(.tertiary) : AnyShapeStyle(Color.red)
+        }
+    }
+
     var body: some View {
         Button {
             // Tapping an open chip closes it.
@@ -332,23 +342,29 @@ private struct HeartsChip: View {
                 openRequest += 1
             }
         } label: {
-            HStack(spacing: 3) {
-                if isOpen {
-                    ForEach(0..<limit, id: \.self) { index in
+            // Every heart is always there; closed, all but the first sit in one frame of no width. So
+            // opening and closing only moves the chip's edge, which uncovers or covers the hearts as
+            // it goes, instead of the hearts fading on their own while the chip resizes.
+            HStack(spacing: 0) {
+                Image(systemName: isOpen && remaining == 0 ? "heart" : "heart.fill")
+                    .foregroundStyle(firstHeartStyle(isLost: remaining == 0))
+                    .symbolEffect(.bounce, value: mistakes)
+                HStack(spacing: 3) {
+                    ForEach(1..<max(limit, 1), id: \.self) { index in
                         let isLost = index >= remaining
                         Image(systemName: isLost ? "heart" : "heart.fill")
                             .foregroundStyle(isLost ? AnyShapeStyle(.tertiary) : AnyShapeStyle(Color.red))
-                            .transition(.scale.combined(with: .opacity))
                     }
-                } else {
-                    Image(systemName: "heart.fill")
-                        .foregroundStyle(remaining <= 1 ? AnyShapeStyle(.tertiary) : AnyShapeStyle(Color.red))
-                        .symbolEffect(.bounce, value: mistakes)
                 }
+                .padding(.leading, 3)
+                .fixedSize()
+                .frame(width: isOpen ? nil : 0, alignment: .leading)
+                .clipped()
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 6)
             .background(.fill.tertiary, in: .capsule)
+            .clipShape(.capsule)
         }
         .buttonStyle(.pressable)
         .animation(.spring(duration: 0.35, bounce: 0.3), value: isOpen)
