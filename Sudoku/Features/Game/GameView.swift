@@ -11,6 +11,9 @@ struct GameView: View {
     let model: GameModel
     /// Set when the game is a training position: a task banner replaces the status bar.
     var practice: PracticeModel?
+    /// For a race or the daily puzzle: the result sheet leads back with these words instead of to a
+    /// new game.
+    var returnTitle: LocalizedStringKey?
 
     @Environment(\.dismiss) private var dismiss
     @Environment(\.scenePhase) private var scenePhase
@@ -125,7 +128,7 @@ struct GameView: View {
         }
         .sensoryFeedback(.success, trigger: isShowingCodeCopied) { _, shown in shown && haptics }
         .sheet(item: $outcome) { outcome in
-            GameResultSheet(model: model, outcome: outcome, startsNewGames: !model.isRace) {
+            GameResultSheet(model: model, outcome: outcome, returnTitle: returnTitle) {
                 self.outcome = nil
                 Task { await model.startNewGame() }
             } onHome: {
@@ -160,7 +163,7 @@ struct GameView: View {
                 }
                 .disabled(model.game.isFinished)
             }
-            if !model.isPractice, !model.isRace {
+            if !model.isPractice, !model.isFixedPuzzle {
                 Button("Auto Solve", systemImage: "play.circle") {
                     model.startAutoSolve()
                 }

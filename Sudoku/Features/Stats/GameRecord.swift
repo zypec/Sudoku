@@ -42,10 +42,12 @@ final class GameRecord {
     var estimatedSeconds: Int?
     var requiredTechniquesRaw: [String]
     var hintedTechniquesRaw: [String]
-    /// Reserved for the daily puzzle; normal games are `false`.
+    /// Whether this was a daily puzzle; normal games are `false`.
     var isDaily: Bool
+    /// The daily puzzle's day (`DailyPuzzle`), for a daily game.
+    var dailyDay: Int?
 
-    init(_ result: GameResult, isDaily: Bool = false) {
+    init(_ result: GameResult, dailyDay: Int? = nil) {
         finishedAt = result.finishedAt
         difficultyRaw = result.difficulty.rawValue
         isSolved = result.isSolved
@@ -57,7 +59,8 @@ final class GameRecord {
         estimatedSeconds = result.estimatedSeconds
         requiredTechniquesRaw = result.requiredTechniques.map(\.rawValue)
         hintedTechniquesRaw = result.hintedTechniques.map(\.rawValue)
-        self.isDaily = isDaily
+        isDaily = dailyDay != nil
+        self.dailyDay = dailyDay
     }
 
     var result: GameResult {
@@ -106,8 +109,8 @@ final class GameRecorder {
     }
 
     @discardableResult
-    func record(_ game: SudokuGame) -> GameRecord {
-        let record = GameRecord(GameResult(game: game))
+    func record(_ game: SudokuGame, dailyDay: Int? = nil) -> GameRecord {
+        let record = GameRecord(GameResult(game: game), dailyDay: dailyDay)
         context.insert(record)
         try? context.save()
         return record

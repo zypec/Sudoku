@@ -392,6 +392,23 @@
         }
       }
     },
+    "A day's puzzle counts toward your streak only when it's solved that day.": {
+      "comment": "Daily calendar note.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A day's puzzle counts toward your streak only when it's solved that day."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bir günün bulmacası yalnızca o gün çözülürse seriye sayılır."
+          }
+        }
+      }
+    },
     "A finned fish is an X-Wing or Swordfish with one or two extra cells, the fin, inside a single box. If the fin doesn't hold the digit, the fish works as usual; if it does, it rules out the cells it sees. Cells hit in both cases, in the fin's box and in the fish's columns, lose the digit.": {
       "comment": "Technique guide (detailed hint explanation and training)",
       "localizations": {
@@ -919,6 +936,23 @@
         }
       }
     },
+    "Calendar": {
+      "comment": "Statistics: opens the daily calendar.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calendar"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Takvim"
+          }
+        }
+      }
+    },
     "Cancel": {
       "comment": "Cancel button.",
       "localizations": {
@@ -1123,23 +1157,6 @@
         }
       }
     },
-    "Coming Soon": {
-      "comment": "Alert title for sections that aren't built yet",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Coming Soon"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Yakında"
-          }
-        }
-      }
-    },
     "Coming soon": {
       "comment": "Accessibility value for difficulties that aren't available yet",
       "localizations": {
@@ -1187,6 +1204,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Devam Et"
+          }
+        }
+      }
+    },
+    "Continue Today's Puzzle": {
+      "comment": "Daily card: today's puzzle is in progress.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continue Today's Puzzle"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bugünün Bulmacasına Devam Et"
           }
         }
       }
@@ -3741,6 +3775,23 @@
         }
       }
     },
+    "Next Month": {
+      "comment": "Daily calendar: shows the month after.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Next Month"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sonraki Ay"
+          }
+        }
+      }
+    },
     "Next Step": {
       "comment": "Auto solve: apply the step on screen now",
       "localizations": {
@@ -4400,6 +4451,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bulmaca hazırlanıyor…"
+          }
+        }
+      }
+    },
+    "Previous Month": {
+      "comment": "Daily calendar: shows the month before.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Previous Month"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Önceki Ay"
           }
         }
       }
@@ -5322,6 +5390,23 @@
         }
       }
     },
+    "Solved Today": {
+      "comment": "Daily card: today's puzzle is solved.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solved Today"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bugün Çözüldü"
+          }
+        }
+      }
+    },
     "Solved by Auto Solve": {
       "comment": "Result sheet title when auto solve finished the game",
       "localizations": {
@@ -5335,6 +5420,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Otomatik Çözüm Bitirdi"
+          }
+        }
+      }
+    },
+    "Solved later": {
+      "comment": "Daily calendar: accessibility value of a day solved after it.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solved later"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sonradan çözüldü"
+          }
+        }
+      }
+    },
+    "Solved on the day": {
+      "comment": "Daily calendar: accessibility value of a day solved on the day.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solved on the day"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gününde çözüldü"
           }
         }
       }
@@ -6359,23 +6478,6 @@
         }
       }
     },
-    "This part of the app isn't ready yet.": {
-      "comment": "Alert message for sections that aren't built yet",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "This part of the app isn't ready yet."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Uygulamanın bu bölümü henüz hazır değil."
-          }
-        }
-      }
-    },
     "This race was removed.": {
       "comment": "Race detail of a removed race.",
       "localizations": {
@@ -7103,23 +7205,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Senin Süren"
-          }
-        }
-      }
-    },
-    "Your daily streak history will appear here once Daily Sudoku arrives.": {
-      "comment": "Statistics: placeholder for the daily streak history",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Your daily streak history will appear here once Daily Sudoku arrives."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Günlük Sudoku geldiğinde günlük seri geçmişin burada görünecek."
           }
         }
       }

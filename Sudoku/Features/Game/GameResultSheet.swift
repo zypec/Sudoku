@@ -28,8 +28,8 @@ enum GameOutcome: Identifiable {
 struct GameResultSheet: View {
     let model: GameModel
     let outcome: GameOutcome
-    /// Off in a race: its game leads back to the race, never to another puzzle.
-    var startsNewGames = true
+    /// For a race or the daily puzzle: the one way on is back, with these words, never another puzzle.
+    var returnTitle: LocalizedStringKey?
     let onNewGame: () -> Void
     let onHome: () -> Void
     /// After a loss: take back the last mistake and play on.
@@ -95,7 +95,14 @@ struct GameResultSheet: View {
                 lostActions
             } else {
                 VStack(spacing: 10) {
-                    if startsNewGames {
+                    if let returnTitle {
+                        Button(action: onHome) {
+                            Text(returnTitle)
+                                .font(.headline)
+                                .frame(maxWidth: .infinity)
+                        }
+                        .glassProminentButton()
+                    } else {
                         Button(action: onNewGame) {
                             Label("New Game", systemImage: "plus")
                                 .font(.headline)
@@ -108,13 +115,6 @@ struct GameResultSheet: View {
                                 .frame(maxWidth: .infinity)
                         }
                         .glassButton()
-                    } else {
-                        Button(action: onHome) {
-                            Label("Back to Race", systemImage: "flag.checkered")
-                                .font(.headline)
-                                .frame(maxWidth: .infinity)
-                        }
-                        .glassProminentButton()
                     }
                 }
                 .controlSize(.large)
@@ -142,11 +142,11 @@ struct GameResultSheet: View {
             }
             .glassButton()
             HStack(spacing: 32) {
-                if startsNewGames {
+                if let returnTitle {
+                    Button(returnTitle, action: onHome)
+                } else {
                     Button("New Game", action: onNewGame)
                     Button("Home", action: onHome)
-                } else {
-                    Button("Back to Race", action: onHome)
                 }
             }
             .buttonStyle(.borderless)

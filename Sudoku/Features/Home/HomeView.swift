@@ -24,17 +24,25 @@ struct HomeView: View {
 
     private let store = GameStore.shared
 
-    @State private var isShowingComingSoon = false
     @State private var isShowingStats = false
     @State private var isShowingTraining = false
     @State private var isShowingRace = false
+    @State private var isShowingCalendar = false
+    @State private var isShowingDailyGame = false
+    /// The day whose daily puzzle opens.
+    @State private var dailyGameDay = 0
 
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
                     header
-                    DailyCard(onPlay: showComingSoon)
+                    DailyCard {
+                        dailyGameDay = DailyCalendar.today()
+                        isShowingDailyGame = true
+                    } onCalendar: {
+                        isShowingCalendar = true
+                    }
                     HStack(spacing: 12) {
                         FeatureTile(
                             title: "Training",
@@ -110,6 +118,12 @@ struct HomeView: View {
             .navigationDestination(isPresented: $isShowingRace) {
                 RaceListView()
             }
+            .navigationDestination(isPresented: $isShowingCalendar) {
+                DailyCalendarView()
+            }
+            .navigationDestination(isPresented: $isShowingDailyGame) {
+                DailyGameView(day: dailyGameDay)
+            }
             .sheet(isPresented: $isShowingNewGame, onDismiss: openPendingGame) {
                 NewGameSheet(replacesGameInProgress: savedGame?.hasProgress == true) { difficulty in
                     await startGame(difficulty)
@@ -121,11 +135,6 @@ struct HomeView: View {
             // A standard sheet: the zoom out of the toolbar button stuttered on the first open.
             .sheet(isPresented: $isShowingSettings) {
                 SettingsView()
-            }
-            .alert("Coming Soon", isPresented: $isShowingComingSoon) {
-                Button("OK", role: .cancel) {}
-            } message: {
-                Text("This part of the app isn't ready yet.")
             }
             .task {
                 savedGame = store.load()
@@ -158,10 +167,6 @@ struct HomeView: View {
 
     private var recorder: GameRecorder {
         GameRecorder(context: modelContext)
-    }
-
-    private func showComingSoon() {
-        isShowingComingSoon = true
     }
 
     private func continueButton(for game: SudokuGame) -> some View {
@@ -263,16 +268,32 @@ struct HomeView: View {
 
 /// The daily puzzle: today's date, the streak and this week's days. Placeholder until the daily
 /// mode exists: the streak and week are empty.
+/// Today's puzzle and the streak: the days of the week solved on their day, and a way into today's
+/// game. The title opens the calendar.
 private struct DailyCard: View {
     let onPlay: () -> Void
+    let onCalendar: () -> Void
 
-    private let streak = 0
+    @Query(filter: #Predicate<GameRecord> { $0.isDaily }) private var records: [GameRecord]
 
     var body: some View {
+        let daily = DailyRecords(records)
+        let today = DailyCalendar.today()
+        let streak = daily.streak.current(today: today)
+        let solvedToday = daily.solvedDays.contains(today)
         VStack(alignment: .leading, spacing: 16) {
             HStack {
-                Label("Daily Sudoku", systemImage: "calendar")
-                    .font(.headline)
+                Button(action: onCalendar) {
+                    HStack(spacing: 6) {
+                        Label("Daily Sudoku", systemImage: "calendar")
+                            .font(.headline)
+                        Image(systemName: "chevron.right")
+                            .font(.footnote.weight(.semibold))
+                            .foregroundStyle(.tertiary)
+                    }
+                    .foregroundStyle(.primary)
+                }
+                .buttonStyle(.plain)
                 Spacer()
                 HStack(spacing: 4) {
                     Image(systemName: "flame.fill")
@@ -286,16 +307,29 @@ private struct DailyCard: View {
                 .background(.orange.opacity(0.15), in: .capsule)
             }
 
-            WeekStrip()
+            WeekStrip(solvedDays: daily.streak.solvedDays)
 
             // Secondary: the screen's one prominent action is Continue or New Game at the bottom.
             Button(action: onPlay) {
-                Label("Play Today's Puzzle", systemImage: "play.fill")
-                    .font(.headline)
-                    .frame(maxWidth: .infinity)
+                HStack {
+                    if solvedToday {
+                        Label("Solved Today", systemImage: "checkmark")
+                    } else if DailyRecords.store(forDay: today).load() != nil {
+                        Label("Continue Today's Puzzle", systemImage: "play.fill")
+                    } else {
+                        Label("Play Today's Puzzle", systemImage: "play.fill")
+                    }
+                    Spacer(minLength: 8)
+                    Text(DailyPuzzle.difficulty(forDay: today).title)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
+                .font(.headline)
+                .frame(maxWidth: .infinity)
             }
             .glassButton()
             .controlSize(.large)
+            .disabled(solvedToday)
         }
         .padding(18)
         .background(.fill.quaternary, in: .rect(cornerRadius: 24))
@@ -305,6 +339,9 @@ private struct DailyCard: View {
 /// The current week, one circle per day, with today ringed. Days follow the user's calendar
 /// (first weekday and names).
 private struct WeekStrip: View {
+    /// Days solved on their own day, filled in.
+    let solvedDays: Set<Int>
+
     private var days: [Date] {
         let calendar = Calendar.current
         guard let week = calendar.dateInterval(of: .weekOfYear, for: .now) else { return [] }
@@ -315,15 +352,20 @@ private struct WeekStrip: View {
         HStack {
             ForEach(days, id: \.self) { day in
                 let isToday = Calendar.current.isDateInToday(day)
+                let isSolved = solvedDays.contains(DailyCalendar.day(of: day))
                 VStack(spacing: 6) {
                     Text(day, format: .dateTime.weekday(.narrow))
                         .font(.caption.weight(.semibold))
                         .foregroundStyle(isToday ? AnyShapeStyle(.tint) : AnyShapeStyle(.secondary))
                     Text(day, format: .dateTime.day())
-                        .font(.subheadline.weight(isToday ? .bold : .regular))
+                        .font(.subheadline.weight(isToday || isSolved ? .bold : .regular))
                         .monospacedDigit()
+                        .foregroundStyle(isSolved ? AnyShapeStyle(Color.white) : AnyShapeStyle(.primary))
                         .frame(width: 34, height: 34)
                         .background {
+                            if isSolved {
+                                Circle().fill(Color.orange.gradient)
+                            }
                             Circle()
                                 .strokeBorder(isToday ? AnyShapeStyle(.tint) : AnyShapeStyle(.quaternary), lineWidth: isToday ? 2 : 1)
                         }

@@ -39,7 +39,7 @@ struct StatsView: View {
                     TechniqueSection(stats: TechniqueStat.all(from: results))
                     RecentGames(results: Array(results.prefix(10)))
                 }
-                DailyStreakPlaceholder()
+                DailyStreakSection()
             }
             .padding()
             .frame(maxWidth: 640)
@@ -412,16 +412,24 @@ private struct RecentGames: View {
 
 // MARK: Daily
 
-private struct DailyStreakPlaceholder: View {
+/// The daily streak, now and at its best, and the way to the calendar.
+private struct DailyStreakSection: View {
+    @Query(filter: #Predicate<GameRecord> { $0.isDaily }) private var records: [GameRecord]
+
     var body: some View {
+        let daily = DailyRecords(records)
         VStack(alignment: .leading, spacing: 12) {
             SectionTitle("Daily Streak")
-            Label("Your daily streak history will appear here once Daily Sudoku arrives.", systemImage: "calendar")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(16)
-                .background(.fill.quaternary, in: .rect(cornerRadius: 20))
+            HStack(spacing: 12) {
+                StreakTile(title: "Current Streak", value: daily.streak.current(today: DailyCalendar.today()), systemImage: "flame.fill", tint: .orange)
+                StreakTile(title: "Best Streak", value: daily.streak.best, systemImage: "medal.fill", tint: .yellow)
+            }
+            NavigationLink {
+                DailyCalendarView()
+            } label: {
+                Label("Calendar", systemImage: "calendar")
+                    .font(.subheadline.weight(.semibold))
+            }
         }
     }
 }

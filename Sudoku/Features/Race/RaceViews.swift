@@ -363,7 +363,7 @@ private struct RaceGameView: View {
     var body: some View {
         Group {
             if let model {
-                GameView(model: model)
+                GameView(model: model, returnTitle: "Back to Race")
             }
         }
         .task {
@@ -371,7 +371,7 @@ private struct RaceGameView: View {
             let store = RaceStore.shared.gameStore(for: race)
             let game = store.load() ?? SudokuGame(puzzle: race.puzzle, mistakeLimit: settings.mistakeLimitSetting)
             let model = GameModel(game: game, settings: settings, store: store, recorder: GameRecorder(context: modelContext))
-            model.isRace = true
+            model.isFixedPuzzle = true
             let id = race.id
             model.onFinish = { game in
                 RaceStore.shared.finish(id, game: game)

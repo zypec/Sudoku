@@ -99,8 +99,10 @@ final class GameModel {
         practiceFocus != nil
     }
 
-    /// A race's game: no auto solve, and no other puzzle started from it.
-    @ObservationIgnored var isRace = false
+    /// A race's or a daily puzzle's game: no auto solve, and no other puzzle started from it.
+    @ObservationIgnored var isFixedPuzzle = false
+    /// The daily puzzle's day, recorded with the game, for a daily game.
+    @ObservationIgnored var dailyDay: Int?
     /// Hears when the game ends (solved or lost), as each time it is recorded; races take their result
     /// from it.
     @ObservationIgnored var onFinish: ((SudokuGame) -> Void)?
@@ -646,7 +648,7 @@ final class GameModel {
         save()  // also copies the clock in, before a finished game is recorded
         if game.isFinished, !hasRecordedResult {
             hasRecordedResult = true
-            lastRecord = recorder?.record(game)
+            lastRecord = recorder?.record(game, dailyDay: dailyDay)
             onFinish?(game)
         }
     }
