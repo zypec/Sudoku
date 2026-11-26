@@ -35,7 +35,9 @@ struct HomeView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(alignment: .leading, spacing: 20) {
+                // Three levels, so the eye knows where to go: the day's puzzle, then the places to
+                // go as one quiet list, and the game itself at the bottom.
+                VStack(alignment: .leading, spacing: 28) {
                     header
                     DailyCard {
                         dailyGameDay = DailyCalendar.today()
@@ -43,33 +45,20 @@ struct HomeView: View {
                     } onCalendar: {
                         isShowingCalendar = true
                     }
-                    HStack(spacing: 12) {
-                        FeatureTile(
-                            title: "Training",
-                            subtitle: "Learn every technique",
-                            systemImage: "graduationcap.fill",
-                            tint: .purple
-                        ) {
+                    VStack(spacing: 0) {
+                        HomeRow(title: "Training", subtitle: "Learn every technique", systemImage: "graduationcap.fill", tint: .purple) {
                             isShowingTraining = true
                         }
-                        FeatureTile(
-                            title: "Statistics",
-                            subtitle: "Your progress",
-                            systemImage: "chart.bar.fill",
-                            tint: .teal
-                        ) {
+                        Divider().padding(.leading, 64)
+                        HomeRow(title: "Statistics", subtitle: "Your progress", systemImage: "chart.bar.fill", tint: .teal) {
                             isShowingStats = true
                         }
+                        Divider().padding(.leading, 64)
+                        HomeRow(title: "Race a Friend", subtitle: "Same puzzle, first to finish wins", systemImage: "flag.checkered", tint: .orange) {
+                            isShowingRace = true
+                        }
                     }
-                    FeatureTile(
-                        title: "Race a Friend",
-                        subtitle: "Same puzzle, first to finish wins",
-                        systemImage: "flag.checkered",
-                        tint: .orange,
-                        isWide: true
-                    ) {
-                        isShowingRace = true
-                    }
+                    .background(.fill.quaternary, in: .rect(cornerRadius: 24))
                 }
                 .padding()
                 // A comfortable reading width on iPad.
@@ -385,66 +374,40 @@ private struct WeekStrip: View {
 }
 
 /// A square-ish entry point to a section of the app.
-private struct FeatureTile: View {
+/// A place to go from Home, as a row of one list: an icon, the name and what it holds.
+private struct HomeRow: View {
     let title: LocalizedStringKey
     let subtitle: LocalizedStringKey
     let systemImage: String
     let tint: Color
-    /// A full-width tile in one row: the icon beside the words, so it stays short.
-    var isWide = false
     let action: () -> Void
 
     var body: some View {
         Button(action: action) {
-            if isWide {
-                HStack(spacing: 14) {
-                    icon
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text(title)
-                            .font(.app(.headline))
-                            .foregroundStyle(.primary)
-                        Text(subtitle)
-                            .font(.app(.caption))
-                            .foregroundStyle(.secondary)
-                    }
-                    Spacer(minLength: 0)
-                    Image(systemName: "chevron.right")
-                        .font(.app(.footnote, weight: .semibold))
-                        .foregroundStyle(.tertiary)
+            HStack(spacing: 14) {
+                Image(systemName: systemImage)
+                    .font(.system(size: 17, weight: .semibold))
+                    .foregroundStyle(.white)
+                    .frame(width: 34, height: 34)
+                    .background(tint.gradient, in: .rect(cornerRadius: 9))
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(title)
+                        .font(.app(.body, weight: .medium))
+                        .foregroundStyle(.primary)
+                    Text(subtitle)
+                        .font(.app(.footnote))
+                        .foregroundStyle(.secondary)
                 }
-                .padding(14)
-                .background(.fill.quaternary, in: .rect(cornerRadius: 24))
-                .contentShape(.rect(cornerRadius: 24))
-            } else {
-                tall
+                Spacer(minLength: 8)
+                Image(systemName: "chevron.right")
+                    .font(.footnote.weight(.semibold))
+                    .foregroundStyle(.tertiary)
             }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 12)
+            .contentShape(.rect)
         }
         .buttonStyle(.pressable)
     }
-
-    private var icon: some View {
-        Image(systemName: systemImage)
-            .font(.app(.title2))
-            .foregroundStyle(.white)
-            .frame(width: 44, height: 44)
-            .background(tint.gradient, in: .rect(cornerRadius: 12))
-    }
-
-    private var tall: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            icon
-            Spacer(minLength: 0)
-            Text(title)
-                .font(.app(.headline))
-                .foregroundStyle(.primary)
-            Text(subtitle)
-                .font(.app(.caption))
-                .foregroundStyle(.secondary)
-                .lineLimit(2)
-        }
-        .frame(maxWidth: .infinity, minHeight: 130, alignment: .leading)
-        .padding(16)
-        .background(.fill.quaternary, in: .rect(cornerRadius: 24))
-        .contentShape(.rect(cornerRadius: 24))
-    }
 }
+
