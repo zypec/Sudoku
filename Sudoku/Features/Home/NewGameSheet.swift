@@ -93,7 +93,7 @@ struct NewGameSheet: View {
             .padding(.leading, 4)
             HStack(spacing: 8) {
                 TextField(text: $code) {
-                    Text(verbatim: PuzzleCode.prefix)
+                    Text(verbatim: "H7K-2M4-Q9X")
                 }
                 .font(.body.monospaced())
                 .textInputAutocapitalization(.never)

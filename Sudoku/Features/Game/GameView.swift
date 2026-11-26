@@ -166,7 +166,7 @@ struct GameView: View {
                 }
                 .disabled(model.game.isFinished || model.autoSolve != nil)
                 Button("Copy Puzzle Code", systemImage: "doc.on.doc") {
-                    UIPasteboard.general.string = PuzzleCode.code(for: model.game.puzzle.givens)
+                    UIPasteboard.general.string = PuzzleCode.code(for: model.game.puzzle)
                     withAnimation(.snappy) { isShowingCodeCopied = true }
                 }
                 Divider()

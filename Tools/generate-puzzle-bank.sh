@@ -3,6 +3,8 @@
 # Mac. The result is deterministic: the same engine and count always give the same file.
 #
 # Usage: Tools/generate-puzzle-bank.sh [puzzles per difficulty, default 300]
+# After regenerating, raise PuzzleCode.bankGeneration by one, so short puzzle codes of the old bank
+# are refused instead of opening other puzzles.
 set -euo pipefail
 
 root=${0:A:h:h}

@@ -23,8 +23,11 @@ final class PuzzleSource {
 
     func puzzle(_ difficulty: Difficulty) async -> Puzzle {
         if let index = nextIndex(for: difficulty), let stored = bank.puzzle(difficulty, at: index) {
-            var generator = SystemRandomNumberGenerator()
-            return PuzzleTransform.random(using: &generator).apply(to: stored)
+            // A seed in the range a short puzzle code can carry.
+            let seed = UInt32.random(in: 0..<PuzzleCode.seedLimit)
+            var puzzle = PuzzleTransform.seeded(seed).apply(to: stored)
+            puzzle.origin = Puzzle.Origin(index: index, seed: seed)
+            return puzzle
         }
         return await PuzzleGenerator.generate(difficulty)
     }

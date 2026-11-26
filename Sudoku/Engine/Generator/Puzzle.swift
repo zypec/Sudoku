@@ -28,6 +28,16 @@ struct Puzzle: Hashable, Codable, Sendable {
     var estimatedSeconds: Int?
     /// Techniques the logical solver needs for this puzzle, easiest first. `nil` in older saves.
     var requiredTechniques: [TechniqueKind]?
+    /// Where a puzzle from the bundled bank came from, so a short code can name it (`PuzzleCode`).
+    /// `nil` for a puzzle made on the device, and in older saves.
+    var origin: Origin?
+
+    /// A bank puzzle and the transform it is shown in, made from `seed` (`PuzzleTransform.random`
+    /// with a `SeededRandomNumberGenerator`, the same on every device).
+    struct Origin: Hashable, Codable, Sendable {
+        let index: Int
+        let seed: UInt32
+    }
 
     init(givens: [Digit], solution: [Digit], difficulty: Difficulty, estimatedSeconds: Int? = nil, requiredTechniques: [TechniqueKind]? = nil) {
         precondition(givens.count == Geometry.cellCount && solution.count == Geometry.cellCount, "A puzzle needs 81 cells")

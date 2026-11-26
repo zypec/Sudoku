@@ -76,4 +76,10 @@ struct PuzzleTransform: Hashable, Sendable {
             requiredTechniques: puzzle.requiredTechniques
         )
     }
+
+    /// The transform a seed stands for, the same on every device.
+    static func seeded(_ seed: UInt32) -> PuzzleTransform {
+        var generator = SeededRandomNumberGenerator(seed: UInt64(seed) | 0x5D0C_0000_0000)
+        return random(using: &generator)
+    }
 }
