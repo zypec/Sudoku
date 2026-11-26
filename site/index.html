@@ -147,9 +147,16 @@ header .home{font-family:var(--logo);font-weight:800;letter-spacing:-.01em}
 /* ── What it is, what is new, and the facts. ── */
 .about{position:relative;max-width:70ch;color:var(--ink-2);font-size:16.5px;line-height:1.65}
 .about p{margin:0 0 12px}
-.about:not(.open){max-height:calc(1.65em * 4);overflow:hidden}
-.about:not(.open)::after{content:"";position:absolute;inset:auto 0 0;height:1.65em;background:linear-gradient(transparent,var(--bg))}
-.more{background:none;border:0;padding:0;margin:4px 0 0;font:inherit;font-size:15px;font-weight:600;color:var(--accent-ink);cursor:pointer}
+/* As a store page does: three lines, and "more" at the end of the last one over the words fading out
+   under it; it opens the rest in place. */
+.about:not(.open){max-height:calc(1.65em * 3);overflow:hidden}
+/* Closed, the paragraphs run on as one, so the cut falls exactly under the third line. */
+.about:not(.open) p{display:inline;margin:0}
+.about:not(.open) p::after{content:" "}
+.more{position:absolute;right:0;bottom:0;height:1.65em;padding:0 0 0 64px;border:0;font:inherit;font-weight:600;
+  color:var(--accent-ink);cursor:pointer;background:linear-gradient(90deg,transparent,var(--bg) 52px)}
+.more:hover{text-decoration:underline}
+.about.open .more{display:none}
 .new{max-width:70ch}
 .new .when{display:flex;justify-content:space-between;gap:12px;color:var(--muted);font-size:14px;margin:4px 0 10px}
 .new ul{margin:0;padding-left:20px;color:var(--ink-2)}
@@ -301,7 +308,7 @@ Content.kind('shots', block => {
 });
 
 /** What the app is, cut to its first lines until More opens it. */
-Content.kind('about', block => `<div class="about" id="about">${block.html}</div><button class="more" type="button" id="more">More</button>`);
+Content.kind('about', block => `<div class="about" id="abouttext">${block.html}<button class="more" type="button" id="more">more</button></div>`);
 
 Content.kind('new', block => `<div class="new"><div class="when"><span>${inline(block.one('version'))}</span>`
   + `<span>${inline(block.one('date'))}</span></div>${block.html}</div>`);
@@ -321,7 +328,7 @@ document.addEventListener('contentready', () => {
   }
 
   // More opens the whole of what the app is, and is gone once there is no more to show.
-  const about = document.getElementById('about'), more = document.getElementById('more');
+  const about = document.getElementById('abouttext'), more = document.getElementById('more');
   if (about && more) {
     if (about.scrollHeight <= about.clientHeight + 2) more.remove();
     more.onclick = () => { about.classList.add('open'); more.remove(); };
