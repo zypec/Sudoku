@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sudoku</title>
-<meta name="description" content="A Sudoku for iPhone and iPad whose hints explain the next step the way a good player would take it, and play the reasoning on the board. Built with Claude.">
+<meta name="description" content="Sudoku for iPhone and iPad with hints that teach: the next logical step, the technique it takes and why it works, played on the board. Built with Claude.">
 <meta property="og:title" content="Sudoku">
-<meta property="og:description" content="A Sudoku that explains itself: human-like hints, visual proofs and training for 32 techniques.">
+<meta property="og:description" content="Sudoku for iPhone and iPad with hints that teach, and training for 32 techniques.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2030%2030'%3E%3Cstyle%3E.b%7Bfill:%231d1626%7D.l%7Bstroke:%23fff%7D%40media%20%28prefers-color-scheme:dark%29%7B.b%7Bfill:%23ece6f6%7D.l%7Bstroke:%23000%7D%7D%3C/style%3E%3Crect%20class='b'%20width='30'%20height='30'%20rx='7'/%3E%3Cpath%20class='l'%20stroke-opacity='.35'%20stroke-width='1.6'%20d='M10%200v30M20%200v30M0%2010h30M0%2020h30'/%3E%3Crect%20x='10.5'%20y='10.5'%20width='9'%20height='9'%20rx='2.2'%20fill='%232a7cf0'/%3E%3C/svg%3E">
 <script>
 try {
@@ -19,45 +19,95 @@ try {
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700..800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="kit/front.css">
 <style>
+/* Sudoku's page is laid out as an app's store page (the app, its screens, what it is, what is new, the
+   facts) in the look the other front pages share: the kit's bar, type, buttons and colors. */
+
 /* The name is a logo, in the rounded face the app sets its digits in (SF Pro Rounded on Apple devices,
    Nunito elsewhere), wherever it is written as the name. */
 :root{--logo:ui-rounded,"SF Pro Rounded",Nunito,"Helvetica Neue",Arial,sans-serif;
   /* The app's blue, from its icon: brighter than MetroCrafter's navy, so the two never read as one. */
   --accent:#0a66d8;--accent-ink:#0855b5;--accent-soft:#0a66d812;--accent-line:#0a66d840;
-  /* The tile the icon's 7 sits on, and its glow. */
-  --tile-a:#3f8cff;--tile-b:#0a5fd0;--tile-glow:#2f7bf066;
   /* The hint colors of the app: one case of a pattern in green, the other in blue, what goes in red. */
-  --case-a:#2f9e55;--case-b:#2f7bf0;--struck:#d93a3a;--house:#f6d36b38;--corner:#f39a4a40;--target:#d93a3a1c}
+  --case-a:#2f9e55;--case-b:#2f7bf0;--struck:#d93a3a;--house:#f6d36b38;--corner:#f39a4a40;--target:#d93a3a1c;
+  /* The one background the screens' cards share, each card showing its own stretch of it, so cards side
+     by side run into each other the way a store page's screenshots do. */
+  --strip:linear-gradient(90deg,#d9e8ff,#e4dcff 18%,#ffdcea 34%,#ffe6cf 50%,#dff4e2 66%,#d6efff 82%,#e2dcff);
+  --card:260px;--gap:14px}
 @media (prefers-color-scheme:dark){:root:not([data-theme=light]){
-  --accent:#5aa7ff;--accent-ink:#7cb9ff;--accent-soft:#5aa7ff17;--accent-line:#5aa7ff45;--tile-glow:#5aa7ff80;
-  --house:#f6d36b1f;--corner:#f39a4a2e;--target:#ff5b5b24;--struck:#ff6b6b}}
-:root[data-theme=dark]{--accent:#5aa7ff;--accent-ink:#7cb9ff;--accent-soft:#5aa7ff17;--accent-line:#5aa7ff45;--tile-glow:#5aa7ff80;
-  --house:#f6d36b1f;--corner:#f39a4a2e;--target:#ff5b5b24;--struck:#ff6b6b}
+  --accent:#5aa7ff;--accent-ink:#7cb9ff;--accent-soft:#5aa7ff17;--accent-line:#5aa7ff45;
+  --house:#f6d36b1f;--corner:#f39a4a2e;--target:#ff5b5b24;--struck:#ff6b6b;
+  --strip:linear-gradient(90deg,#11223f,#1f1a3d 18%,#35172b 34%,#30220f 50%,#10291c 66%,#0c2638 82%,#1f1a3d)}}
+:root[data-theme=dark]{--accent:#5aa7ff;--accent-ink:#7cb9ff;--accent-soft:#5aa7ff17;--accent-line:#5aa7ff45;
+  --house:#f6d36b1f;--corner:#f39a4a2e;--target:#ff5b5b24;--struck:#ff6b6b;
+  --strip:linear-gradient(90deg,#11223f,#1f1a3d 18%,#35172b 34%,#30220f 50%,#10291c 66%,#0c2638 82%,#1f1a3d)}
 
 header .home{font-family:var(--logo);font-weight:800;letter-spacing:-.01em}
-.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:48px;align-items:center;padding:64px 0 40px}
-.brand{font-size:76px;font-weight:800;letter-spacing:-.025em;line-height:1;margin:0 0 18px;display:inline-flex;align-items:center;
-  gap:.2em;font-family:var(--logo);white-space:nowrap}
 
-/* The name, as the app's icon is: the board's corner settles first, the letters rise one by one, and then
-   the 7 is placed on its tile, which keeps glowing. Only here; the bar shows it still. */
-.brand .mark{width:.92em;height:.92em;flex:none;display:block;animation:pop .7s cubic-bezier(.34,1.6,.5,1) .1s both}
-.brand .mark .seven{transform-box:fill-box;transform-origin:center;
-  animation:pop .8s cubic-bezier(.34,1.7,.5,1) .78s both,glow 3.4s ease-in-out 1.7s infinite}
-.brand .word{display:inline-flex}
+/* ── The app: its icon, name and the one thing to do, then the strip of facts under it. ── */
+.app{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-areas:"icon text" "icon cta";column-gap:28px;
+  align-items:center;padding:64px 0 0}
+.app .icon{grid-area:icon}
+.app .text{grid-area:text;align-self:end}
+.app .cta{grid-area:cta;align-self:start}
+/* The icon is dark on the light theme and light on the dark one, so it stands out from the page. */
+.app .icon{width:132px;height:132px;border-radius:30px;overflow:hidden;flex:none;box-shadow:0 0 0 1px var(--line),0 18px 36px -20px #0a1b3a80;
+  animation:pop .7s cubic-bezier(.34,1.6,.5,1) .05s both}
+.app .icon img{display:block;width:100%;height:100%}
+.app .icon .on-dark{display:none}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .app .icon .on-light{display:none}
+  :root:not([data-theme=light]) .app .icon .on-dark{display:block}}
+:root[data-theme=dark] .app .icon .on-light{display:none}
+:root[data-theme=dark] .app .icon .on-dark{display:block}
+.brand{font:800 64px/1 var(--logo);letter-spacing:-.025em;margin:0}
 .brand .ch{display:inline-block;animation:rise .8s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(.2s + var(--i) * .055s)}
+.app .subtitle{margin:8px 0 2px;font-size:19px;color:var(--ink-2)}
+.app .developer{font-size:14.5px;color:var(--muted)}
+.app .developer a{color:var(--accent-ink)}
+.cta{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:18px}
+/* What is not out yet sits beside the button as words, underlined with dots, since it leads nowhere yet. */
+.soon{display:inline-flex;align-items:center;height:44px;padding:0 10px;font-weight:600;font-size:15px;color:var(--muted);
+  text-decoration:underline dotted;text-decoration-color:var(--line-2);text-decoration-thickness:2px;text-underline-offset:6px;cursor:default}
 @keyframes rise{from{opacity:0;filter:blur(10px);transform:translateY(.22em)}to{opacity:1;filter:none;transform:none}}
-@keyframes pop{from{opacity:0;transform:scale(0)}to{opacity:1;transform:scale(1)}}
-@keyframes glow{0%,100%{filter:drop-shadow(0 0 .02em var(--tile-glow))}50%{filter:drop-shadow(0 0 .09em var(--tile-glow))}}
-.cta{display:flex;gap:10px;flex-wrap:wrap}
+@keyframes pop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:scale(1)}}
 
-/* The board beside the name, drawn as the app draws a hint: a flat, legible board with the pattern on it,
-   and the hint's panel beside it, saying each step while the board shows it. The four steps take three
-   seconds each; with reduced motion the board holds the last one. */
-.hero figure{margin:0;border-radius:18px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line);
-  aspect-ratio:16/10;background:var(--stage);display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;padding:14px;
-  align-items:center}
-.board{height:100%;aspect-ratio:1;display:block;background:var(--panel)}
+.facts{display:flex;margin:36px 0 0;padding:16px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  overflow-x:auto;scrollbar-width:none}
+.facts::-webkit-scrollbar{display:none}
+.facts div{flex:1 0 auto;min-width:120px;display:grid;justify-items:center;gap:3px;padding:2px 18px;text-align:center}
+.facts div+div{border-left:1px solid var(--line)}
+.facts dt{font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.facts dd{margin:0;font:800 22px/1.2 var(--logo);color:var(--ink-2)}
+.facts .under{font:400 12.5px/1.3 var(--body);color:var(--muted)}
+
+/* ── The screens, as a store page shows them: a row to scroll, each with its headline over the phone. ── */
+.shotshead{display:flex;align-items:center;gap:12px}
+.shotshead h2{flex:1}
+.arrows{display:flex;gap:8px;margin-top:38px}
+.arrows button{width:38px;height:38px;display:grid;place-items:center;border-radius:50%;border:0;cursor:pointer;color:var(--ink);
+  background:var(--glass);backdrop-filter:var(--glass-filter);-webkit-backdrop-filter:var(--glass-filter);
+  box-shadow:inset 0 1px 0 var(--glass-rim),inset 0 0 0 1px color-mix(in srgb,var(--glass-rim) 28%,transparent),var(--glass-shadow);
+  transition:transform .3s var(--spring),opacity .2s}
+.arrows button:active{transform:scale(.92)}
+.arrows button:disabled{opacity:.35;cursor:default}
+.arrows svg{width:18px;height:18px}
+.strip{display:flex;gap:var(--gap);overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 28px;padding:6px 28px 20px;margin:10px -28px 0;
+  scrollbar-width:none;overscroll-behavior-x:contain}
+.strip::-webkit-scrollbar{display:none}
+.card{flex:none;margin:0;width:var(--card);aspect-ratio:9/17.5;scroll-snap-align:start;border-radius:24px;overflow:hidden;position:relative;
+  display:flex;flex-direction:column;align-items:center;padding:20px 0 0;
+  background-image:var(--strip);background-size:calc(var(--n) * (var(--card) + var(--gap))) 100%;
+  background-position:calc(var(--i) * (var(--card) + var(--gap)) * -1) 0;box-shadow:inset 0 0 0 1px var(--line)}
+.card h3{margin:0 18px 16px;font:800 21px/1.2 var(--logo);letter-spacing:-.01em;text-align:center;color:var(--ink);text-wrap:balance}
+/* The phone comes up from the card's foot, cut off by it, as on a store page. */
+.card a{display:block;width:82%;cursor:zoom-in}
+.card img{display:block;width:100%;height:auto;border-radius:22px;box-shadow:0 0 0 5px #0b0b10,0 18px 30px -12px #0006}
+.card .screen{width:82%;border-radius:22px;background:var(--panel);box-shadow:0 0 0 5px #0b0b10,0 18px 30px -12px #0006;
+  padding:10px;display:grid;gap:10px}
+
+/* The first card's hint, drawn as the app draws one: a flat, legible board with the pattern on it, and
+   the hint's panel under it saying each step while the board shows it. Four steps of three seconds; with
+   reduced motion it holds the last. */
+.board{width:100%;height:auto;aspect-ratio:1;display:block;background:var(--panel)}
 .board .given{font:700 23px var(--logo);fill:var(--ink)}
 .board .note{font:700 10px var(--logo);fill:var(--muted)}
 .board .on .note{fill:#fff}
@@ -74,71 +124,60 @@ header .home{font-family:var(--logo);font-weight:800;letter-spacing:-.01em}
 @keyframes case-a{0%,48%{opacity:1}52%,73%{opacity:.2}77%,100%{opacity:1}}
 @keyframes case-b{0%,23%{opacity:1}27%,48%{opacity:.2}52%,100%{opacity:1}}
 @keyframes end{0%,73%{opacity:0}77%,97%{opacity:1}100%{opacity:0}}
-
-.hint{align-self:stretch;display:flex;flex-direction:column;gap:4px;min-width:0;padding:16px 16px 14px;border-radius:14px;
-  background:var(--panel);color:var(--ink)}
-.hint b{font:800 19px/1.2 var(--logo);letter-spacing:-.01em}
-.hint small{font-size:12.5px;color:var(--muted)}
-.hint .says{display:grid;margin-top:12px;flex:1}
-.hint .says p{grid-area:1/1;margin:0;font-size:14px;line-height:1.5;color:var(--ink-2);opacity:0;
+.hint{display:flex;flex-direction:column;gap:2px;padding:12px 12px 10px;border-radius:14px;background:var(--sunk);color:var(--ink)}
+.hint b{font:800 16px/1.2 var(--logo)}
+.hint small{font-size:11.5px;color:var(--muted)}
+.hint .says{display:grid;margin-top:8px;min-height:5.4em}
+.hint .says p{grid-area:1/1;margin:0;font-size:12.5px;line-height:1.45;color:var(--ink-2);opacity:0;
   animation:say 12s infinite;animation-delay:calc(var(--k) * 3s - 12s)}
 .hint .says strong{color:var(--accent-ink)}
-.hint .pages{display:flex;gap:4px;align-items:center}
+.hint .pages{display:flex;gap:4px;align-items:center;margin-top:6px}
 .hint .pages i{height:4px;width:8px;border-radius:2px;background:var(--line-2);
   animation:page 12s infinite;animation-delay:calc(var(--k) * 3s - 12s)}
 @keyframes say{0%{opacity:0;transform:translateY(4px)}3%,23%{opacity:1;transform:none}26%,100%{opacity:0}}
 @keyframes page{0%,24%{width:22px;background:var(--accent)}26%,100%{width:8px;background:var(--line-2)}}
 @media (prefers-reduced-motion:reduce){
-  .brand .mark,.brand .mark .seven,.brand .ch{animation:none}
+  .app .icon,.brand .ch{animation:none}
   .board .case-a,.board .case-b,.board .end{animation:none;opacity:1}
   .hint .says p,.hint .pages i{animation:none}
   .hint .says p:last-child{opacity:1}
   .hint .pages i:last-child{width:22px;background:var(--accent)}
 }
 
-.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:20px}
-.card{display:flex;flex-direction:column;gap:10px;border:1px solid var(--line);border-radius:var(--r);background:var(--panel);
-  padding:22px;color:var(--ink);transition:border-color .15s,transform .15s}
-a.card:hover{text-decoration:none;border-color:var(--accent-line);transform:translateY(-2px)}
-.card b{font-size:17px;letter-spacing:-.01em}
-.card p{margin:0;color:var(--ink-2);font-size:14.5px}
-.card .go{margin-top:auto;color:var(--accent-ink);font-weight:600;font-size:14px}
-.card.soon .go{color:var(--muted)}
-/* The card a first visit should take. */
-.card.featured{border:1px solid var(--accent-line);background:linear-gradient(180deg,var(--accent-soft),var(--panel) 60%);
-  box-shadow:0 10px 30px -24px color-mix(in srgb,var(--accent) 70%,transparent)}
-.card.featured:hover{border-color:var(--accent)}
-.card.featured .go{font-size:15px;animation:goglow 2.8s ease-in-out infinite}
-@keyframes goglow{0%,100%{text-shadow:0 0 0 transparent}50%{text-shadow:0 0 8px var(--tile-glow)}}
-
-/* The screens stand as the phone holds them, whole. */
-.gallery{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:16px}
-.gallery figure{margin:0}
-.gallery a{display:block;cursor:zoom-in}
-.gallery img{display:block;width:100%;height:auto;aspect-ratio:700/1521;object-fit:cover;object-position:top;border-radius:18px;
-  border:1px solid var(--line);background:var(--stage)}
-.gallery a:hover img{border-color:var(--accent-line)}
-.gallery figcaption{font-size:13.5px;color:var(--ink-2);margin-top:8px;line-height:1.5}
+/* ── What it is, what is new, and the facts. ── */
+.about{position:relative;max-width:70ch;color:var(--ink-2);font-size:16.5px;line-height:1.65}
+.about p{margin:0 0 12px}
+.about:not(.open){max-height:calc(1.65em * 4);overflow:hidden}
+.about:not(.open)::after{content:"";position:absolute;inset:auto 0 0;height:1.65em;background:linear-gradient(transparent,var(--bg))}
+.more{background:none;border:0;padding:0;margin:4px 0 0;font:inherit;font-size:15px;font-weight:600;color:var(--accent-ink);cursor:pointer}
+.new{max-width:70ch}
+.new .when{display:flex;justify-content:space-between;gap:12px;color:var(--muted);font-size:14px;margin:4px 0 10px}
+.new ul{margin:0;padding-left:20px;color:var(--ink-2)}
+.new li{margin-bottom:6px}
+.info{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:40px;margin:8px 0 0}
+.info div{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--line);font-size:15px}
+.info dt{color:var(--muted)}
+.info dd{margin:0;text-align:right;color:var(--ink-2)}
 /* The credits are owed, not read. */
-.credits{margin:20px 0 0;color:var(--muted);font-size:11px;line-height:1.6}
+.credits{margin:28px 0 0;color:var(--muted);font-size:11px;line-height:1.6}
 .credits p{margin:0}
 .credits a{color:var(--muted);text-decoration:underline;text-underline-offset:2px}
 
-@media (max-width:900px){
-  .hero{grid-template-columns:minmax(0,1fr);gap:28px;padding-top:40px}
-  .cards{grid-template-columns:1fr}
-  .gallery{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .brand{font-size:56px}
-}
-/* On a phone the board takes the whole width, so its notes stay readable, and the hint goes under it. */
 @media (max-width:640px){
-  .hero figure{aspect-ratio:auto;grid-template-columns:minmax(0,1fr);padding:10px;gap:10px}
-  .board{width:100%;height:auto}
-  .hint .says{min-height:4.5em}
+  :root{--card:224px;--gap:12px}
+  .app{grid-template-areas:"icon text" "cta cta";column-gap:18px;padding-top:36px}
+  .app .text{align-self:center}
+  .app .icon{width:96px;height:96px;border-radius:22px}
+  .brand{font-size:42px}
+  .app .subtitle{font-size:16px}
+  .cta{margin-top:18px}
+  .facts div{min-width:104px;padding:2px 12px}
+  .strip{scroll-padding:0 16px;padding:6px 16px 20px;margin:10px -16px 0}
+  .card h3{font-size:18px}
+  .arrows{display:none}
+  .info{grid-template-columns:1fr}
 }
-.lede p{margin:0}.lede p+p{margin-top:12px}
-/* The words under a section's heading, before what it shows, read as a note. */
-section>.prose p{margin:0;color:var(--muted);font-size:14px}
+.lede p{margin:0}
 .content-error{color:var(--muted);padding:48px 0}
 </style>
 </head>
@@ -168,23 +207,7 @@ section>.prose p{margin:0;color:var(--muted);font-size:14px}
 <script src="kit/lightbox.js"></script>
 <script>
 const {escape, inline} = Content;
-const button = ([words, href, primary]) => `<a class="btn${primary ? ' primary' : ''}" href="${escape(href)}"`
-  + `${/^https?:/.test(href) ? ' target="_blank" rel="noopener"' : ''}>${inline(words)}</a>`;
-
-/**
- * The app's icon, drawn: a corner of a board with its 7 on a blue tile. It is drawn in the page's ink, dark
- * on the light theme and light on the dark one, so it stands out from the page either way; the tile keeps
- * its blue.
- */
-const MARK = '<svg class="mark" viewBox="0 0 30 30" aria-hidden="true">'
-  + '<defs><linearGradient id="tile" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--tile-a)"/><stop offset="1" stop-color="var(--tile-b)"/></linearGradient></defs>'
-  + '<rect width="30" height="30" rx="7" fill="var(--ink)"/>'
-  + '<path stroke="var(--bg)" stroke-opacity=".3" stroke-width=".8" d="M10 0v30M20 0v30M0 10h30M0 20h30"/>'
-  + '<g fill="var(--bg)" font-family="ui-rounded,Nunito,sans-serif" font-weight="700" font-size="7" text-anchor="middle">'
-  + '<text x="5" y="7.5">5</text><text x="25" y="7.5">9</text><text x="25" y="27.5">1</text>'
-  + '<g fill-opacity=".6" font-size="2.6"><text x="5" y="23.2">2</text><text x="2.4" y="25.6">4</text><text x="5" y="28">8</text></g></g>'
-  + '<g class="seven"><rect x="10.8" y="10.8" width="8.4" height="8.4" rx="2.2" fill="url(#tile)"/>'
-  + '<text x="15" y="17.6" fill="#fff" font-family="ui-rounded,Nunito,sans-serif" font-weight="700" font-size="7" text-anchor="middle">7</text></g></svg>';
+const away = href => /^https?:/.test(href) ? ' target="_blank" rel="noopener"' : '';
 
 /*
  * The board: a real X-Wing on 7, cut from the solution of Wikipedia's example puzzle with cells emptied so
@@ -240,44 +263,96 @@ function board(label) {
   return `<svg class="board" viewBox="-1.1 -1.1 ${9 * size + 2.2} ${9 * size + 2.2}" role="img" aria-label="${escape(label)}">${out.join('')}</svg>`;
 }
 
-Content.kind('hero', block => {
-  const [name, meaning] = block.pairs('technique')[0] || [];
-  const steps = block.all('step');
-  const hint = name ? `<div class="hint"><b>${inline(name)}</b>${meaning ? `<small>${inline(meaning)}</small>` : ''}`
-    + `<div class="says">${steps.map((step, k) => `<p style="--k:${k}">${inline(step)}</p>`).join('')}</div>`
-    + `<div class="pages" aria-hidden="true">${steps.map((step, k) => `<i style="--k:${k}"></i>`).join('')}</div></div>` : '';
-  return `<section class="hero"><div><p class="kicker">${inline(block.one('kicker'))}</p>`
-    + `<h1 class="brand" id="brand" aria-label="Sudoku">Sudoku</h1>`
-    + `<div class="lede">${block.html}</div><div class="cta">${block.pairs('button').map(button).join('')}</div>`
-    + (block.one('note') ? `<p class="note" style="margin-top:14px">${inline(block.one('note'))}</p>` : '') + '</div>'
-    + (name ? `<figure>${board(`A Sudoku board with an ${name} on 7, explained by a hint beside it`)}${hint}</figure>` : '')
-    + '</section>';
+/** The app: its icon (dark on the light theme, light on the dark one), name, the one button and the facts. */
+Content.kind('app', block => {
+  const [button, href] = block.pairs('button')[0] || [];
+  const [developer, developerHref] = block.pairs('developer')[0] || [];
+  const facts = block.pairs('fact').map(([label, value, under]) =>
+    `<div><dt>${inline(label)}</dt><dd>${inline(value)}</dd>${under ? `<dd class="under">${inline(under)}</dd>` : ''}</div>`).join('');
+  return `<section class="app"><span class="icon"><img class="on-light" src="gallery/icon-dark.png" alt="" width="132" height="132">`
+    + `<img class="on-dark" src="gallery/icon-light.png" alt="" width="132" height="132"></span>`
+    + `<div class="text"><h1 class="brand" id="brand">${inline(block.one('name'))}</h1>`
+    + `<p class="subtitle">${inline(block.one('subtitle'))}</p>`
+    + (developer ? `<span class="developer">by <a href="${escape(developerHref)}"${away(developerHref)}>${inline(developer)}</a></span>` : '')
+    + `</div><div class="cta">${button ? `<a class="btn primary" href="${escape(href)}"${away(href)}>${inline(button)}</a>` : ''}`
+    + `${block.one('soon') ? `<span class="soon">${inline(block.one('soon'))}</span>` : ''}</div>`
+    + `</section>${facts ? `<dl class="facts">${facts}</dl>` : ''}`;
 });
 
-/** A card leads somewhere. The one whose link is empty (a store page not open yet) says so instead. */
-Content.kind('card', block => {
-  const href = block.one('link');
-  const go = href ? block.one('go') : block.one('until') || block.one('go');
-  const featured = block.one('featured') === 'yes' && href;
-  const away = /^https?:/.test(href) ? ' target="_blank" rel="noopener"' : '';
-  return href
-    ? `<a class="card${featured ? ' featured' : ''}" href="${escape(href)}"${away}><b>${inline(block.one('name'))}</b>${block.html}<span class="go">${inline(go)}</span></a>`
-    : `<div class="card soon"><b>${inline(block.one('name'))}</b>${block.html}<span class="go">${inline(go)}</span></div>`;
-}, 'cards');
+/**
+ * The screens, one card each, the live hint first. Each card is told how many there are and where it
+ * stands, so it shows its own stretch of the one background they share.
+ */
+Content.kind('shots', block => {
+  const [demo, technique, meaning] = block.pairs('demo')[0] || [];
+  const shots = block.pairs('shot');
+  const n = shots.length + (demo ? 1 : 0);
+  const steps = block.all('step');
+  const cards = [];
+  if (demo) cards.push(`<h3>${inline(demo)}</h3><div class="screen">${board(`A Sudoku board with an ${technique} on 7, explained by a hint under it`)}`
+    + `<div class="hint"><b>${inline(technique)}</b>${meaning ? `<small>${inline(meaning)}</small>` : ''}`
+    + `<div class="says">${steps.map((step, k) => `<p style="--k:${k}">${inline(step)}</p>`).join('')}</div>`
+    + `<div class="pages" aria-hidden="true">${steps.map((step, k) => `<i style="--k:${k}"></i>`).join('')}</div></div></div>`);
+  for (const [src, headline] of shots) {
+    cards.push(`<h3>${inline(headline || '')}</h3><a href="${escape(src)}"><img src="${escape(src)}" alt="${escape(headline || '')}" loading="lazy" width="700" height="1521"></a>`);
+  }
+  return '<div class="strip" id="strip">' + cards.map((card, i) => `<figure class="card" style="--i:${i};--n:${n}">${card}`
+    + `<figcaption hidden>${i === 0 && demo ? '' : escape(shots[i - (demo ? 1 : 0)][1] || '')}</figcaption></figure>`).join('') + '</div>';
+});
 
-Content.kind('gallery', block => '<div class="gallery">' + block.pairs('picture').map(([src, caption]) =>
-  `<figure><a href="${escape(src)}"><img src="${escape(src)}" alt="${escape(caption || '')}" loading="lazy" width="700" height="1521"></a>`
-  + `${caption ? `<figcaption>${inline(caption)}</figcaption>` : ''}</figure>`).join('') + '</div>');
+/** What the app is, cut to its first lines until More opens it. */
+Content.kind('about', block => `<div class="about" id="about">${block.html}</div><button class="more" type="button" id="more">More</button>`);
+
+Content.kind('new', block => `<div class="new"><div class="when"><span>${inline(block.one('version'))}</span>`
+  + `<span>${inline(block.one('date'))}</span></div>${block.html}</div>`);
+
+Content.kind('info', block => '<dl class="info">' + block.pairs('row').map(([label, value]) =>
+  `<div><dt>${inline(label)}</dt><dd>${inline(value)}</dd></div>`).join('') + '</dl>');
 
 Content.kind('credits', block => `<div class="credits">${block.html}</div>`);
 
 /** What only works once the words are on the page. */
 document.addEventListener('contentready', () => {
   const brand = document.getElementById('brand');
-  if (brand) brand.innerHTML = MARK + '<span class="word" aria-hidden="true">'
-    + [...'Sudoku'].map((c, i) => `<span class="ch" style="--i:${i}">${c}</span>`).join('') + '</span>';
+  if (brand) {
+    const name = brand.textContent;
+    brand.setAttribute('aria-label', name);
+    brand.innerHTML = [...name].map((c, i) => `<span class="ch" style="--i:${i}" aria-hidden="true">${c}</span>`).join('');
+  }
 
-  Lightbox.wire('.gallery a');
+  // More opens the whole of what the app is, and is gone once there is no more to show.
+  const about = document.getElementById('about'), more = document.getElementById('more');
+  if (about && more) {
+    if (about.scrollHeight <= about.clientHeight + 2) more.remove();
+    more.onclick = () => { about.classList.add('open'); more.remove(); };
+  }
+
+  // On a wide screen the row of screens has arrows beside its heading, a card at a time.
+  const strip = document.getElementById('strip');
+  const heading = strip?.closest('section')?.querySelector('h2');
+  if (strip && heading) {
+    const ICON = path => `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${path}</svg>`;
+    const row = document.createElement('div');
+    row.className = 'shotshead';
+    heading.replaceWith(row);
+    row.append(heading);
+    row.insertAdjacentHTML('beforeend', '<div class="arrows">'
+      + `<button type="button" data-by="-1" aria-label="Previous screens">${ICON('<path d="M12.5 4.5 7 10l5.5 5.5"/>')}</button>`
+      + `<button type="button" data-by="1" aria-label="Next screens">${ICON('<path d="M7.5 4.5 13 10l-5.5 5.5"/>')}</button></div>`);
+    const buttons = row.querySelectorAll('.arrows button');
+    const card = () => strip.querySelector('.card').getBoundingClientRect().width + 14;
+    buttons.forEach(button => button.onclick = () =>
+      strip.scrollBy({left: Number(button.dataset.by) * card() * 2, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}));
+    const update = () => {
+      buttons[0].disabled = strip.scrollLeft < 4;
+      buttons[1].disabled = strip.scrollLeft + strip.clientWidth >= strip.scrollWidth - 4;
+    };
+    strip.addEventListener('scroll', update, {passive: true});
+    addEventListener('resize', update);
+    update();
+  }
+
+  Lightbox.wire('.strip a');
 
   /**
    * Arriving from another page at #gallery: the browser looked for the section before the words were drawn
