@@ -5050,6 +5050,23 @@
         }
       }
     },
+    "Show Solution": {
+      "comment": "Practice: shows the expected step in full.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show Solution"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çözümü Göster"
+          }
+        }
+      }
+    },
     "Show Timer": {
       "comment": "Settings toggle",
       "localizations": {

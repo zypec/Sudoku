@@ -207,4 +207,18 @@ struct TrainingTests {
         practice.evaluate()
         #expect(practice.status == .wrongMove)
     }
+
+    /// Show Solution opens the expected step in full, and applying it solves the position.
+    @Test func theSolutionCanBeShownAndApplied() throws {
+        let practice = try #require(PracticeModel(code: PracticePick(technique: .bug, index: 0, seed: 5).code, settings: settings, progress: progress))
+        practice.game.showPracticeSolution()
+        guard case .step(let step, _)? = practice.game.activeHint?.hint else {
+            Issue.record("Expected the step as a hint")
+            return
+        }
+        #expect(step.technique == .bug)
+        practice.game.applyHint()
+        practice.evaluate()
+        #expect(practice.status == .solved)
+    }
 }

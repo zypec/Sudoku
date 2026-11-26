@@ -134,6 +134,8 @@ struct PracticePick: Hashable, Sendable {
 struct PracticeSetup {
     let game: SudokuGame
     let expected: SolveStep
+    /// The candidates the step was found on, to explain it in full when the player asks.
+    let board: Board
 
     init?(position: TrainingPositions.Position, technique: TechniqueKind, transform: PuzzleTransform) {
         guard let board = position.board(transformedBy: transform),
@@ -145,6 +147,7 @@ struct PracticeSetup {
         let notes = technique.level > 1 ? Geometry.cells.map(board.candidates(at:)) : Array(repeating: CandidateSet.empty, count: Geometry.cellCount)
         game = SudokuGame(puzzle: puzzle, mistakeLimit: nil, notes: notes)
         self.expected = expected
+        self.board = board
     }
 }
 
@@ -180,6 +183,7 @@ final class PracticeModel {
     @ObservationIgnored private let settings: AppSettings
     @ObservationIgnored private let progress: TrainingProgress
     @ObservationIgnored private var expected: SolveStep
+    @ObservationIgnored private var expectedBoard: Board
     @ObservationIgnored private var initialNotes: [CandidateSet]
     /// Other right moves the player chose to keep, as `cell * 10 + digit`.
     @ObservationIgnored private var keptMoves = Set<Int>()
@@ -243,6 +247,7 @@ final class PracticeModel {
         self.progress = progress
         game = GameModel(game: setup.game, settings: settings, followsMistakeLimitSetting: false)
         expected = setup.expected
+        expectedBoard = setup.board
         initialNotes = setup.game.notes
         prepare()
     }
@@ -276,6 +281,8 @@ final class PracticeModel {
     private func prepare() {
         let cells = isPlacement ? expected.placements.map(\.cell) : expected.eliminations.map(\.cell)
         game.practiceFocus = (technique, cells, isPlacement)
+        let solution = Hint.step(expected, board: expectedBoard)
+        game.practiceSolution = { solution }
         if !isRandom {
             progress.setCurrentPosition(positionIndex, of: technique)
         }
@@ -314,6 +321,7 @@ final class PracticeModel {
         self.pick = pick
         game = GameModel(game: setup.game, settings: settings, followsMistakeLimitSetting: false)
         expected = setup.expected
+        expectedBoard = setup.board
         initialNotes = setup.game.notes
         status = .working(done: 0, total: 0)
         loadID += 1

@@ -94,6 +94,15 @@ final class GameModel {
     /// In training: the technique being practiced and the cells it acts on. A hint then only
     /// points at those cells instead of explaining the technique.
     @ObservationIgnored var practiceFocus: (technique: TechniqueKind, cells: [CellIndex], isPlacement: Bool)?
+    /// In practice: the expected step as a full hint, for when pointing at its cells isn't enough.
+    @ObservationIgnored var practiceSolution: (() -> Hint)?
+
+    /// Shows the practice position's expected step in full: its reasoning, the visual explanation and
+    /// Apply.
+    func showPracticeSolution() {
+        guard let solution = practiceSolution?() else { return }
+        show(solution)
+    }
 
     var isPractice: Bool {
         practiceFocus != nil

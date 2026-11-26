@@ -132,7 +132,15 @@ struct HintPanel: View {
             .controlSize(.large)
             .frame(maxWidth: .infinity, alignment: .trailing)
         case .unavailable:
-            EmptyView()
+            // In practice the hint only points at the cells; the whole step is a tap away.
+            if model.practiceSolution != nil {
+                Button("Show Solution") {
+                    model.showPracticeSolution()
+                }
+                .glassProminentButton()
+                .controlSize(.large)
+                .frame(maxWidth: .infinity, alignment: .trailing)
+            }
         case .step, .chain:
             // One glass container, so switching to the visual explanation morphs the buttons:
             // Next turns from a capsule into a circle and Play grows out of the glass beside it.

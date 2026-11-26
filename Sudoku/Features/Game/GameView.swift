@@ -175,6 +175,10 @@ struct GameView: View {
                 Divider()
             }
             if let practice {
+                Button("Show Solution", systemImage: "lightbulb.max") {
+                    model.showPracticeSolution()
+                }
+                .disabled(practice.status == .solved)
                 Button("Copy Training Code", systemImage: "doc.on.doc") {
                     UIPasteboard.general.string = practice.pick.code
                     withAnimation(.snappy) { isShowingCodeCopied = true }
