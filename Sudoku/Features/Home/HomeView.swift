@@ -60,7 +60,7 @@ struct HomeView: View {
             }
             .scrollBounceBehavior(.basedOnSize)
             .safeAreaInset(edge: .bottom) {
-                GlassEffectContainer(spacing: 12) {
+                GlassGroup(spacing: 12) {
                     VStack(spacing: 12) {
                         if let savedGame {
                             continueButton(for: savedGame)
@@ -103,7 +103,7 @@ struct HomeView: View {
                 } startWithCode: { code in
                     await startGame(code: code)
                 }
-                .navigationTransition(.zoom(sourceID: TransitionID.newGame, in: namespace))
+                .zoomTransition(sourceID: TransitionID.newGame, in: namespace)
             }
             // A standard sheet: the zoom out of the toolbar button stuttered on the first open.
             .sheet(isPresented: $isShowingSettings) {
@@ -167,7 +167,7 @@ struct HomeView: View {
             .font(.subheadline)
             .frame(maxWidth: .infinity)
         }
-        .buttonStyle(.glassProminent)
+        .glassProminentButton()
         .controlSize(.large)
     }
 
@@ -183,14 +183,14 @@ struct HomeView: View {
         Group {
             if savedGame == nil {
                 Button { isShowingNewGame = true } label: { label }
-                    .buttonStyle(.glassProminent)
+                    .glassProminentButton()
             } else {
                 Button { isShowingNewGame = true } label: { label }
-                    .buttonStyle(.glass)
+                    .glassButton()
             }
         }
         .controlSize(.large)
-        .matchedTransitionSource(id: TransitionID.newGame, in: namespace)
+        .zoomSource(id: TransitionID.newGame, in: namespace)
     }
 
     /// A game left unfinished and replaced counts as lost, once the player had started it.
@@ -281,7 +281,7 @@ private struct DailyCard: View {
                     .font(.headline)
                     .frame(maxWidth: .infinity)
             }
-            .buttonStyle(.glass)
+            .glassButton()
             .controlSize(.large)
         }
         .padding(18)

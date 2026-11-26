@@ -98,13 +98,13 @@ struct GameResultSheet: View {
                             .font(.headline)
                             .frame(maxWidth: .infinity)
                     }
-                    .buttonStyle(.glassProminent)
+                    .glassProminentButton()
                     Button(action: onHome) {
                         Text("Home")
                             .font(.headline)
                             .frame(maxWidth: .infinity)
                     }
-                    .buttonStyle(.glass)
+                    .glassButton()
                 }
                 .controlSize(.large)
             }
@@ -123,13 +123,13 @@ struct GameResultSheet: View {
                     .font(.headline)
                     .frame(maxWidth: .infinity)
             }
-            .buttonStyle(.glassProminent)
+            .glassProminentButton()
             Button(action: onPlayAgain) {
                 Label("Play Again", systemImage: "arrow.clockwise")
                     .font(.headline)
                     .frame(maxWidth: .infinity)
             }
-            .buttonStyle(.glass)
+            .glassButton()
             HStack(spacing: 32) {
                 Button("New Game", action: onNewGame)
                 Button("Home", action: onHome)

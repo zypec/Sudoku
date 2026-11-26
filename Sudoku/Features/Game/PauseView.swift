@@ -69,7 +69,7 @@ struct PauseView: View {
                     .font(.headline)
                     .frame(maxWidth: .infinity)
             }
-            .buttonStyle(.glassProminent)
+            .glassProminentButton()
             .controlSize(.large)
             .frame(maxWidth: 420)
         }

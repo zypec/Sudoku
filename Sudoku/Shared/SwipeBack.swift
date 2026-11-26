@@ -35,7 +35,9 @@ private struct SwipeBackDisabler: UIViewControllerRepresentable {
         }
 
         private func setGesturesEnabled(_ isEnabled: Bool) {
-            navigationController?.interactiveContentPopGestureRecognizer?.isEnabled = isEnabled
+            if #available(iOS 26, *) {
+                navigationController?.interactiveContentPopGestureRecognizer?.isEnabled = isEnabled
+            }
             navigationController?.interactivePopGestureRecognizer?.isEnabled = isEnabled
         }
     }

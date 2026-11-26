@@ -26,7 +26,7 @@ struct NewGameSheet: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 10) {
-                    GlassEffectContainer(spacing: 10) {
+                    GlassGroup(spacing: 10) {
                         VStack(spacing: 10) {
                             ForEach(Difficulty.allCases) { difficulty in
                                 DifficultyCard(
@@ -62,7 +62,7 @@ struct NewGameSheet: View {
             .navigationTitle("New Game")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                Button(role: .close) {
+                CloseButton {
                     dismiss()
                 }
             }
@@ -165,9 +165,10 @@ private struct DifficultyCard: View {
             .opacity(difficulty.isAvailable ? 1 : 0.45)
         }
         .buttonStyle(.plain)
-        .glassEffect(
-            .regular.tint(difficulty.isAvailable ? difficulty.color.opacity(0.18) : nil).interactive(),
-            in: .rect(cornerRadius: 22)
+        .glassOrMaterial(
+            in: .rect(cornerRadius: 22),
+            tint: difficulty.isAvailable ? difficulty.color.opacity(0.18) : nil,
+            interactive: true
         )
         .accessibilityValue(difficulty.isAvailable ? Text(verbatim: "") : Text("Coming soon"))
     }

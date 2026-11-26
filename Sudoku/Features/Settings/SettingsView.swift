@@ -91,7 +91,7 @@ struct SettingsView: View {
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                Button(role: .close) {
+                CloseButton {
                     dismiss()
                 }
             }

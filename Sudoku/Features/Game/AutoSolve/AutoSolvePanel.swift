@@ -44,7 +44,7 @@ struct AutoSolvePanel: View {
                         .labelStyle(.iconOnly)
                         .frame(width: 24, height: 24)
                 }
-                .buttonStyle(.glass)
+                .glassButton()
                 .buttonBorderShape(.circle)
                 .disabled(!model.canStepAutoSolveBack)
 
@@ -56,7 +56,7 @@ struct AutoSolvePanel: View {
                         .frame(width: 24, height: 24)
                         .contentTransition(.symbolEffect(.replace))
                 }
-                .buttonStyle(.glassProminent)
+                .glassProminentButton()
                 .buttonBorderShape(.circle)
                 .disabled(state.isStuck)
 
@@ -67,7 +67,7 @@ struct AutoSolvePanel: View {
                         .labelStyle(.iconOnly)
                         .frame(width: 24, height: 24)
                 }
-                .buttonStyle(.glass)
+                .glassButton()
                 .buttonBorderShape(.circle)
                 .disabled(state.isStuck)
 
@@ -89,7 +89,7 @@ struct AutoSolvePanel: View {
                     }
                     .font(.body.weight(.semibold))
                 }
-                .buttonStyle(.glass)
+                .glassButton()
                 .accessibilityLabel(Text("Speed"))
                 .accessibilityValue(Text(verbatim: settings.autoSolveSpeed.label))
             }
@@ -97,7 +97,7 @@ struct AutoSolvePanel: View {
         }
         .padding(20)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-        .glassEffect(in: .rect(cornerRadius: 28))
+        .glassOrMaterial(in: .rect(cornerRadius: 28))
         .animation(.snappy, value: state.appliedSteps)
         .animation(.snappy, value: state.isPaused)
     }

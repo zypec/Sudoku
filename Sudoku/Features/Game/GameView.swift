@@ -52,7 +52,7 @@ struct GameView: View {
                 ProgressView()
                     .controlSize(.large)
                     .padding(24)
-                    .glassEffect(in: .rect(cornerRadius: 20))
+                    .glassOrMaterial(in: .rect(cornerRadius: 20))
             }
         }
         .navigationTitle(practice.map { $0.isRandom ? Text("Random Practice") : Text(verbatim: $0.technique.title) } ?? Text(model.game.puzzle.difficulty.title))
@@ -115,7 +115,7 @@ struct GameView: View {
                     .font(.subheadline.weight(.semibold))
                     .padding(.horizontal, 16)
                     .padding(.vertical, 10)
-                    .glassEffect()
+                    .glassOrMaterial(in: .capsule)
                     .transition(.move(edge: .top).combined(with: .opacity))
                     .task {
                         try? await Task.sleep(for: .seconds(1.6))

@@ -35,7 +35,7 @@ struct HintPanel: View {
         }
         .padding(20)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-        .glassEffect(in: .rect(cornerRadius: 28))
+        .glassOrMaterial(in: .rect(cornerRadius: 28))
         .animation(.snappy(duration: 0.2), value: activeHint.index)
         .sheet(isPresented: $isShowingGuide) {
             HintDetailSheet(model: model, hint: activeHint.hint)
@@ -105,7 +105,7 @@ struct HintPanel: View {
             Button("Erase Mistakes") {
                 model.eraseMistakes()
             }
-            .buttonStyle(.glassProminent)
+            .glassProminentButton()
             .controlSize(.large)
             .frame(maxWidth: .infinity, alignment: .trailing)
         case .impossibleNotes, .notesMissingSolution:
@@ -121,14 +121,14 @@ struct HintPanel: View {
                     }
                 }
             }
-            .buttonStyle(.glassProminent)
+            .glassProminentButton()
             .controlSize(.large)
             .frame(maxWidth: .infinity, alignment: .trailing)
         case .notesIncomplete:
             Button("Complete Notes") {
                 model.completeNotes()
             }
-            .buttonStyle(.glassProminent)
+            .glassProminentButton()
             .controlSize(.large)
             .frame(maxWidth: .infinity, alignment: .trailing)
         case .unavailable:
@@ -136,7 +136,7 @@ struct HintPanel: View {
         case .step, .chain:
             // One glass container, so switching to the visual explanation morphs the buttons:
             // Next turns from a capsule into a circle and Play grows out of the glass beside it.
-            GlassEffectContainer(spacing: 20) {
+            GlassGroup(spacing: 20) {
                 ZStack {
                     HStack(spacing: 12) {
                         GlassControl(systemImage: "chevron.left", title: "Back", id: "back", namespace: glassNamespace) {
@@ -184,7 +184,7 @@ extension HintPanel {
 }
 
 /// A Liquid Glass button for the hint panel's bottom row: a circle with an icon, or a capsule with
-/// a title. Each has a glass ID, so inside a `GlassEffectContainer` its shape morphs when the row
+/// a title. Each has a glass ID, so inside a `GlassGroup` its shape morphs when the row
 /// changes instead of popping.
 private struct GlassControl: View {
     let systemImage: String
@@ -221,8 +221,8 @@ private struct GlassControl: View {
             .contentShape(.capsule)
         }
         .buttonStyle(.plain)
-        .glassEffect(isProminent ? .regular.tint(.accentColor).interactive() : .regular.interactive(), in: .capsule)
-        .glassEffectID(id, in: namespace)
+        .glassOrMaterial(in: .capsule, tint: isProminent ? .accentColor : nil, interactive: true)
+        .glassID(id, in: namespace)
         .accessibilityLabel(Text(title))
     }
 }

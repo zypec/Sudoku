@@ -183,7 +183,7 @@ struct TechniqueDetailView: View {
                             .font(.headline)
                             .frame(maxWidth: .infinity)
                     }
-                    .buttonStyle(.glassProminent)
+                    .glassProminentButton()
                     .controlSize(.large)
                     Text("Positions: \(positionCount)")
                         .font(.caption)
@@ -281,7 +281,7 @@ private struct TechniqueExample: View {
                 .frame(width: 24, height: 24)
                 .contentTransition(.symbolEffect(.replace))
         }
-        .buttonStyle(.glass)
+        .glassButton()
         .buttonBorderShape(.circle)
         .controlSize(.large)
     }
@@ -354,17 +354,17 @@ struct PracticeBanner: View {
                 Button("Undo", systemImage: "arrow.uturn.backward") {
                     practice.undoWrongMove()
                 }
-                .buttonStyle(.glass)
+                .glassButton()
             case .otherSolution:
                 VStack(alignment: .trailing, spacing: 6) {
                     Button("Continue") {
                         practice.continueToExpected()
                     }
-                    .buttonStyle(.glass)
+                    .glassButton()
                     Button("Next") {
                         practice.nextPosition()
                     }
-                    .buttonStyle(.glassProminent)
+                    .glassProminentButton()
                 }
                 .controlSize(.small)
             case .solved:
@@ -373,18 +373,18 @@ struct PracticeBanner: View {
                         Button("Restart") {
                             practice.restart()
                         }
-                        .buttonStyle(.glass)
+                        .glassButton()
                         Button("Next") {
                             practice.nextPosition()
                         }
-                        .buttonStyle(.glassProminent)
+                        .glassProminentButton()
                     }
                     .controlSize(.small)
                 } else {
                     Button("Next") {
                         practice.nextPosition()
                     }
-                    .buttonStyle(.glassProminent)
+                    .glassProminentButton()
                 }
             case .working where practice.isRandom:
                 EmptyView()
