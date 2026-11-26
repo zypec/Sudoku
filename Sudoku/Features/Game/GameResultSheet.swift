@@ -49,9 +49,9 @@ struct GameResultSheet: View {
                     .font(.system(size: 44))
                     .foregroundStyle(color)
                 Text(title)
-                    .font(.system(.title, design: .rounded, weight: .bold))
+                    .font(.app(.title, weight: .bold))
                 Text(message)
-                    .font(.subheadline)
+                    .font(.app(.subheadline))
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
             }
@@ -60,11 +60,11 @@ struct GameResultSheet: View {
             if outcome == .solved {
                 VStack(spacing: 2) {
                     Text(score.total, format: .number)
-                        .font(.system(size: 56, weight: .heavy, design: .rounded))
+                        .font(.app(size: 56, weight: .heavy))
                         .monospacedDigit()
                         .contentTransition(.numericText())
                     Text("points")
-                        .font(.subheadline.weight(.semibold))
+                        .font(.app(.subheadline, weight: .semibold))
                         .foregroundStyle(.secondary)
                 }
                 VStack(spacing: 0) {
@@ -81,7 +81,7 @@ struct GameResultSheet: View {
                                 .monospacedDigit()
                                 .foregroundStyle(line.points < 0 ? AnyShapeStyle(Color.red) : AnyShapeStyle(.primary))
                         }
-                        .font(.subheadline)
+                        .font(.app(.subheadline))
                         .padding(.vertical, 9)
                     }
                 }
@@ -98,20 +98,20 @@ struct GameResultSheet: View {
                     if let returnTitle {
                         Button(action: onHome) {
                             Text(returnTitle)
-                                .font(.headline)
+                                .font(.app(.headline))
                                 .frame(maxWidth: .infinity)
                         }
                         .glassProminentButton()
                     } else {
                         Button(action: onNewGame) {
                             Label("New Game", systemImage: "plus")
-                                .font(.headline)
+                                .font(.app(.headline))
                                 .frame(maxWidth: .infinity)
                         }
                         .glassProminentButton()
                         Button(action: onHome) {
                             Text("Home")
-                                .font(.headline)
+                                .font(.app(.headline))
                                 .frame(maxWidth: .infinity)
                         }
                         .glassButton()
@@ -131,13 +131,13 @@ struct GameResultSheet: View {
         VStack(spacing: 10) {
             Button(action: onTakeBack) {
                 Label("Undo Last Mistake", systemImage: "arrow.uturn.backward")
-                    .font(.headline)
+                    .font(.app(.headline))
                     .frame(maxWidth: .infinity)
             }
             .glassProminentButton()
             Button(action: onPlayAgain) {
                 Label("Play Again", systemImage: "arrow.clockwise")
-                    .font(.headline)
+                    .font(.app(.headline))
                     .frame(maxWidth: .infinity)
             }
             .glassButton()
@@ -150,7 +150,7 @@ struct GameResultSheet: View {
                 }
             }
             .buttonStyle(.borderless)
-            .font(.subheadline.weight(.semibold))
+            .font(.app(.subheadline, weight: .semibold))
             .frame(maxWidth: .infinity)
             .padding(.top, 4)
         }

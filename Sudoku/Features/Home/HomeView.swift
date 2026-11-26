@@ -90,22 +90,10 @@ struct HomeView: View {
                 .padding(.horizontal)
                 .padding(.bottom, 8)
             }
-            // The screen draws its own large title, but the back button's long-press menu lists screens
-            // by their navigation title: without one, Home was an empty row there. The title is kept
-            // out of the bar by an empty principal item.
+            // The screen draws its own title and hides the bar, but the back button's long-press menu
+            // lists screens by their navigation title: without one, Home was an empty row there.
             .navigationTitle("Sudoku")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Color.clear.frame(width: 1, height: 1)
-                        .accessibilityHidden(true)
-                }
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button("Settings", systemImage: "gearshape") {
-                        isShowingSettings = true
-                    }
-                }
-            }
+            .toolbar(.hidden, for: .navigationBar)
             .navigationDestination(item: $activeGame) { model in
                 GameView(model: model)
             }
@@ -154,15 +142,33 @@ struct HomeView: View {
         }
     }
 
+    /// The date and the name at the very top, as Apple's own apps open, with Settings beside the name
+    /// instead of in a bar of its own above it.
     private var header: some View {
-        VStack(alignment: .leading, spacing: 2) {
-            Text(Date.now, format: .dateTime.weekday(.wide).day().month(.wide))
-                .font(.subheadline.weight(.semibold))
-                .foregroundStyle(.secondary)
-                .textCase(.uppercase)
-            Text("Sudoku")
-                .font(.system(.largeTitle, design: .rounded, weight: .bold))
+        HStack(alignment: .bottom) {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(Date.now, format: .dateTime.weekday(.wide).day().month(.wide))
+                    .font(.app(.subheadline, weight: .semibold))
+                    .foregroundStyle(.secondary)
+                    .textCase(.uppercase)
+                Text("Sudoku")
+                    .font(.app(.largeTitle, weight: .bold))
+                    .accessibilityAddTraits(.isHeader)
+            }
+            Spacer(minLength: 12)
+            Button {
+                isShowingSettings = true
+            } label: {
+                Image(systemName: "gearshape")
+                    .font(.system(size: 19, weight: .medium))
+                    .foregroundStyle(.primary)
+                    .frame(width: 44, height: 44)
+                    .glassOrMaterial(in: .circle, interactive: true)
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(Text("Settings"))
         }
+        .padding(.top, 8)
     }
 
     private var recorder: GameRecorder {
@@ -176,13 +182,13 @@ struct HomeView: View {
             // One line: the action on the left, the saved game's difficulty and time on the right.
             HStack(spacing: 8) {
                 Label("Continue", systemImage: "play.fill")
-                    .font(.headline)
+                    .font(.app(.headline))
                 Spacer(minLength: 8)
                 Text(game.puzzle.difficulty.title)
                 Text(verbatim: GameStatusView.formattedTime(game.elapsedSeconds))
                     .monospacedDigit()
             }
-            .font(.subheadline)
+            .font(.app(.subheadline))
             .frame(maxWidth: .infinity)
         }
         .glassProminentButton()
@@ -193,7 +199,7 @@ struct HomeView: View {
     private var newGameButton: some View {
         let label = HStack {
             Label("New Game", systemImage: "plus")
-                .font(.headline)
+                .font(.app(.headline))
             Spacer(minLength: 0)
         }
         .frame(maxWidth: .infinity)
@@ -286,9 +292,9 @@ private struct DailyCard: View {
                 Button(action: onCalendar) {
                     HStack(spacing: 6) {
                         Label("Daily Sudoku", systemImage: "calendar")
-                            .font(.headline)
+                            .font(.app(.headline))
                         Image(systemName: "chevron.right")
-                            .font(.footnote.weight(.semibold))
+                            .font(.app(.footnote, weight: .semibold))
                             .foregroundStyle(.tertiary)
                     }
                     .foregroundStyle(.primary)
@@ -301,7 +307,7 @@ private struct DailyCard: View {
                     Text("\(streak) day streak")
                         .monospacedDigit()
                 }
-                .font(.subheadline.weight(.semibold))
+                .font(.app(.subheadline, weight: .semibold))
                 .padding(.horizontal, 10)
                 .padding(.vertical, 5)
                 .background(.orange.opacity(0.15), in: .capsule)
@@ -321,10 +327,10 @@ private struct DailyCard: View {
                     }
                     Spacer(minLength: 8)
                     Text(DailyPuzzle.difficulty(forDay: today).title)
-                        .font(.subheadline)
+                        .font(.app(.subheadline))
                         .foregroundStyle(.secondary)
                 }
-                .font(.headline)
+                .font(.app(.headline))
                 .frame(maxWidth: .infinity)
             }
             .glassButton()
@@ -355,10 +361,10 @@ private struct WeekStrip: View {
                 let isSolved = solvedDays.contains(DailyCalendar.day(of: day))
                 VStack(spacing: 6) {
                     Text(day, format: .dateTime.weekday(.narrow))
-                        .font(.caption.weight(.semibold))
+                        .font(.app(.caption, weight: .semibold))
                         .foregroundStyle(isToday ? AnyShapeStyle(.tint) : AnyShapeStyle(.secondary))
                     Text(day, format: .dateTime.day())
-                        .font(.subheadline.weight(isToday || isSolved ? .bold : .regular))
+                        .font(.app(.subheadline, weight: isToday || isSolved ? .bold : .regular))
                         .monospacedDigit()
                         .foregroundStyle(isSolved ? AnyShapeStyle(Color.white) : AnyShapeStyle(.primary))
                         .frame(width: 34, height: 34)
@@ -395,15 +401,15 @@ private struct FeatureTile: View {
                     icon
                     VStack(alignment: .leading, spacing: 2) {
                         Text(title)
-                            .font(.headline)
+                            .font(.app(.headline))
                             .foregroundStyle(.primary)
                         Text(subtitle)
-                            .font(.caption)
+                            .font(.app(.caption))
                             .foregroundStyle(.secondary)
                     }
                     Spacer(minLength: 0)
                     Image(systemName: "chevron.right")
-                        .font(.footnote.weight(.semibold))
+                        .font(.app(.footnote, weight: .semibold))
                         .foregroundStyle(.tertiary)
                 }
                 .padding(14)
@@ -418,7 +424,7 @@ private struct FeatureTile: View {
 
     private var icon: some View {
         Image(systemName: systemImage)
-            .font(.title2)
+            .font(.app(.title2))
             .foregroundStyle(.white)
             .frame(width: 44, height: 44)
             .background(tint.gradient, in: .rect(cornerRadius: 12))
@@ -429,10 +435,10 @@ private struct FeatureTile: View {
             icon
             Spacer(minLength: 0)
             Text(title)
-                .font(.headline)
+                .font(.app(.headline))
                 .foregroundStyle(.primary)
             Text(subtitle)
-                .font(.caption)
+                .font(.app(.caption))
                 .foregroundStyle(.secondary)
                 .lineLimit(2)
         }

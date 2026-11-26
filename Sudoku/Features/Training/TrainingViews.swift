@@ -84,13 +84,13 @@ private struct RandomPracticeRow: View {
         let progress = TrainingProgress.shared
         HStack(spacing: 14) {
             Image(systemName: "shuffle")
-                .font(.title3.weight(.semibold))
+                .font(.app(.title3, weight: .semibold))
                 .foregroundStyle(.white)
                 .frame(width: 40, height: 40)
                 .background(Color.accentColor.gradient, in: .rect(cornerRadius: 10))
             VStack(alignment: .leading, spacing: 2) {
                 Text("Random Practice")
-                    .font(.headline)
+                    .font(.app(.headline))
                 Group {
                     if let average = progress.randomDailyAverage() {
                         Text("Today: \(progress.randomSolved())   Daily average: \(average.formatted(.number.precision(.fractionLength(0...1))))")
@@ -98,7 +98,7 @@ private struct RandomPracticeRow: View {
                         Text("Any technique, one after another")
                     }
                 }
-                .font(.caption)
+                .font(.app(.caption))
                 .foregroundStyle(.secondary)
             }
         }
@@ -115,15 +115,15 @@ private struct TechniqueRow: View {
         HStack {
             VStack(alignment: .leading, spacing: 2) {
                 Text(verbatim: technique.title)
-                    .font(.body.weight(.semibold))
+                    .font(.app(.body, weight: .semibold))
                 Text(technique.subtitle)
-                    .font(.caption)
+                    .font(.app(.caption))
                     .foregroundStyle(.secondary)
             }
             Spacer()
             if count == 0 {
                 Text("Soon")
-                    .font(.caption)
+                    .font(.app(.caption))
                     .foregroundStyle(.tertiary)
             } else {
                 Gauge(value: Double(solved), in: 0...Double(count)) {
@@ -161,10 +161,10 @@ struct TechniqueDetailView: View {
             VStack(alignment: .leading, spacing: 20) {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(Difficulty(rawValue: technique.level)?.title ?? "Easy")
-                        .font(.subheadline.weight(.semibold))
+                        .font(.app(.subheadline, weight: .semibold))
                         .foregroundStyle(Difficulty(rawValue: technique.level)?.color ?? .accentColor)
                     Text(technique.subtitle)
-                        .font(.title3)
+                        .font(.app(.title3))
                         .foregroundStyle(.secondary)
                 }
 
@@ -180,18 +180,18 @@ struct TechniqueDetailView: View {
                         PracticeView(technique: technique)
                     } label: {
                         Label("Start Practice", systemImage: "target")
-                            .font(.headline)
+                            .font(.app(.headline))
                             .frame(maxWidth: .infinity)
                     }
                     .glassProminentButton()
                     .controlSize(.large)
                     Text("Positions: \(positionCount)")
-                        .font(.caption)
+                        .font(.app(.caption))
                         .foregroundStyle(.secondary)
                         .frame(maxWidth: .infinity)
                 } else {
                     Label("Practice positions for this technique are coming soon.", systemImage: "clock")
-                        .font(.subheadline)
+                        .font(.app(.subheadline))
                         .foregroundStyle(.secondary)
                 }
             }
@@ -211,9 +211,9 @@ private struct GuideCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Label(title, systemImage: systemImage)
-                .font(.headline)
+                .font(.app(.headline))
             Text(verbatim: text)
-                .font(.body)
+                .font(.app(.body))
                 .fixedSize(horizontal: false, vertical: true)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -237,7 +237,7 @@ private struct TechniqueExample: View {
                     .allowsHitTesting(false)
                     .frame(maxWidth: 420)
                 Text(HintStyling.styled(hint.page.text))
-                    .font(.subheadline)
+                    .font(.app(.subheadline))
                     .frame(maxWidth: .infinity, minHeight: 60, alignment: .topLeading)
                     .transaction { $0.animation = nil }
                 HStack(spacing: 20) {
@@ -338,14 +338,14 @@ struct PracticeBanner: View {
     var body: some View {
         HStack(spacing: 12) {
             Image(systemName: symbol)
-                .font(.title2)
+                .font(.app(.title2))
                 .foregroundStyle(color)
                 .symbolEffect(.bounce, value: practice.status)
             VStack(alignment: .leading, spacing: 2) {
                 Text(title)
-                    .font(.subheadline.weight(.semibold))
+                    .font(.app(.subheadline, weight: .semibold))
                 Text(detail)
-                    .font(.caption)
+                    .font(.app(.caption))
                     .foregroundStyle(.secondary)
             }
             Spacer(minLength: 0)
@@ -390,7 +390,7 @@ struct PracticeBanner: View {
                 EmptyView()
             case .working:
                 Text("\(practice.positionIndex + 1) of \(practice.positionCount)")
-                    .font(.caption.weight(.semibold))
+                    .font(.app(.caption, weight: .semibold))
                     .monospacedDigit()
                     .foregroundStyle(.secondary)
             }

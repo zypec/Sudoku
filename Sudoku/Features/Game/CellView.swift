@@ -36,11 +36,11 @@ struct CellView: View {
             background
             if value != 0 {
                 Text(verbatim: "\(value)")
-                    .font(.system(size: side * 0.6, weight: isGiven ? .semibold : .regular, design: .rounded))
+                    .font(.app(size: side * 0.6, weight: isGiven ? .semibold : .regular))
                     .foregroundStyle(valueStyle)
             } else if let ghostDigit = hintStyle?.ghostDigit {
                 Text(verbatim: "\(ghostDigit)")
-                    .font(.system(size: side * 0.6, weight: .semibold, design: .rounded))
+                    .font(.app(size: side * 0.6, weight: .semibold))
                     .foregroundStyle(Color.green)
                     .transition(.scale.combined(with: .opacity))
             } else if !displayedNotes.isEmpty {
@@ -133,7 +133,7 @@ struct CellView: View {
         }
 
         return Text(verbatim: isShown ? "\(digit)" : " ")
-            .font(.system(size: side * 0.24, weight: isBold ? .bold : .regular, design: .rounded))
+            .font(.app(size: side * 0.24, weight: isBold ? .bold : .regular))
             .strikethrough(mark == .eliminated, color: .red)
             .foregroundStyle(style)
             .background {

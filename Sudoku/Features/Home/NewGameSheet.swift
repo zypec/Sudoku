@@ -45,7 +45,7 @@ struct NewGameSheet: View {
 
                     if replacesGameInProgress {
                         Label("Starting a new game counts the game in progress as lost.", systemImage: "info.circle")
-                            .font(.footnote)
+                            .font(.app(.footnote))
                             .foregroundStyle(.secondary)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.top, 6)
@@ -76,7 +76,7 @@ struct NewGameSheet: View {
     private var codeField: some View {
         VStack(alignment: .leading, spacing: 6) {
             Text("Start with Code")
-                .font(.subheadline.weight(.semibold))
+                .font(.app(.subheadline, weight: .semibold))
                 .foregroundStyle(.secondary)
                 .padding(.leading, 4)
             // Above the field, so the keyboard never covers what it says.
@@ -89,7 +89,7 @@ struct NewGameSheet: View {
                         .foregroundStyle(.secondary)
                 }
             }
-            .font(.footnote)
+            .font(.app(.footnote))
             .padding(.leading, 4)
             HStack(spacing: 8) {
                 TextField(text: $code) {
@@ -149,9 +149,9 @@ private struct DifficultyCard: View {
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(difficulty.title)
-                        .font(.headline)
+                        .font(.app(.headline))
                     Text(difficulty.summary)
-                        .font(.subheadline)
+                        .font(.app(.subheadline))
                         .foregroundStyle(.secondary)
                 }
 
@@ -180,11 +180,11 @@ private struct DifficultyCard: View {
                 .accessibilityLabel(Text("Preparing puzzle…"))
         } else if difficulty.isAvailable {
             Image(systemName: "chevron.right")
-                .font(.footnote.weight(.semibold))
+                .font(.app(.footnote, weight: .semibold))
                 .foregroundStyle(.tertiary)
         } else {
             Text("Soon")
-                .font(.caption.weight(.semibold))
+                .font(.app(.caption, weight: .semibold))
                 .foregroundStyle(.secondary)
                 .padding(.horizontal, 10)
                 .padding(.vertical, 4)

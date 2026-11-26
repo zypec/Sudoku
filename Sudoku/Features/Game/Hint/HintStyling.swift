@@ -47,14 +47,14 @@ enum HintStyling {
             var start = text.startIndex
             while let range = text.range(of: place, range: start..<text.endIndex) {
                 if isFree(range) {
-                    style(range) { $0.font = .body.weight(.semibold) }
+                    style(range) { $0.font = .app(.body, weight: .semibold) }
                 }
                 start = range.upperBound
             }
         }
         for range in digits(in: text) where isFree(range) {
             style(range) {
-                $0.font = .body.weight(.bold)
+                $0.font = .app(.body, weight: .bold)
                 $0.foregroundColor = .accentColor
             }
         }

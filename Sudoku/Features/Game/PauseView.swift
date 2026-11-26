@@ -21,9 +21,9 @@ struct PauseView: View {
                     .font(.system(size: 56))
                     .foregroundStyle(.tint)
                 Text("Paused")
-                    .font(.system(.largeTitle, design: .rounded, weight: .bold))
+                    .font(.app(.largeTitle, weight: .bold))
                 Text(game.puzzle.difficulty.title)
-                    .font(.headline)
+                    .font(.app(.headline))
                     .foregroundStyle(game.puzzle.difficulty.color)
             }
 
@@ -66,7 +66,7 @@ struct PauseView: View {
 
             Button(action: model.resume) {
                 Label("Resume", systemImage: "play.fill")
-                    .font(.headline)
+                    .font(.app(.headline))
                     .frame(maxWidth: .infinity)
             }
             .glassProminentButton()
@@ -97,7 +97,7 @@ struct PauseView: View {
                 .fontWeight(.semibold)
                 .monospacedDigit()
         }
-        .font(.body)
+        .font(.app(.body))
         .padding(.vertical, 12)
         .accessibilityElement(children: .combine)
     }

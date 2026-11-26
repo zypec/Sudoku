@@ -87,13 +87,13 @@ struct DailyCalendarView: View {
                             .labelStyle(.iconOnly)
                         Spacer()
                         Text(month, format: .dateTime.month(.wide).year())
-                            .font(.headline)
+                            .font(.app(.headline))
                         Spacer()
                         Button("Next Month", systemImage: "chevron.right") { shift(1) }
                             .labelStyle(.iconOnly)
                             .disabled(calendar.isDate(month, equalTo: .now, toGranularity: .month))
                     }
-                    .font(.title3)
+                    .font(.app(.title3))
 
                     // The weekday names in a row of their own: in the grid their places (0 to 6) were
                     // the same ids as the first days', and the grid laid itself out again forever.
@@ -101,7 +101,7 @@ struct DailyCalendarView: View {
                     HStack(spacing: 6) {
                         ForEach(Array(weekdaySymbols.enumerated()), id: \.offset) { _, symbol in
                             Text(symbol)
-                                .font(.caption.weight(.semibold))
+                                .font(.app(.caption, weight: .semibold))
                                 .foregroundStyle(.secondary)
                                 .frame(maxWidth: .infinity)
                         }
@@ -122,7 +122,7 @@ struct DailyCalendarView: View {
                 .background(.fill.quaternary, in: .rect(cornerRadius: 24))
 
                 Label("A day's puzzle counts toward your streak only when it's solved that day.", systemImage: "info.circle")
-                    .font(.footnote)
+                    .font(.app(.footnote))
                     .foregroundStyle(.secondary)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
@@ -173,7 +173,7 @@ private struct DayCell: View {
     var body: some View {
         let isToday = day == today
         let label = Text(date, format: .dateTime.day())
-            .font(.subheadline.weight(isToday || onDay ? .bold : .regular))
+            .font(.app(.subheadline, weight: isToday || onDay ? .bold : .regular))
             .monospacedDigit()
             .frame(maxWidth: .infinity, minHeight: 40)
             .foregroundStyle(onDay ? AnyShapeStyle(Color.white) : day > today ? AnyShapeStyle(.tertiary) : AnyShapeStyle(.primary))
@@ -208,11 +208,11 @@ struct StreakTile: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             Label(title, systemImage: systemImage)
-                .font(.subheadline)
+                .font(.app(.subheadline))
                 .foregroundStyle(.secondary)
                 .symbolRenderingMode(.multicolor)
             Text(value, format: .number)
-                .font(.system(.title, design: .rounded, weight: .bold))
+                .font(.app(.title, weight: .bold))
                 .monospacedDigit()
         }
         .frame(maxWidth: .infinity, alignment: .leading)

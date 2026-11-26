@@ -98,7 +98,7 @@ private struct RaceRow: View {
                     .scaleEffect(0.7, anchor: .leading)
                     .frame(width: 30, alignment: .leading)
                 Text(race.puzzle.difficulty.title)
-                    .font(.headline)
+                    .font(.app(.headline))
             }
             Group {
                 if let winner = race.winner, race.isOver {
@@ -111,7 +111,7 @@ private struct RaceRow: View {
                     Text("Ends \(race.deadline, format: .relative(presentation: .named))")
                 }
             }
-            .font(.subheadline)
+            .font(.app(.subheadline))
             .foregroundStyle(.secondary)
         }
     }
@@ -254,7 +254,7 @@ struct RaceDetailView: View {
                     Button(RaceStore.shared.gameStore(for: race).load() == nil ? LocalizedStringKey("Play") : LocalizedStringKey("Continue"), systemImage: "play.fill") {
                         isPlaying = true
                     }
-                    .font(.headline)
+                    .font(.app(.headline))
                 }
             } header: {
                 Text("You")
@@ -327,22 +327,22 @@ private struct StandingRow: View {
                         .foregroundStyle(.secondary)
                 }
             }
-            .font(.headline)
+            .font(.app(.headline))
             .frame(width: 28)
             VStack(alignment: .leading, spacing: 2) {
                 Text(isMe ? String(localized: "You") : (result.name.isEmpty ? String(localized: "Someone") : result.name))
-                    .font(.headline)
+                    .font(.app(.headline))
                 Text(result.finishedAt, format: .dateTime.weekday().day().month().hour().minute())
-                    .font(.caption)
+                    .font(.app(.caption))
                     .foregroundStyle(.secondary)
             }
             Spacer()
             VStack(alignment: .trailing, spacing: 2) {
                 Text(verbatim: GameStatusView.formattedTime(result.seconds))
-                    .font(.body.monospacedDigit())
+                    .font(.app(.body).monospacedDigit())
                 if !inTime {
                     Text("Late")
-                        .font(.caption.weight(.semibold))
+                        .font(.app(.caption, weight: .semibold))
                         .foregroundStyle(.orange)
                 }
             }

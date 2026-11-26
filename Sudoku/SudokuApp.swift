@@ -12,9 +12,15 @@ import SwiftUI
 struct SudokuApp: App {
     @State private var settings = AppSettings()
 
+    init() {
+        AppFont.styleNavigationBars()
+    }
+
     var body: some Scene {
         WindowGroup {
             HomeView()
+                // Helvetica Neue for every text that doesn't set its own (rows, labels, buttons).
+                .font(.app(.body))
                 .environment(settings)
                 .preferredColorScheme(settings.theme.colorScheme)
         }

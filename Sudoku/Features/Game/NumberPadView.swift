@@ -31,7 +31,7 @@ struct NumberPadView: View {
                 digitLabel(digit)
                     .frame(height: 44)
                 Text(verbatim: "\(remaining)")
-                    .font(.caption2.weight(.semibold))
+                    .font(.app(.caption2, weight: .semibold))
                     .foregroundStyle(.secondary)
                     .monospacedDigit()
             }
@@ -53,7 +53,7 @@ struct NumberPadView: View {
             let horizontal: HorizontalAlignment = [.leading, .center, .trailing][(digit - 1) % 3]
             let vertical: VerticalAlignment = [.top, .center, .bottom][(digit - 1) / 3]
             Text(verbatim: "\(digit)")
-                .font(.system(.footnote, design: .rounded, weight: .bold))
+                .font(.app(.footnote, weight: .bold))
                 .foregroundStyle(.tint)
                 .padding(4)
                 .frame(width: 36, height: 36, alignment: Alignment(horizontal: horizontal, vertical: vertical))
@@ -64,7 +64,7 @@ struct NumberPadView: View {
                 }
         } else {
             Text(verbatim: "\(digit)")
-                .font(.system(.largeTitle, design: .rounded, weight: .regular))
+                .font(.app(.largeTitle, weight: .regular))
                 .foregroundStyle(.tint)
                 .lineLimit(1)
                 .minimumScaleFactor(0.6)

@@ -115,7 +115,7 @@ struct GameView: View {
         .overlay(alignment: .top) {
             if isShowingCodeCopied {
                 Label(practice == nil ? LocalizedStringKey("Puzzle code copied") : LocalizedStringKey("Training code copied"), systemImage: "checkmark.circle.fill")
-                    .font(.subheadline.weight(.semibold))
+                    .font(.app(.subheadline, weight: .semibold))
                     .padding(.horizontal, 16)
                     .padding(.vertical, 10)
                     .glassOrMaterial(in: .capsule)
@@ -262,7 +262,7 @@ struct GameStatusView: View {
             }
             Button(action: model.pause) {
                     Image(systemName: "pause.fill")
-                        .font(.subheadline.weight(.bold))
+                        .font(.app(.subheadline, weight: .bold))
                         .frame(width: 32, height: 32)
                         .background(.fill.tertiary, in: .circle)
                 }
@@ -270,7 +270,7 @@ struct GameStatusView: View {
                 .disabled(game.isFinished)
                 .accessibilityLabel(Text("Pause"))
         }
-        .font(.subheadline.weight(.semibold))
+        .font(.app(.subheadline, weight: .semibold))
         .frame(minHeight: 32)
     }
 

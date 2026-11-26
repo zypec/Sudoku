@@ -56,8 +56,9 @@ enum HintWalkthrough {
             return [HintPage(kind: .message, text: text, highlights: highlights)]
 
         case .notesIncomplete(let cells):
+            // In the light color of a house, not a target's: nothing is wrong in these cells.
             var highlights = HintHighlights()
-            highlights.fill(cells, .target)
+            highlights.fill(cells, .house)
             let text = String(localized: "Your notes aren't complete: the highlighted cells have none yet. Solving starts by noting, in every empty cell, each digit its row, column and box still allow.")
             return [HintPage(kind: .message, text: text, highlights: highlights)]
 

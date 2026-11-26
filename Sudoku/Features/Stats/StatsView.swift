@@ -31,7 +31,7 @@ struct StatsView: View {
                 SummaryGrid(summary: StatsSummary(results: results))
                 if results.isEmpty {
                     Text("Finish a game to see your statistics here.")
-                        .font(.subheadline)
+                        .font(.app(.subheadline))
                         .foregroundStyle(.secondary)
                         .frame(maxWidth: .infinity)
                 } else {
@@ -123,10 +123,10 @@ private struct DifficultyPicker: View {
                     Text("Choose a Difficulty")
                 }
                 Image(systemName: "chevron.up.chevron.down")
-                    .font(.caption.weight(.bold))
+                    .font(.app(.caption, weight: .bold))
                     .foregroundStyle(.secondary)
             }
-            .font(.headline)
+            .font(.app(.headline))
             .foregroundStyle(.primary)
             .padding(.leading, selection == nil ? 16 : 12)
             .padding(.trailing, 14)
@@ -215,14 +215,14 @@ private struct StatTile<Value: View, Detail: View>: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             Label(title, systemImage: systemImage)
-                .font(.subheadline)
+                .font(.app(.subheadline))
                 .foregroundStyle(.secondary)
             value
-                .font(.system(.title, design: .rounded, weight: .bold))
+                .font(.app(.title, weight: .bold))
                 .monospacedDigit()
                 .contentTransition(.numericText())
             detail
-                .font(.caption)
+                .font(.app(.caption))
                 .foregroundStyle(.secondary)
         }
         // Fill the row so tiles side by side have the same height.
@@ -273,7 +273,7 @@ private struct SolveTimeChart: View {
                         .lineStyle(StrokeStyle(lineWidth: 1, dash: [4, 4]))
                         .annotation(position: .top, alignment: .leading) {
                             Text("Average")
-                                .font(.caption2)
+                                .font(.app(.caption2))
                                 .foregroundStyle(.secondary)
                         }
                     if let selectedIndex, let point = points.first(where: { $0.index == selectedIndex }) {
@@ -282,10 +282,10 @@ private struct SolveTimeChart: View {
                             .annotation(position: .top, overflowResolution: .init(x: .fit, y: .disabled)) {
                                 VStack(spacing: 2) {
                                     Text(verbatim: GameStatusView.formattedTime(point.result.elapsedSeconds))
-                                        .font(.caption.weight(.semibold))
+                                        .font(.app(.caption, weight: .semibold))
                                         .monospacedDigit()
                                     Text(point.result.finishedAt, format: .dateTime.day().month())
-                                        .font(.caption2)
+                                        .font(.app(.caption2))
                                         .foregroundStyle(.secondary)
                                 }
                                 .padding(6)
@@ -319,10 +319,10 @@ private struct TechniqueSection: View {
                         VStack(alignment: .leading, spacing: 6) {
                             HStack {
                                 Text(verbatim: stat.technique.title)
-                                    .font(.subheadline.weight(.semibold))
+                                    .font(.app(.subheadline, weight: .semibold))
                                 Spacer()
                                 Text("\(stat.solvedAlone) of \(stat.needed) on your own")
-                                    .font(.caption)
+                                    .font(.app(.caption))
                                     .foregroundStyle(.secondary)
                                     .monospacedDigit()
                             }
@@ -367,25 +367,25 @@ private struct RecentGames: View {
             outcomeIcon(result)
             VStack(alignment: .leading, spacing: 2) {
                 Text(result.difficulty.title)
-                    .font(.subheadline.weight(.semibold))
+                    .font(.app(.subheadline, weight: .semibold))
                 Text(result.finishedAt, format: .relative(presentation: .named))
-                    .font(.caption)
+                    .font(.app(.caption))
                     .foregroundStyle(.secondary)
             }
             Spacer()
             VStack(alignment: .trailing, spacing: 2) {
                 Text(verbatim: GameStatusView.formattedTime(result.elapsedSeconds))
-                    .font(.subheadline.weight(.semibold))
+                    .font(.app(.subheadline, weight: .semibold))
                     .monospacedDigit()
                 if result.isWin {
                     Text("+\(result.score.total.formatted(.number)) points")
-                        .font(.caption.weight(.semibold))
+                        .font(.app(.caption, weight: .semibold))
                         .foregroundStyle(.tint)
                 }
                 if result.isWin, let estimate = result.estimatedSeconds {
                     let share = SolveTimeEstimate.shareOfSlowerPlayers(than: result.elapsedSeconds, estimate: estimate)
                     Text("Faster than \(share.formatted(.percent.precision(.fractionLength(0))))")
-                        .font(.caption)
+                        .font(.app(.caption))
                         .foregroundStyle(.secondary)
                 }
             }
@@ -404,7 +404,7 @@ private struct RecentGames: View {
             ("xmark.circle.fill", .red, "Lost")
         }
         return Image(systemName: symbol)
-            .font(.title2)
+            .font(.app(.title2))
             .foregroundStyle(color)
             .accessibilityLabel(Text(label))
     }
@@ -428,7 +428,7 @@ private struct DailyStreakSection: View {
                 DailyCalendarView()
             } label: {
                 Label("Calendar", systemImage: "calendar")
-                    .font(.subheadline.weight(.semibold))
+                    .font(.app(.subheadline, weight: .semibold))
             }
         }
     }
@@ -443,7 +443,7 @@ private struct SectionTitle: View {
 
     var body: some View {
         Text(title)
-            .font(.title3.bold())
+            .font(.app(.title3, weight: .bold))
             .accessibilityAddTraits(.isHeader)
     }
 }

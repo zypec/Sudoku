@@ -24,7 +24,7 @@ struct HintPanel: View {
             ScrollView {
                 // No crossfade: two sentences fading over each other are hard to read.
                 Text(HintStyling.styled(activeHint.page.text))
-                    .font(.body)
+                    .font(.app(.body))
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .transaction { $0.animation = nil }
             }
@@ -61,11 +61,11 @@ struct HintPanel: View {
             VStack(alignment: .leading, spacing: 2) {
                 // In a chain the title follows the technique of the page being read.
                 Text(verbatim: activeHint.title ?? activeHint.page.technique?.title ?? HintText.title(for: activeHint.hint))
-                    .font(.title3.bold())
+                    .font(.app(.title3, weight: .bold))
                     .contentTransition(.opacity)
                 if let subtitle = activeHint.page.technique.map({ String(localized: $0.subtitle) }) ?? HintText.subtitle(for: activeHint.hint) {
                     Text(verbatim: subtitle)
-                        .font(.subheadline)
+                        .font(.app(.subheadline))
                         .foregroundStyle(.secondary)
                 }
             }
@@ -204,14 +204,14 @@ private struct GlassControl: View {
                     HStack(spacing: 4) {
                         Text(title)
                         Image(systemName: systemImage)
-                            .font(.body.weight(.semibold))
+                            .font(.app(.body, weight: .semibold))
                     }
-                    .font(.headline)
+                    .font(.app(.headline))
                     .padding(.horizontal, 20)
                     .frame(height: 48)
                 } else {
                     Image(systemName: systemImage)
-                        .font(.body.weight(.semibold))
+                        .font(.app(.body, weight: .semibold))
                         .frame(width: 48, height: 48)
                         .contentTransition(.symbolEffect(.replace))
                 }
@@ -239,7 +239,7 @@ struct PanelIconButton: View {
     var body: some View {
         Button(action: action) {
             Image(systemName: systemImage)
-                .font(.body.weight(.semibold))
+                .font(.app(.body, weight: .semibold))
                 .foregroundStyle(isOn ? AnyShapeStyle(Color.white) : AnyShapeStyle(.secondary))
                 .frame(width: 32, height: 32)
                 .background(isOn ? AnyShapeStyle(Color.accentColor) : AnyShapeStyle(.fill.tertiary), in: .circle)

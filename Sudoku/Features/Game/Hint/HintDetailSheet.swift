@@ -44,12 +44,12 @@ struct HintDetailSheet: View {
                     Section {
                         VStack(alignment: .leading, spacing: 6) {
                             Text("How It Works")
-                                .font(.headline)
+                                .font(.app(.headline))
                             Text(verbatim: guide.howItWorks)
                         }
                         VStack(alignment: .leading, spacing: 6) {
                             Text("How to Spot It")
-                                .font(.headline)
+                                .font(.app(.headline))
                             Text(verbatim: guide.howToSpot)
                         }
                     } header: {
@@ -61,7 +61,7 @@ struct HintDetailSheet: View {
                     ForEach(Array(steps.enumerated()), id: \.offset) { index, text in
                         HStack(alignment: .firstTextBaseline, spacing: 10) {
                             Text(verbatim: "\(index + 1)")
-                                .font(.subheadline.weight(.bold))
+                                .font(.app(.subheadline, weight: .bold))
                                 .monospacedDigit()
                                 .foregroundStyle(.tint)
                             Text(verbatim: text)

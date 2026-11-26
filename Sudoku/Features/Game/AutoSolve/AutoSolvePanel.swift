@@ -21,11 +21,11 @@ struct AutoSolvePanel: View {
                 VStack(alignment: .leading, spacing: 4) {
                     if let hint = state.hint {
                         Text(verbatim: HintText.title(for: hint))
-                            .font(.headline)
+                            .font(.app(.headline))
                     }
                     if let page = state.page {
                         Text(verbatim: page.text)
-                            .font(.body)
+                            .font(.app(.body))
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -87,7 +87,7 @@ struct AutoSolvePanel: View {
                     } icon: {
                         Image(systemName: "gauge.with.dots.needle.67percent")
                     }
-                    .font(.body.weight(.semibold))
+                    .font(.app(.body, weight: .semibold))
                 }
                 .glassButton()
                 .accessibilityLabel(Text("Speed"))
@@ -106,9 +106,9 @@ struct AutoSolvePanel: View {
         HStack(alignment: .top, spacing: 8) {
             VStack(alignment: .leading, spacing: 2) {
                 Text("Auto Solve")
-                    .font(.title3.bold())
+                    .font(.app(.title3, weight: .bold))
                 Text(status)
-                    .font(.subheadline)
+                    .font(.app(.subheadline))
                     .foregroundStyle(.secondary)
                     .contentTransition(.numericText())
             }

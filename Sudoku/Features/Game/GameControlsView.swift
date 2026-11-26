@@ -61,7 +61,7 @@ private struct ControlButton: View {
                     .overlay(alignment: .topTrailing) {
                         if let badge {
                             Text(badge, format: .number)
-                                .font(.caption2.weight(.bold))
+                                .font(.app(.caption2, weight: .bold))
                                 .monospacedDigit()
                                 .foregroundStyle(.white)
                                 .frame(minWidth: 18, minHeight: 18)
@@ -71,7 +71,7 @@ private struct ControlButton: View {
                         }
                     }
                 Text(title)
-                    .font(.caption)
+                    .font(.app(.caption))
                     .foregroundStyle(isOn ? AnyShapeStyle(.tint) : AnyShapeStyle(.secondary))
                     .lineLimit(1)
                     .minimumScaleFactor(0.6)
