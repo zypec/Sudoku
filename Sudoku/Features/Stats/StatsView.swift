@@ -7,75 +7,134 @@ import Charts
 import SwiftData
 import SwiftUI
 
-/// Statistics: a summary per difficulty, solve times, how the player does with each technique and
-/// the most recent games. Everything is computed from the stored `GameRecord`s.
+/// Statistics, one difficulty at a time: a summary, solve times, how the player does with each
+/// technique and the most recent games. Everything is computed from the stored `GameRecord`s.
+///
+/// The difficulties are always there. Only those with a game played can be chosen, and the easiest
+/// of them is shown first; with no games at all the picker asks for a difficulty and every one is
+/// locked, while the summary shows what it will hold.
 struct StatsView: View {
     @Query(sort: \GameRecord.finishedAt, order: .reverse) private var records: [GameRecord]
-    /// `nil` shows every difficulty.
-    @State private var filter: Difficulty?
+    @Environment(\.modelContext) private var modelContext
+    /// The difficulty picked; `nil` (or one whose games were reset) falls back to the easiest played.
+    @State private var selection: Difficulty?
+    @State private var isConfirmingReset = false
 
     var body: some View {
         let all = records.map(\.result)
-        let results = filter.map { difficulty in all.filter { $0.difficulty == difficulty } } ?? all
-        Group {
-            if all.isEmpty {
-                ContentUnavailableView {
-                    Label("No Games Yet", systemImage: "chart.bar")
-                } description: {
+        let played = Difficulty.allCases.filter { difficulty in all.contains { $0.difficulty == difficulty } }
+        let shown = selection.flatMap { played.contains($0) ? $0 : nil } ?? played.first
+        let results = shown.map { difficulty in all.filter { $0.difficulty == difficulty } } ?? []
+        ScrollView {
+            VStack(alignment: .leading, spacing: 28) {
+                DifficultyPicker(selection: shown, played: played) { selection = $0 }
+                SummaryGrid(summary: StatsSummary(results: results))
+                if results.isEmpty {
                     Text("Finish a game to see your statistics here.")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .frame(maxWidth: .infinity)
+                } else {
+                    SolveTimeChart(results: results)
+                    TechniqueSection(stats: TechniqueStat.all(from: results))
+                    RecentGames(results: Array(results.prefix(10)))
                 }
-            } else {
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 28) {
-                        DifficultyFilter(selection: $filter)
-                        SummaryGrid(summary: StatsSummary(results: results))
-                        SolveTimeChart(results: results)
-                        TechniqueSection(stats: TechniqueStat.all(from: results))
-                        RecentGames(results: Array(results.prefix(10)))
-                        DailyStreakPlaceholder()
-                    }
-                    .padding()
-                    .frame(maxWidth: 640)
-                    .frame(maxWidth: .infinity)
+                DailyStreakPlaceholder()
+            }
+            .padding()
+            .frame(maxWidth: 640)
+            .frame(maxWidth: .infinity)
+        }
+        .animation(.snappy, value: shown)
+        .navigationTitle("Statistics")
+        .toolbar {
+            Menu("More", systemImage: "ellipsis") {
+                Button("Reset Statistics", systemImage: "trash", role: .destructive) {
+                    isConfirmingReset = true
                 }
-                .animation(.snappy, value: filter)
+                .disabled(shown == nil)
             }
         }
-        .navigationTitle("Statistics")
+        .confirmationDialog(
+            shown.map(resetTitle) ?? Text(verbatim: ""),
+            isPresented: $isConfirmingReset,
+            titleVisibility: .visible
+        ) {
+            Button("Reset", role: .destructive) {
+                if let shown { reset(shown) }
+            }
+        } message: {
+            if let shown {
+                Text("Every \(shown.title) game is removed from your statistics. This can't be undone.")
+            }
+        }
+    }
+
+    private func resetTitle(_ difficulty: Difficulty) -> Text {
+        Text("Reset \(String(localized: difficulty.title)) statistics?")
+    }
+
+    /// Deletes every recorded game of one difficulty.
+    private func reset(_ difficulty: Difficulty) {
+        for record in records where record.difficultyRaw == difficulty.rawValue {
+            modelContext.delete(record)
+        }
+        try? modelContext.save()
+        selection = nil
     }
 }
 
-// MARK: Filter
+// MARK: Picker
 
-/// "All" plus one capsule per difficulty, scrolling sideways when they don't fit.
-private struct DifficultyFilter: View {
-    @Binding var selection: Difficulty?
+/// The difficulty shown, as a button in its color that opens the list of difficulties. Those without
+/// a game played are locked and say so.
+private struct DifficultyPicker: View {
+    let selection: Difficulty?
+    let played: [Difficulty]
+    let choose: (Difficulty) -> Void
 
     var body: some View {
-        ScrollView(.horizontal) {
-            HStack(spacing: 8) {
-                chip(Text("All"), isSelected: selection == nil, tint: .accentColor) { selection = nil }
-                ForEach(Difficulty.allCases) { difficulty in
-                    chip(Text(difficulty.title), isSelected: selection == difficulty, tint: difficulty.color) {
-                        selection = difficulty
+        Menu {
+            ForEach(Difficulty.allCases) { difficulty in
+                let isPlayed = played.contains(difficulty)
+                Button {
+                    choose(difficulty)
+                } label: {
+                    if difficulty == selection {
+                        Label(difficulty.title, systemImage: "checkmark")
+                    } else if isPlayed {
+                        Text(difficulty.title)
+                    } else {
+                        // A menu row's second text is its subtitle.
+                        Text(difficulty.title)
+                        Text("No games played yet")
+                        Image(systemName: "lock.fill")
                     }
                 }
+                .disabled(!isPlayed)
             }
+        } label: {
+            HStack(spacing: 8) {
+                if let selection {
+                    DifficultyMeter(difficulty: selection)
+                        .scaleEffect(0.8)
+                    Text(selection.title)
+                } else {
+                    Text("Choose a Difficulty")
+                }
+                Image(systemName: "chevron.up.chevron.down")
+                    .font(.caption.weight(.bold))
+                    .foregroundStyle(.secondary)
+            }
+            .font(.headline)
+            .foregroundStyle(.primary)
+            .padding(.leading, selection == nil ? 16 : 12)
+            .padding(.trailing, 14)
+            .frame(minHeight: 44)
+            .background((selection?.color ?? .secondary).opacity(0.16), in: .capsule)
         }
-        .scrollIndicators(.hidden)
-    }
-
-    private func chip(_ title: Text, isSelected: Bool, tint: Color, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            title
-                .font(.subheadline.weight(.semibold))
-                .foregroundStyle(isSelected ? AnyShapeStyle(Color.white) : AnyShapeStyle(.primary))
-                .padding(.horizontal, 14)
-                .padding(.vertical, 8)
-                .background(isSelected ? AnyShapeStyle(tint) : AnyShapeStyle(.fill.tertiary), in: .capsule)
-        }
-        .buttonStyle(.pressable)
-        .accessibilityAddTraits(isSelected ? .isSelected : [])
+        .accessibilityLabel(Text("Difficulty"))
+        .accessibilityValue(selection.map { Text($0.title) } ?? Text("Choose a Difficulty"))
     }
 }
 

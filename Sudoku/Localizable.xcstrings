@@ -409,23 +409,6 @@
         }
       }
     },
-    "All": {
-      "comment": "Statistics filter: every difficulty",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "All"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tümü"
-          }
-        }
-      }
-    },
     "All cells two-valued but one": {
       "comment": "Technique subtitle: BUG+1",
       "localizations": {
@@ -902,6 +885,23 @@
         }
       }
     },
+    "Choose a Difficulty": {
+      "comment": "Statistics: the difficulty picker before any game is played.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose a Difficulty"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zorluk Seç"
+          }
+        }
+      }
+    },
     "Close": {
       "comment": "Accessibility label for the button that closes the hint panel",
       "localizations": {
@@ -1085,6 +1085,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Detaylı Anlatım"
+          }
+        }
+      }
+    },
+    "Difficulty": {
+      "comment": "Accessibility label of the statistics difficulty picker.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Difficulty"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zorluk"
           }
         }
       }
@@ -1357,6 +1374,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Hataları Sil"
+          }
+        }
+      }
+    },
+    "Every %@ game is removed from your statistics. This can't be undone.": {
+      "comment": "Confirmation message; the argument is a difficulty, such as Hard.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Every %@ game is removed from your statistics. This can't be undone."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tüm %@ oyunlar istatistiklerinden silinir. Bu geri alınamaz."
           }
         }
       }
@@ -3248,6 +3282,23 @@
         }
       }
     },
+    "No games played yet": {
+      "comment": "Statistics: under a locked difficulty in the picker.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No games played yet"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Henüz oyun oynanmadı"
+          }
+        }
+      }
+    },
     "None": {
       "comment": "Statistics value when there is nothing to show yet",
       "localizations": {
@@ -3839,6 +3890,57 @@
           "stringUnit": {
             "state": "translated",
             "value": "Yöntemin elediği adayları sil (%1$lld / %2$lld)."
+          }
+        }
+      }
+    },
+    "Reset": {
+      "comment": "Confirms resetting statistics.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reset"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sıfırla"
+          }
+        }
+      }
+    },
+    "Reset %@ statistics?": {
+      "comment": "Confirmation title; the argument is a difficulty, such as Hard.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reset %@ statistics?"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ istatistikleri sıfırlansın mı?"
+          }
+        }
+      }
+    },
+    "Reset Statistics": {
+      "comment": "Statistics menu: deletes the shown difficulty's games.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reset Statistics"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İstatistikleri Sıfırla"
           }
         }
       }
