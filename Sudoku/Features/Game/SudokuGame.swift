@@ -236,7 +236,9 @@ struct SudokuGame: Codable, Sendable {
 
     /// Writes the solution into `cell`. Not counted as a mistake. Returns whether anything changed.
     @discardableResult
-    mutating func reveal(at cell: CellIndex) -> Bool {
+    /// - Parameter asHint: The Hint button with smart hints off fills the cell in: counted as a hint,
+    ///   not as a revealed cell, so it isn't scored twice and the hint limit applies.
+    mutating func reveal(at cell: CellIndex, asHint: Bool = false) -> Bool {
         let digit = puzzle.solution[cell]
         guard !isFinished, !isGiven(cell), values[cell] != digit else { return false }
         recordUndo()
@@ -245,7 +247,11 @@ struct SudokuGame: Codable, Sendable {
         for peer in Geometry.peers[cell] {
             notes[peer].remove(digit)
         }
-        revealCount += 1
+        if asHint {
+            hintCount += 1
+        } else {
+            revealCount += 1
+        }
         return true
     }
 

@@ -180,6 +180,8 @@ struct StatisticsTests {
         let puzzle = PuzzleGenerator.generate(.easy, using: &generator)
         let model = GameModel(game: SudokuGame(puzzle: puzzle, mistakeLimit: 3), settings: settings, recorder: GameRecorder(context: context))
 
+        // With notes written, the smart hint is a step of logic, so its technique is recorded.
+        model.fillNotes()
         model.requestHint()
         model.applyHint()
         #expect(try context.fetch(FetchDescriptor<GameRecord>()).isEmpty)

@@ -12,6 +12,9 @@ enum Hint: Equatable, Sendable {
     case impossibleNotes([Elimination], blockers: [CellIndex])
     /// Cells whose notes leave out the digit that belongs there, so the notes can't be trusted.
     case notesMissingSolution([CellIndex])
+    /// Empty cells with no notes at all, while smart hints guide the player: solving starts by noting
+    /// every candidate.
+    case notesIncomplete([CellIndex])
     /// The easiest next deduction, and the candidates it was found on.
     case step(SolveStep, board: Board)
     /// Eliminations the player can't act on (they aren't in their notes), followed by the placement
@@ -26,7 +29,7 @@ enum Hint: Equatable, Sendable {
         switch self {
         case .step(let step, _): [step]
         case .chain(let links): links.map(\.step)
-        case .incorrectEntries, .impossibleNotes, .notesMissingSolution, .unavailable: []
+        case .incorrectEntries, .impossibleNotes, .notesMissingSolution, .notesIncomplete, .unavailable: []
         }
     }
 
@@ -52,7 +55,9 @@ enum HintFinder {
     /// - Parameter chainsEliminations: When the next step only removes candidates the player hasn't
     ///   noted, follow the logic on to the placement it leads to and return that as a `.chain`.
     ///   Auto solve turns this off to show every step on its own.
-    static func hint(for game: SudokuGame, solver: LogicalSolver = LogicalSolver(), chainsEliminations: Bool = true) -> Hint {
+    /// - Parameter guidesNotes: Smart hints: before any logic, cells left without notes are pointed out,
+    ///   so the player first notes every candidate, as solving by hand starts.
+    static func hint(for game: SudokuGame, solver: LogicalSolver = LogicalSolver(), chainsEliminations: Bool = true, guidesNotes: Bool = false) -> Hint {
         let incorrect = game.incorrectCells
         guard incorrect.isEmpty else { return .incorrectEntries(incorrect) }
         // Problems in the notes come before logic: the player is working from them.
@@ -60,6 +65,10 @@ enum HintFinder {
         guard impossible.isEmpty else { return .impossibleNotes(impossible, blockers: blockers(of: impossible, in: game)) }
         let missing = cellsWhoseNotesMissTheSolution(in: game)
         guard missing.isEmpty else { return .notesMissingSolution(missing) }
+        if guidesNotes {
+            let bare = Geometry.cells.filter { game.values[$0] == 0 && game.notes[$0].isEmpty }
+            guard bare.isEmpty else { return .notesIncomplete(bare) }
+        }
 
         let board = candidateBoard(for: game)
         guard let step = solver.nextStep(on: board) else { return .unavailable }

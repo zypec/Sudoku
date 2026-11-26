@@ -50,6 +50,10 @@ final class GameModel {
         var pageIndex = 0
         var visualFrames: [HintPage]?
         var visualIndex = 0
+        /// A smart hint about wrong notes that doesn't say yet which they are.
+        var isConcealed = false
+        /// The panel's title when the hint's own would say too much or the wrong thing.
+        var title: String?
 
         var isVisual: Bool {
             visualFrames != nil
@@ -259,9 +263,55 @@ final class GameModel {
             activeHint = ActiveHint(hint: .unavailable, pages: [HintPage(kind: .message, text: text, highlights: highlights, technique: focus.technique)])
             return
         }
-        let hint = HintFinder.hint(for: game)
+        guard settings.smartHints else {
+            fillSelectedCell()
+            return
+        }
+        show(HintFinder.hint(for: game, guidesNotes: true))
+    }
+
+    /// Opens a hint in the panel and counts it. A smart hint about wrong notes first only says so.
+    func show(_ hint: Hint) {
         update { $0.registerHint(for: hint.mainTechnique) }
+        switch hint {
+        case .impossibleNotes, .notesMissingSolution:
+            // Only that something is wrong; which notes, once the player asks.
+            let text = String(localized: "Some of your notes are wrong. Find them yourself, or see which ones.")
+            activeHint = ActiveHint(hint: hint, pages: [HintPage(kind: .message, text: text, highlights: HintHighlights())],
+                                    isConcealed: true, title: String(localized: "Check Your Notes"))
+        default:
+            activeHint = ActiveHint(hint: hint, pages: HintWalkthrough.pages(for: hint))
+        }
+    }
+
+    /// Smart hints off: the Hint button fills in the selected cell with its digit.
+    private func fillSelectedCell() {
+        guard let cell = selectedCell, !game.isGiven(cell), game.values[cell] != game.puzzle.solution[cell] else {
+            let text = String(localized: "Select an empty cell, then tap Hint to fill it in.")
+            activeHint = ActiveHint(hint: .unavailable, pages: [HintPage(kind: .message, text: text, highlights: HintHighlights())],
+                                    title: String(localized: "Hint"))
+            return
+        }
+        activeHint = nil
+        update { $0.reveal(at: cell, asHint: true) }
+    }
+
+    /// A concealed note hint shows which notes are wrong, and how to fix them.
+    func showWhichNotesAreWrong() {
+        guard let hint = activeHint?.hint else { return }
         activeHint = ActiveHint(hint: hint, pages: HintWalkthrough.pages(for: hint))
+    }
+
+    /// Notes every candidate in the cells that have none, from the placed digits alone: the notes the
+    /// player already wrote stay as they are.
+    func completeNotes() {
+        let board = Board(values: game.values)
+        var candidates: [CellIndex: CandidateSet] = [:]
+        for cell in Geometry.cells where game.values[cell] == 0 && game.notes[cell].isEmpty {
+            candidates[cell] = board.candidates(at: cell)
+        }
+        update { $0.fillEmptyNotes(with: candidates) }
+        activeHint = nil
     }
 
     func showNextHintPage() {
@@ -387,7 +437,7 @@ final class GameModel {
             step.placements.first?.cell ?? step.eliminations.first?.cell
         case .chain?:
             autoSolve?.hint?.placement?.cell
-        case .incorrectEntries(let cells)?, .notesMissingSolution(let cells)?:
+        case .incorrectEntries(let cells)?, .notesMissingSolution(let cells)?, .notesIncomplete(let cells)?:
             cells.first
         case .impossibleNotes(let eliminations, _)?:
             eliminations.first?.cell
@@ -493,7 +543,8 @@ final class GameModel {
                 update { $0.removeNotes(eliminations) }
             case .notesMissingSolution(let cells):
                 update { $0.refillNotes(in: cells) }
-            case .unavailable:
+            case .notesIncomplete, .unavailable:
+                // Auto solve doesn't guide notes, so it never meets a hint about incomplete ones.
                 break
             }
             autoSolve?.appliedSteps += 1

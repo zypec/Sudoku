@@ -60,7 +60,7 @@ struct HintPanel: View {
         HStack(alignment: .top, spacing: 8) {
             VStack(alignment: .leading, spacing: 2) {
                 // In a chain the title follows the technique of the page being read.
-                Text(verbatim: activeHint.page.technique?.title ?? HintText.title(for: activeHint.hint))
+                Text(verbatim: activeHint.title ?? activeHint.page.technique?.title ?? HintText.title(for: activeHint.hint))
                     .font(.title3.bold())
                     .contentTransition(.opacity)
                 if let subtitle = activeHint.page.technique.map({ String(localized: $0.subtitle) }) ?? HintText.subtitle(for: activeHint.hint) {
@@ -109,8 +109,24 @@ struct HintPanel: View {
             .controlSize(.large)
             .frame(maxWidth: .infinity, alignment: .trailing)
         case .impossibleNotes, .notesMissingSolution:
-            Button("Fix Notes") {
-                model.fixNotes()
+            // A smart hint first only says there is a wrong note; the player may look for it.
+            Group {
+                if activeHint.isConcealed {
+                    Button("Show Which") {
+                        model.showWhichNotesAreWrong()
+                    }
+                } else {
+                    Button("Fix Notes") {
+                        model.fixNotes()
+                    }
+                }
+            }
+            .buttonStyle(.glassProminent)
+            .controlSize(.large)
+            .frame(maxWidth: .infinity, alignment: .trailing)
+        case .notesIncomplete:
+            Button("Complete Notes") {
+                model.completeNotes()
             }
             .buttonStyle(.glassProminent)
             .controlSize(.large)

@@ -23,7 +23,7 @@ enum VisualProof {
                 builder.build()
                 return builder.frames
             }
-        case .incorrectEntries, .impossibleNotes, .notesMissingSolution, .unavailable:
+        case .incorrectEntries, .impossibleNotes, .notesMissingSolution, .notesIncomplete, .unavailable:
             return HintWalkthrough.pages(for: hint)
         }
     }

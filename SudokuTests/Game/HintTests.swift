@@ -304,7 +304,8 @@ struct HintTests {
     @MainActor
     @Test func detailedModeShowsAndAddsTheCandidatesAroundTheHint() throws {
         let model = GameModel(game: generatedGame(.medium, seed: 1), settings: AppSettings(defaults: try #require(UserDefaults(suiteName: "HintTests.\(UUID().uuidString)"))))
-        model.requestHint()
+        // A player without notes; smart hints would ask for them first, so the step is shown directly.
+        model.show(HintFinder.hint(for: model.game))
         let cells = model.hintCells
         #expect(!cells.isEmpty)
         let cell = try #require(cells.first)
@@ -360,6 +361,7 @@ struct HintTests {
             hint = HintFinder.hint(for: game)
         }
         let model2 = GameModel(game: game, settings: model.settings)
+        model2.fillNotes()
         model2.requestHint()
         let pages = try #require(model2.activeHint?.count)
         model2.startVisualExplanation()
@@ -542,6 +544,7 @@ struct HintTests {
     @MainActor
     @Test func modelStepsBackAndForthThroughPages() throws {
         let model = GameModel(game: generatedGame(.medium, seed: 1), settings: AppSettings(defaults: UserDefaults(suiteName: "HintTests.\(UUID().uuidString)") ?? .standard))
+        model.fillNotes()
         model.requestHint()
         let hint = try #require(model.activeHint)
         #expect(hint.pageIndex == 0)
@@ -560,5 +563,70 @@ struct HintTests {
         model.showPreviousHintPage()
         #expect(model.activeHint?.pageIndex == hint.pages.count - 2)
         #expect(model.hintHighlights == hint.pages[hint.pages.count - 2].highlights)
+    }
+
+    // MARK: Smart hints
+
+    @MainActor
+    private func smartSettings(_ smart: Bool = true) throws -> AppSettings {
+        let settings = AppSettings(defaults: try #require(UserDefaults(suiteName: "HintTests.\(UUID().uuidString)")))
+        settings.smartHints = smart
+        return settings
+    }
+
+    @Test func smartHintsAskForNotesBeforeLogic() throws {
+        var game = try easyGame()
+        let empty = Geometry.cells.filter { game.values[$0] == 0 }
+        #expect(HintFinder.hint(for: game, guidesNotes: true) == .notesIncomplete(empty))
+        // Without guidance the same position gets its next step.
+        if case .notesIncomplete = HintFinder.hint(for: game) { Issue.record("only smart hints guide notes") }
+        _ = game.fillNotes()
+        if case .notesIncomplete = HintFinder.hint(for: game, guidesNotes: true) { Issue.record("notes are complete now") }
+    }
+
+    @MainActor
+    @Test func completeNotesKeepsTheNotesAlreadyWritten() throws {
+        var game = try easyGame()
+        game.toggleNote(4, at: 2)
+        let model = GameModel(game: game, settings: try smartSettings())
+        model.requestHint()
+        guard case .notesIncomplete = model.activeHint?.hint else {
+            Issue.record("expected the notes to be pointed out first")
+            return
+        }
+        model.completeNotes()
+        #expect(model.game.notes[2] == [4])
+        let board = Board(values: model.game.values)
+        #expect(model.game.notes[3] == board.candidates(at: 3))
+        #expect(model.activeHint == nil)
+    }
+
+    @MainActor
+    @Test func wrongNotesAreAnnouncedBeforeTheyAreShown() throws {
+        var game = try easyGame()
+        _ = game.fillNotes()
+        game.toggleNote(5, at: 2) // a 5 is already placed in the same row
+        let model = GameModel(game: game, settings: try smartSettings())
+        model.requestHint()
+        let hint = try #require(model.activeHint)
+        #expect(hint.isConcealed)
+        #expect(hint.page.highlights == HintHighlights())
+        model.showWhichNotesAreWrong()
+        #expect(model.activeHint?.isConcealed == false)
+        #expect(model.activeHint?.page.highlights != HintHighlights())
+    }
+
+    @MainActor
+    @Test func withoutSmartHintsTheHintFillsTheSelectedCell() throws {
+        let model = GameModel(game: try easyGame(), settings: try smartSettings(false))
+        model.requestHint()
+        #expect(model.activeHint?.hint == .unavailable)
+        model.closeHint()
+        model.select(2)
+        model.requestHint()
+        #expect(model.game.values[2] == 4)
+        #expect(model.game.hintCount == 1)
+        #expect(model.game.revealCount == 0)
+        #expect(model.activeHint == nil)
     }
 }

@@ -55,6 +55,12 @@ enum HintWalkthrough {
             let text = String(localized: "The notes in the highlighted cells leave out a digit that can still go there, so hints can't build on them. Fixing them refills those cells with every digit still possible.")
             return [HintPage(kind: .message, text: text, highlights: highlights)]
 
+        case .notesIncomplete(let cells):
+            var highlights = HintHighlights()
+            highlights.fill(cells, .target)
+            let text = String(localized: "Your notes aren't complete: the highlighted cells have none yet. Solving starts by noting, in every empty cell, each digit its row, column and box still allow.")
+            return [HintPage(kind: .message, text: text, highlights: highlights)]
+
         case .unavailable:
             let text = String(localized: "The next step needs a technique that isn't available yet. You can reveal a cell instead.")
             return [HintPage(kind: .message, text: text, highlights: HintHighlights())]

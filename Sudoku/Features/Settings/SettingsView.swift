@@ -37,6 +37,19 @@ struct SettingsView: View {
                         Label("Mistake Limit", systemImage: "heart")
                     }
                     .disabled(!settings.showsMistakes)
+                    Toggle(isOn: $settings.showsTimer) {
+                        Label("Show Timer", systemImage: "timer")
+                    }
+                } header: {
+                    Text("Game")
+                } footer: {
+                    Text("The mistake limit also applies to the game in progress. When mistakes are hidden, there is no limit.")
+                }
+
+                Section {
+                    Toggle(isOn: $settings.smartHints) {
+                        Label("Smart Hints", systemImage: "sparkles")
+                    }
                     Toggle(isOn: Binding(get: { settings.hintLimit > 0 }, set: { settings.hintLimit = $0 ? 3 : 0 })) {
                         Label("Limit Hints", systemImage: "lightbulb")
                     }
@@ -45,13 +58,10 @@ struct SettingsView: View {
                             Text("Hints per Game: \(settings.hintLimit)")
                         }
                     }
-                    Toggle(isOn: $settings.showsTimer) {
-                        Label("Show Timer", systemImage: "timer")
-                    }
                 } header: {
-                    Text("Game")
+                    Text("Hints")
                 } footer: {
-                    Text("The mistake and hint limits also apply to the game in progress. When mistakes are hidden, there is no mistake limit.")
+                    Text("Smart hints guide you: they check your notes first, then show the next step. Turned off, a hint fills in the selected cell. The hint limit also applies to the game in progress.")
                 }
 
                 Section("Assists") {

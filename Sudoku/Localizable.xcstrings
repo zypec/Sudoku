@@ -885,6 +885,23 @@
         }
       }
     },
+    "Check Your Notes": {
+      "comment": "Hint title while the wrong notes are not shown yet.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Check Your Notes"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notlarını Kontrol Et"
+          }
+        }
+      }
+    },
     "Choose a Difficulty": {
       "comment": "Statistics: the difficulty picker before any game is played.",
       "localizations": {
@@ -949,6 +966,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Yakında geliyor"
+          }
+        }
+      }
+    },
+    "Complete Notes": {
+      "comment": "Hint panel: notes every candidate in the cells that have no notes.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Complete Notes"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notları Tamamla"
           }
         }
       }
@@ -2602,6 +2636,23 @@
         }
       }
     },
+    "Incomplete Notes": {
+      "comment": "Hint title when some empty cells have no notes.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Incomplete Notes"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eksik Notlar"
+          }
+        }
+      }
+    },
     "Incorrect Digits": {
       "comment": "Hint panel title when the board has wrong digits",
       "localizations": {
@@ -4030,6 +4081,23 @@
         }
       }
     },
+    "Select an empty cell, then tap Hint to fill it in.": {
+      "comment": "Hint with smart hints off and no empty cell selected.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select an empty cell, then tap Hint to fill it in."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boş bir hücre seç, sonra doldurmak için İpucu'na dokun."
+          }
+        }
+      }
+    },
     "Settings": {
       "comment": "Settings screen title and button",
       "localizations": {
@@ -4098,6 +4166,23 @@
         }
       }
     },
+    "Show Which": {
+      "comment": "Hint panel: shows which notes are wrong after a smart hint said some are.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show Which"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hangileri Olduğunu Göster"
+          }
+        }
+      }
+    },
     "Shows the tries left": {
       "comment": "Accessibility hint of the hearts chip",
       "localizations": {
@@ -4111,6 +4196,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Kalan hakları gösterir"
+          }
+        }
+      }
+    },
+    "Smart Hints": {
+      "comment": "Settings toggle: hints that guide, checking notes first.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smart Hints"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Akıllı İpucu"
+          }
+        }
+      }
+    },
+    "Smart hints guide you: they check your notes first, then show the next step. Turned off, a hint fills in the selected cell. The hint limit also applies to the game in progress.": {
+      "comment": "Footer of the Hints section in Settings.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smart hints guide you: they check your notes first, then show the next step. Turned off, a hint fills in the selected cell. The hint limit also applies to the game in progress."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Akıllı ipucu yol gösterir: önce notlarını kontrol eder, sonra bir sonraki adımı gösterir. Kapalıyken ipucu seçili hücreyi doldurur. İpucu limiti devam eden oyuna da uygulanır."
           }
         }
       }
@@ -4417,6 +4536,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bazı notlar doğru olamaz: üstü çizili her rakam aynı satır, sütun ya da kutuda zaten yerleşmiş (işaretli)."
+          }
+        }
+      }
+    },
+    "Some of your notes are wrong. Find them yourself, or see which ones.": {
+      "comment": "Smart hint about wrong notes, before showing which.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Some of your notes are wrong. Find them yourself, or see which ones."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notlarından bazıları yanlış. Kendin bulabilir ya da hangileri olduğunu görebilirsin."
           }
         }
       }
@@ -4897,19 +5033,19 @@
         }
       }
     },
-    "The mistake and hint limits also apply to the game in progress. When mistakes are hidden, there is no mistake limit.": {
+    "The mistake limit also applies to the game in progress. When mistakes are hidden, there is no limit.": {
       "comment": "Footer of the Game section in Settings.",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "The mistake and hint limits also apply to the game in progress. When mistakes are hidden, there is no mistake limit."
+            "value": "The mistake limit also applies to the game in progress. When mistakes are hidden, there is no limit."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hata ve ipucu limitleri devam eden oyuna da uygulanır. Hatalar gizliyken hata limiti yoktur."
+            "value": "Hata limiti devam eden oyuna da uygulanır. Hatalar gizliyken limit yoktur."
           }
         }
       }
@@ -5777,6 +5913,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Günlük Sudoku geldiğinde günlük seri geçmişin burada görünecek."
+          }
+        }
+      }
+    },
+    "Your notes aren't complete: the highlighted cells have none yet. Solving starts by noting, in every empty cell, each digit its row, column and box still allow.": {
+      "comment": "Smart hint when some empty cells have no notes.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your notes aren't complete: the highlighted cells have none yet. Solving starts by noting, in every empty cell, each digit its row, column and box still allow."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notların eksik: vurgulanan hücrelerde henüz not yok. Çözüm, her boş hücreye satırının, sütununun ve kutusunun hâlâ izin verdiği rakamları not etmekle başlar."
           }
         }
       }

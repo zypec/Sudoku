@@ -16,6 +16,8 @@ enum HintText {
             String(localized: "Impossible Notes")
         case .notesMissingSolution:
             String(localized: "Notes Missing a Digit")
+        case .notesIncomplete:
+            String(localized: "Incomplete Notes")
         case .unavailable:
             String(localized: "No Hint Available")
         case .step, .chain:
