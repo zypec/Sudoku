@@ -25,9 +25,6 @@ struct HomeView: View {
     private let store = GameStore.shared
 
     @State private var isShowingComingSoon = false
-    @State private var isShowingCodeEntry = false
-    @State private var isShowingCodeError = false
-    @State private var enteredCode = ""
     @State private var isShowingStats = false
     @State private var isShowingTraining = false
 
@@ -69,11 +66,6 @@ struct HomeView: View {
                             continueButton(for: savedGame)
                         }
                         newGameButton
-                        Button("Start with Code", systemImage: "number") {
-                            enteredCode = ""
-                            isShowingCodeEntry = true
-                        }
-                        .font(.subheadline.weight(.semibold))
                     }
                 }
                 .frame(maxWidth: 440)
@@ -99,31 +91,14 @@ struct HomeView: View {
             .sheet(isPresented: $isShowingNewGame, onDismiss: openPendingGame) {
                 NewGameSheet(replacesGameInProgress: savedGame?.hasProgress == true) { difficulty in
                     await startGame(difficulty)
+                } startWithCode: { code in
+                    await startGame(code: code)
                 }
                 .navigationTransition(.zoom(sourceID: TransitionID.newGame, in: namespace))
             }
             // A standard sheet: the zoom out of the toolbar button stuttered on the first open.
             .sheet(isPresented: $isShowingSettings) {
                 SettingsView()
-            }
-            .alert("Start with Code", isPresented: $isShowingCodeEntry) {
-                TextField(text: $enteredCode) {
-                    Text(verbatim: PuzzleCode.prefix)
-                }
-                .textInputAutocapitalization(.never)
-                .autocorrectionDisabled()
-                Button("Start") {
-                    let code = enteredCode
-                    Task { await startGame(code: code) }
-                }
-                Button("Cancel", role: .cancel) {}
-            } message: {
-                Text("Paste a puzzle code copied from a game.")
-            }
-            .alert("Not a Puzzle Code", isPresented: $isShowingCodeError) {
-                Button("OK", role: .cancel) {}
-            } message: {
-                Text("This code doesn't make a puzzle with a single solution.")
             }
             .alert("Coming Soon", isPresented: $isShowingComingSoon) {
                 Button("OK", role: .cancel) {}
@@ -216,11 +191,11 @@ struct HomeView: View {
         }
     }
 
-    /// Opens the puzzle a code stands for, graded off the main actor.
-    private func startGame(code: String) async {
+    /// Opens the puzzle a code stands for, graded off the main actor; `false` when the code makes no
+    /// puzzle. Like a new game, it opens once the sheet has closed.
+    private func startGame(code: String) async -> Bool {
         guard let puzzle = await Task.detached(priority: .userInitiated, operation: { PuzzleCode.puzzle(from: code) }).value else {
-            isShowingCodeError = true
-            return
+            return false
         }
         recordAbandonedGame()
         let model = GameModel(
@@ -231,7 +206,9 @@ struct HomeView: View {
         )
         model.save()
         savedGame = model.game
-        activeGame = model
+        pendingGame = model
+        isShowingNewGame = false
+        return true
     }
 
     private func startGame(_ difficulty: Difficulty) async {

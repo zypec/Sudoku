@@ -766,23 +766,6 @@
         }
       }
     },
-    "Cancel": {
-      "comment": "Cancel button.",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cancel"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Vazgeç"
-          }
-        }
-      }
-    },
     "Case %lld of %lld: suppose %lld is in the cell at %@.": {
       "comment": "Visual proof: case assumption, candidate on",
       "localizations": {
@@ -3278,23 +3261,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Yok"
-          }
-        }
-      }
-    },
-    "Not a Puzzle Code": {
-      "comment": "Alert title when an entered puzzle code is invalid.",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Not a Puzzle Code"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Geçerli Bir Kod Değil"
           }
         }
       }
