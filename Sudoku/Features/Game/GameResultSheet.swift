@@ -28,6 +28,8 @@ enum GameOutcome: Identifiable {
 struct GameResultSheet: View {
     let model: GameModel
     let outcome: GameOutcome
+    /// Off in a race: its game leads back to the race, never to another puzzle.
+    var startsNewGames = true
     let onNewGame: () -> Void
     let onHome: () -> Void
     /// After a loss: take back the last mistake and play on.
@@ -93,18 +95,27 @@ struct GameResultSheet: View {
                 lostActions
             } else {
                 VStack(spacing: 10) {
-                    Button(action: onNewGame) {
-                        Label("New Game", systemImage: "plus")
-                            .font(.headline)
-                            .frame(maxWidth: .infinity)
+                    if startsNewGames {
+                        Button(action: onNewGame) {
+                            Label("New Game", systemImage: "plus")
+                                .font(.headline)
+                                .frame(maxWidth: .infinity)
+                        }
+                        .glassProminentButton()
+                        Button(action: onHome) {
+                            Text("Home")
+                                .font(.headline)
+                                .frame(maxWidth: .infinity)
+                        }
+                        .glassButton()
+                    } else {
+                        Button(action: onHome) {
+                            Label("Back to Race", systemImage: "flag.checkered")
+                                .font(.headline)
+                                .frame(maxWidth: .infinity)
+                        }
+                        .glassProminentButton()
                     }
-                    .glassProminentButton()
-                    Button(action: onHome) {
-                        Text("Home")
-                            .font(.headline)
-                            .frame(maxWidth: .infinity)
-                    }
-                    .glassButton()
                 }
                 .controlSize(.large)
             }
@@ -131,8 +142,12 @@ struct GameResultSheet: View {
             }
             .glassButton()
             HStack(spacing: 32) {
-                Button("New Game", action: onNewGame)
-                Button("Home", action: onHome)
+                if startsNewGames {
+                    Button("New Game", action: onNewGame)
+                    Button("Home", action: onHome)
+                } else {
+                    Button("Back to Race", action: onHome)
+                }
             }
             .buttonStyle(.borderless)
             .font(.subheadline.weight(.semibold))

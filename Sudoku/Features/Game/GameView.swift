@@ -125,7 +125,7 @@ struct GameView: View {
         }
         .sensoryFeedback(.success, trigger: isShowingCodeCopied) { _, shown in shown && haptics }
         .sheet(item: $outcome) { outcome in
-            GameResultSheet(model: model, outcome: outcome) {
+            GameResultSheet(model: model, outcome: outcome, startsNewGames: !model.isRace) {
                 self.outcome = nil
                 Task { await model.startNewGame() }
             } onHome: {
@@ -160,7 +160,7 @@ struct GameView: View {
                 }
                 .disabled(model.game.isFinished)
             }
-            if !model.isPractice {
+            if !model.isPractice, !model.isRace {
                 Button("Auto Solve", systemImage: "play.circle") {
                     model.startAutoSolve()
                 }

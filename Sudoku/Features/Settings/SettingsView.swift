@@ -15,6 +15,16 @@ struct SettingsView: View {
         @Bindable var settings = settings
         NavigationStack {
             Form {
+                Section {
+                    TextField("Your Name", text: $settings.playerName)
+                        .textContentType(.nickname)
+                        .autocorrectionDisabled()
+                } header: {
+                    Text("Races")
+                } footer: {
+                    Text("Shown to friends with the results you share.")
+                }
+
                 Section("Appearance") {
                     Picker(selection: $settings.theme) {
                         ForEach(AppSettings.Theme.allCases) { theme in

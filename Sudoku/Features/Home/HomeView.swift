@@ -27,6 +27,7 @@ struct HomeView: View {
     @State private var isShowingComingSoon = false
     @State private var isShowingStats = false
     @State private var isShowingTraining = false
+    @State private var isShowingRace = false
 
     var body: some View {
         NavigationStack {
@@ -51,6 +52,15 @@ struct HomeView: View {
                         ) {
                             isShowingStats = true
                         }
+                    }
+                    FeatureTile(
+                        title: "Race a Friend",
+                        subtitle: "Same puzzle, first to finish wins",
+                        systemImage: "flag.checkered",
+                        tint: .orange,
+                        isWide: true
+                    ) {
+                        isShowingRace = true
                     }
                 }
                 .padding()
@@ -96,6 +106,9 @@ struct HomeView: View {
             }
             .navigationDestination(isPresented: $isShowingTraining) {
                 TrainingView()
+            }
+            .navigationDestination(isPresented: $isShowingRace) {
+                RaceListView()
             }
             .sheet(isPresented: $isShowingNewGame, onDismiss: openPendingGame) {
                 NewGameSheet(replacesGameInProgress: savedGame?.hasProgress == true) { difficulty in
@@ -329,30 +342,61 @@ private struct FeatureTile: View {
     let subtitle: LocalizedStringKey
     let systemImage: String
     let tint: Color
+    /// A full-width tile in one row: the icon beside the words, so it stays short.
+    var isWide = false
     let action: () -> Void
 
     var body: some View {
         Button(action: action) {
-            VStack(alignment: .leading, spacing: 10) {
-                Image(systemName: systemImage)
-                    .font(.title2)
-                    .foregroundStyle(.white)
-                    .frame(width: 44, height: 44)
-                    .background(tint.gradient, in: .rect(cornerRadius: 12))
-                Spacer(minLength: 0)
-                Text(title)
-                    .font(.headline)
-                    .foregroundStyle(.primary)
-                Text(subtitle)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(2)
+            if isWide {
+                HStack(spacing: 14) {
+                    icon
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(title)
+                            .font(.headline)
+                            .foregroundStyle(.primary)
+                        Text(subtitle)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                    Spacer(minLength: 0)
+                    Image(systemName: "chevron.right")
+                        .font(.footnote.weight(.semibold))
+                        .foregroundStyle(.tertiary)
+                }
+                .padding(14)
+                .background(.fill.quaternary, in: .rect(cornerRadius: 24))
+                .contentShape(.rect(cornerRadius: 24))
+            } else {
+                tall
             }
-            .frame(maxWidth: .infinity, minHeight: 130, alignment: .leading)
-            .padding(16)
-            .background(.fill.quaternary, in: .rect(cornerRadius: 24))
-            .contentShape(.rect(cornerRadius: 24))
         }
         .buttonStyle(.pressable)
+    }
+
+    private var icon: some View {
+        Image(systemName: systemImage)
+            .font(.title2)
+            .foregroundStyle(.white)
+            .frame(width: 44, height: 44)
+            .background(tint.gradient, in: .rect(cornerRadius: 12))
+    }
+
+    private var tall: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            icon
+            Spacer(minLength: 0)
+            Text(title)
+                .font(.headline)
+                .foregroundStyle(.primary)
+            Text(subtitle)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .lineLimit(2)
+        }
+        .frame(maxWidth: .infinity, minHeight: 130, alignment: .leading)
+        .padding(16)
+        .background(.fill.quaternary, in: .rect(cornerRadius: 24))
+        .contentShape(.rect(cornerRadius: 24))
     }
 }

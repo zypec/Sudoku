@@ -99,6 +99,12 @@ final class GameModel {
         practiceFocus != nil
     }
 
+    /// A race's game: no auto solve, and no other puzzle started from it.
+    @ObservationIgnored var isRace = false
+    /// Hears when the game ends (solved or lost), as each time it is recorded; races take their result
+    /// from it.
+    @ObservationIgnored var onFinish: ((SudokuGame) -> Void)?
+
     /// Whether the mistake-limit setting applies to this game (not in training).
     @ObservationIgnored private let followsMistakeLimitSetting: Bool
 
@@ -641,6 +647,7 @@ final class GameModel {
         if game.isFinished, !hasRecordedResult {
             hasRecordedResult = true
             lastRecord = recorder?.record(game)
+            onFinish?(game)
         }
     }
 

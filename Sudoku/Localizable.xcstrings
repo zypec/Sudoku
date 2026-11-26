@@ -205,6 +205,57 @@
         }
       }
     },
+    "1 day": {
+      "comment": "Race time limit.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 day"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 gün"
+          }
+        }
+      }
+    },
+    "1 hour": {
+      "comment": "Race time limit.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 hour"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 saat"
+          }
+        }
+      }
+    },
+    "1 week": {
+      "comment": "Race time limit.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 week"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 hafta"
+          }
+        }
+      }
+    },
     "3 Mistakes": {
       "comment": "Mistake limit option",
       "localizations": {
@@ -222,6 +273,23 @@
         }
       }
     },
+    "3 days": {
+      "comment": "Race time limit.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3 days"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3 gün"
+          }
+        }
+      }
+    },
     "5 Mistakes": {
       "comment": "Mistake limit option",
       "localizations": {
@@ -235,6 +303,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "5 Hata"
+          }
+        }
+      }
+    },
+    "6 hours": {
+      "comment": "Race time limit.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "6 hours"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "6 saat"
           }
         }
       }
@@ -409,6 +494,23 @@
         }
       }
     },
+    "Add": {
+      "comment": "Adds a pasted result code.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ekle"
+          }
+        }
+      }
+    },
     "Add Them to My Notes": {
       "comment": "Detailed hint: write those candidates into the player's notes",
       "localizations": {
@@ -422,6 +524,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Notlarıma Ekle"
+          }
+        }
+      }
+    },
+    "Add the result codes your friends share with you.": {
+      "comment": "Standings footer.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add the result codes your friends share with you."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arkadaşlarının seninle paylaştığı sonuç kodlarını ekle."
           }
         }
       }
@@ -694,6 +813,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Geri"
+          }
+        }
+      }
+    },
+    "Back to Race": {
+      "comment": "Result sheet of a race game.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Back to Race"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yarışa Dön"
           }
         }
       }
@@ -1089,6 +1225,23 @@
         }
       }
     },
+    "Couldn't Join": {
+      "comment": "Alert title when a race code fails.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't Join"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Katılınamadı"
+          }
+        }
+      }
+    },
     "Count where each digit can go in a house. Digits limited to the same few cells point to a hidden subset, often hidden among many other notes.": {
       "comment": "Technique guide (detailed hint explanation and training)",
       "localizations": {
@@ -1446,6 +1599,74 @@
         }
       }
     },
+    "Ended": {
+      "comment": "A race that is over.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ended"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bitti"
+          }
+        }
+      }
+    },
+    "Ends": {
+      "comment": "Race detail: when the race ends.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ends"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bitiş"
+          }
+        }
+      }
+    },
+    "Ends %@": {
+      "comment": "Race row: when the race ends, as a relative date.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ends %@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bitiş: %@"
+          }
+        }
+      }
+    },
+    "Enter your name to share your result.": {
+      "comment": "Race detail footer when no name is set.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter your name to share your result."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sonucunu paylaşmak için adını yaz."
+          }
+        }
+      }
+    },
     "Erase": {
       "comment": "Button that clears the selected cell",
       "localizations": {
@@ -1582,6 +1803,23 @@
         }
       }
     },
+    "Everyone plays the same puzzle. Whoever finishes first, before the race ends, wins. Share the race's code with your friends, and add the result codes they send you.": {
+      "comment": "Footer of the race list.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Everyone plays the same puzzle. Whoever finishes first, before the race ends, wins. Share the race's code with your friends, and add the result codes they send you."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Herkes aynı bulmacayı oynar. Yarış bitmeden önce ilk bitiren kazanır. Yarışın kodunu arkadaşlarınla paylaş, onların gönderdiği sonuç kodlarını da ekle."
+          }
+        }
+      }
+    },
     "Expert": {
       "comment": "Difficulty level",
       "localizations": {
@@ -1714,6 +1952,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "İstatistiklerini görmek için bir oyunu bitir."
+          }
+        }
+      }
+    },
+    "Finished": {
+      "comment": "Race detail: when the player finished.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finished"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bitirme"
           }
         }
       }
@@ -2156,6 +2411,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nasıl fark edilir: %@"
+          }
+        }
+      }
+    },
+    "I finished our Sudoku race in %@. Add my result: %@": {
+      "comment": "Message shared with a result code.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I finished our Sudoku race in %1$@. Add my result: %2$@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sudoku yarışımızı %1$@ sürede bitirdim. Sonucumu ekle: %2$@"
           }
         }
       }
@@ -2772,6 +3044,57 @@
         }
       }
     },
+    "Join": {
+      "comment": "Joins the race of the entered code.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Join"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Katıl"
+          }
+        }
+      }
+    },
+    "Join a Race": {
+      "comment": "Alert title for entering a race code.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Join a Race"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yarışa Katıl"
+          }
+        }
+      }
+    },
+    "Join with Code": {
+      "comment": "Race list: joins a race from a code.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Join with Code"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kodla Katıl"
+          }
+        }
+      }
+    },
     "Last empty cell in a house": {
       "comment": "Subtitle for the Full House technique",
       "localizations": {
@@ -2785,6 +3108,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Son Boş Hücre"
+          }
+        }
+      }
+    },
+    "Late": {
+      "comment": "A result that came after the deadline.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Late"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geç"
           }
         }
       }
@@ -3367,6 +3707,23 @@
         }
       }
     },
+    "New Race": {
+      "comment": "Title of the new race sheet.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New Race"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yeni Yarış"
+          }
+        }
+      }
+    },
     "Next": {
       "comment": "Hint panel: go to the next page",
       "localizations": {
@@ -3448,6 +3805,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Henüz oyun oynanmadı"
+          }
+        }
+      }
+    },
+    "No one has finished yet.": {
+      "comment": "Standings before any result.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No one has finished yet."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Henüz kimse bitirmedi."
+          }
+        }
+      }
+    },
+    "No puzzle of this difficulty could be prepared for a race.": {
+      "comment": "New race failed.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No puzzle of this difficulty could be prepared for a race."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu zorlukta yarış için bulmaca hazırlanamadı."
           }
         }
       }
@@ -3690,6 +4081,23 @@
         }
       }
     },
+    "Paste a result code": {
+      "comment": "Placeholder of the result code field.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paste a result code"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bir sonuç kodu yapıştır"
+          }
+        }
+      }
+    },
     "Paste a training code copied from practice.": {
       "comment": "Message of the training code alert.",
       "localizations": {
@@ -3703,6 +4111,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Alıştırmadan kopyaladığın bir eğitim kodunu yapıştır."
+          }
+        }
+      }
+    },
+    "Paste the race code a friend shared.": {
+      "comment": "Message of the join alert.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paste the race code a friend shared."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bir arkadaşının paylaştığı yarış kodunu yapıştır."
           }
         }
       }
@@ -4047,6 +4472,91 @@
         }
       }
     },
+    "Race": {
+      "comment": "Title of the race screens.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Race"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yarış"
+          }
+        }
+      }
+    },
+    "Race Code": {
+      "comment": "Race detail: the code to share.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Race Code"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yarış Kodu"
+          }
+        }
+      }
+    },
+    "Race a Friend": {
+      "comment": "Home tile that opens races.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Race a Friend"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arkadaşınla Yarış"
+          }
+        }
+      }
+    },
+    "Race me in Sudoku! Join with the code %@ before %@.": {
+      "comment": "Message shared with a race code; the second argument is the deadline.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Race me in Sudoku! Join with the code %1$@ before %2$@."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sudoku'da benimle yarış! %2$@ tarihinden önce %1$@ koduyla katıl."
+          }
+        }
+      }
+    },
+    "Races": {
+      "comment": "Race list section, and the Settings section about races.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Races"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yarışlar"
+          }
+        }
+      }
+    },
     "Random": {
       "comment": "Training: section header for random practice.",
       "localizations": {
@@ -4353,6 +4863,23 @@
         }
       }
     },
+    "Same puzzle, first to finish wins": {
+      "comment": "Subtitle of the race tile on Home.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Same puzzle, first to finish wins"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aynı bulmaca, ilk bitiren kazanır"
+          }
+        }
+      }
+    },
     "Select an empty cell, then tap Hint to fill it in.": {
       "comment": "Hint with smart hints off and no empty cell selected.",
       "localizations": {
@@ -4383,6 +4910,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ayarlar"
+          }
+        }
+      }
+    },
+    "Share Race": {
+      "comment": "Shares the race code.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Share Race"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yarışı Paylaş"
+          }
+        }
+      }
+    },
+    "Share Your Result": {
+      "comment": "Shares the player's result code.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Share Your Result"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sonucunu Paylaş"
           }
         }
       }
@@ -4451,6 +5012,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Hangileri Olduğunu Göster"
+          }
+        }
+      }
+    },
+    "Shown to friends with the results you share.": {
+      "comment": "Settings footer under the name field.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shown to friends with the results you share."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paylaştığın sonuçlarla birlikte arkadaşlarına gösterilir."
           }
         }
       }
@@ -4829,6 +5407,23 @@
         }
       }
     },
+    "Someone": {
+      "comment": "A result shared without a name.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Someone"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Biri"
+          }
+        }
+      }
+    },
     "Soon": {
       "comment": "Badge on difficulties that aren't available yet",
       "localizations": {
@@ -4863,6 +5458,23 @@
         }
       }
     },
+    "Standings": {
+      "comment": "Race detail: everyone's results.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Standings"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sıralama"
+          }
+        }
+      }
+    },
     "Start": {
       "comment": "Button that opens the puzzle from the entered code.",
       "localizations": {
@@ -4893,6 +5505,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Alıştırmaya Başla"
+          }
+        }
+      }
+    },
+    "Start Race": {
+      "comment": "New race: starts it.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start Race"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yarışı Başlat"
+          }
+        }
+      }
+    },
+    "Start a Race": {
+      "comment": "Race list: starts a new race.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start a Race"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yarış Başlat"
           }
         }
       }
@@ -5050,6 +5696,40 @@
         }
       }
     },
+    "Sudoku Race": {
+      "comment": "Share preview title of a race.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sudoku Race"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sudoku Yarışı"
+          }
+        }
+      }
+    },
+    "Sudoku Race Result": {
+      "comment": "Share preview title of a race result.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sudoku Race Result"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sudoku Yarışı Sonucu"
+          }
+        }
+      }
+    },
     "Suppose %lld at %@ is false. Following the links, every second candidate must then be true, up to %lld at %@. So at least one of the two ends is true.": {
       "comment": "Hint walkthrough page: chain reasoning; start digit and cell, end digit and cell",
       "localizations": {
@@ -5131,6 +5811,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Yöntemler"
+          }
+        }
+      }
+    },
+    "That isn't a race code.": {
+      "comment": "Join failed: the text isn't a race code.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "That isn't a race code."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu bir yarış kodu değil."
+          }
+        }
+      }
+    },
+    "That isn't a result of this race.": {
+      "comment": "A pasted result code that doesn't belong to the race.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "That isn't a result of this race."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu, bu yarışın bir sonucu değil."
           }
         }
       }
@@ -5424,6 +6138,40 @@
         }
       }
     },
+    "The race ends when its time is up, whether or not everyone has finished.": {
+      "comment": "New race footer.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The race ends when its time is up, whether or not everyone has finished."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yarış, herkes bitirmiş olsun ya da olmasın, süresi dolunca biter."
+          }
+        }
+      }
+    },
+    "The race is over; a finish now comes in late.": {
+      "comment": "Race detail footer after the deadline.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The race is over; a finish now comes in late."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yarış bitti; şimdi bitirirsen geç kalmış sayılırsın."
+          }
+        }
+      }
+    },
     "The row, column and box of the cell at %@ already contain every other digit, so only %lld is left.": {
       "comment": "Hint walkthrough page: Naked Single",
       "localizations": {
@@ -5628,6 +6376,40 @@
         }
       }
     },
+    "This race was removed.": {
+      "comment": "Race detail of a removed race.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This race was removed."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu yarış silindi."
+          }
+        }
+      }
+    },
+    "This race's puzzle isn't in this version of the app.": {
+      "comment": "Join failed: the puzzle isn't in this app's bank.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This race's puzzle isn't in this version of the app."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu yarışın bulmacası uygulamanın bu sürümünde yok."
+          }
+        }
+      }
+    },
     "This week": {
       "comment": "Accessibility label of the week strip on the daily card",
       "localizations": {
@@ -5703,6 +6485,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Time"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Süre"
+          }
+        }
+      }
+    },
+    "Time Limit": {
+      "comment": "New race: how long it runs.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Time Limit"
           }
         },
         "tr": {
@@ -6138,6 +6937,23 @@
         }
       }
     },
+    "Won by %@": {
+      "comment": "Race row: the winner's name.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Won by %@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kazanan: %@"
+          }
+        }
+      }
+    },
     "X-Wing and wings": {
       "comment": "Hard difficulty description",
       "localizations": {
@@ -6168,6 +6984,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Yüzgeçli X-Wing"
+          }
+        }
+      }
+    },
+    "You": {
+      "comment": "Race detail section about the player, and the player in standings.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sen"
           }
         }
       }
@@ -6240,6 +7073,40 @@
         }
       }
     },
+    "Your Name": {
+      "comment": "Name shown with shared race results.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your Name"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adın"
+          }
+        }
+      }
+    },
+    "Your Time": {
+      "comment": "Race detail: the player's solving time.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your Time"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Senin Süren"
+          }
+        }
+      }
+    },
     "Your daily streak history will appear here once Daily Sudoku arrives.": {
       "comment": "Statistics: placeholder for the daily streak history",
       "localizations": {
@@ -6287,6 +7154,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Gelişimin"
+          }
+        }
+      }
+    },
+    "Your time: %@": {
+      "comment": "Race row: the player's solving time.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your time: %@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Senin süren: %@"
           }
         }
       }
@@ -6372,6 +7256,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "%1$lld. satır, %2$lld. sütun"
+          }
+        }
+      }
+    },
+    "you": {
+      "comment": "Race row: the player, as the winner.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "you"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "sen"
           }
         }
       }

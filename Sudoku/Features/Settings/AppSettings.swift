@@ -49,6 +49,10 @@ final class AppSettings {
     var smartHints: Bool {
         didSet { defaults.set(smartHints, forKey: Key.smartHints) }
     }
+    /// The name shared with race results.
+    var playerName: String {
+        didSet { defaults.set(playerName, forKey: Key.playerName) }
+    }
     /// Hints the Hint button gives per game; 0 is unlimited.
     var hintLimit: Int {
         didSet { defaults.set(hintLimit, forKey: Key.hintLimit) }
@@ -90,6 +94,7 @@ final class AppSettings {
         theme = defaults.string(forKey: Key.theme).flatMap(Theme.init(rawValue:)) ?? .system
         mistakeLimit = (defaults.object(forKey: Key.mistakeLimit) as? Int).flatMap(MistakeLimit.init(rawValue:)) ?? .three
         smartHints = defaults.object(forKey: Key.smartHints) as? Bool ?? true
+        playerName = defaults.string(forKey: Key.playerName) ?? ""
         hintLimit = max(0, defaults.integer(forKey: Key.hintLimit))
         showsMistakes = defaults.object(forKey: Key.showsMistakes) as? Bool ?? true
         showsTimer = defaults.object(forKey: Key.showsTimer) as? Bool ?? true
@@ -112,6 +117,7 @@ final class AppSettings {
         static let theme = "settings.theme"
         static let mistakeLimit = "settings.mistakeLimit"
         static let smartHints = "settings.smartHints"
+        static let playerName = "settings.playerName"
         static let hintLimit = "settings.hintLimit"
         static let showsMistakes = "settings.showsMistakes"
         static let showsTimer = "settings.showsTimer"
