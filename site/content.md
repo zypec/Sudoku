@@ -14,7 +14,8 @@
             the strip under the app)
   shots     demo: headline | technique | what it means (the first card: the live hint on the board),
             step (any number: what the demo's hint says, one step after another),
-            shot: file | headline (any number); cards side by side share one background
+            shot: file | headline (any number); cards side by side share one picture, drawn for the number
+            of cards there are: after adding or removing one, run python3 Tools/site-panorama.py <cards>
   about     what the app is; it opens in full with More
   new       version, date; then what changed
   info      row: label | value (any number)
