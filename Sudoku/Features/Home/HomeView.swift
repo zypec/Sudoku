@@ -72,7 +72,16 @@ struct HomeView: View {
                 .padding(.horizontal)
                 .padding(.bottom, 8)
             }
+            // The screen draws its own large title, but the back button's long-press menu lists screens
+            // by their navigation title: without one, Home was an empty row there. The title is kept
+            // out of the bar by an empty principal item.
+            .navigationTitle("Sudoku")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Color.clear.frame(width: 1, height: 1)
+                        .accessibilityHidden(true)
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Settings", systemImage: "gearshape") {
                         isShowingSettings = true

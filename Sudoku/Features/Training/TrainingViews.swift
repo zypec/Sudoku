@@ -7,10 +7,28 @@ import SwiftUI
 
 // MARK: Library
 
-/// The technique library: every technique by level, with the player's practice progress.
+/// The technique library: random practice first, then every technique by level, with the player's
+/// practice progress. A training code someone shared opens from the toolbar.
 struct TrainingView: View {
+    @Environment(AppSettings.self) private var settings
+    @State private var isEnteringCode = false
+    @State private var code = ""
+    @State private var isCodeInvalid = false
+    @State private var codePractice: PracticeModel?
+
     var body: some View {
         List {
+            Section {
+                NavigationLink {
+                    PracticeView(start: .random)
+                } label: {
+                    RandomPracticeRow()
+                }
+            } header: {
+                Text("Random")
+            } footer: {
+                Text("A position for any technique, without its name. Other right moves count too.")
+            }
             ForEach(Difficulty.allCases) { level in
                 Section {
                     ForEach(TechniqueKind.allCases.filter { $0.level == level.level }, id: \.self) { technique in
@@ -28,6 +46,63 @@ struct TrainingView: View {
             }
         }
         .navigationTitle("Training")
+        .toolbar {
+            Button("Open Code", systemImage: "number") {
+                code = ""
+                isEnteringCode = true
+            }
+        }
+        .alert("Open Training Code", isPresented: $isEnteringCode) {
+            TextField(text: $code) {
+                Text(verbatim: "TXX-XXX-XXX")
+            }
+            .textInputAutocapitalization(.characters)
+            .autocorrectionDisabled()
+            Button("Open") {
+                if let practice = PracticeModel(code: code, settings: settings) {
+                    codePractice = practice
+                } else {
+                    isCodeInvalid = true
+                }
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("Paste a training code copied from practice.")
+        }
+        .alert("Not a Training Code", isPresented: $isCodeInvalid) {
+            Button("OK", role: .cancel) {}
+        }
+        .navigationDestination(item: $codePractice) { practice in
+            PracticeView(start: .model(practice))
+        }
+    }
+}
+
+/// Random practice, with how many were solved today and on an average day.
+private struct RandomPracticeRow: View {
+    var body: some View {
+        let progress = TrainingProgress.shared
+        HStack(spacing: 14) {
+            Image(systemName: "shuffle")
+                .font(.title3.weight(.semibold))
+                .foregroundStyle(.white)
+                .frame(width: 40, height: 40)
+                .background(Color.accentColor.gradient, in: .rect(cornerRadius: 10))
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Random Practice")
+                    .font(.headline)
+                Group {
+                    if let average = progress.randomDailyAverage() {
+                        Text("Today: \(progress.randomSolved())   Daily average: \(average.formatted(.number.precision(.fractionLength(0...1))))")
+                    } else {
+                        Text("Any technique, one after another")
+                    }
+                }
+                .font(.caption)
+                .foregroundStyle(.secondary)
+            }
+        }
+        .padding(.vertical, 2)
     }
 }
 
@@ -216,7 +291,22 @@ private struct TechniqueExample: View {
 
 /// A practice session: the game screen with the task in place of the status bar.
 struct PracticeView: View {
-    let technique: TechniqueKind
+    enum Start {
+        case technique(TechniqueKind)
+        case random
+        /// A session already made, such as one a training code opened.
+        case model(PracticeModel)
+    }
+
+    let start: Start
+
+    init(technique: TechniqueKind) {
+        start = .technique(technique)
+    }
+
+    init(start: Start) {
+        self.start = start
+    }
 
     @Environment(AppSettings.self) private var settings
     @State private var practice: PracticeModel?
@@ -231,8 +321,11 @@ struct PracticeView: View {
             }
         }
         .task {
-            if practice == nil {
-                practice = PracticeModel(technique: technique, settings: settings)
+            guard practice == nil else { return }
+            practice = switch start {
+            case .technique(let technique): PracticeModel(technique: technique, settings: settings)
+            case .random: PracticeModel(randomWith: settings)
+            case .model(let model): model
             }
         }
     }
@@ -262,11 +355,39 @@ struct PracticeBanner: View {
                     practice.undoWrongMove()
                 }
                 .buttonStyle(.glass)
-            case .solved:
-                Button("Next") {
-                    practice.nextPosition()
+            case .otherSolution:
+                VStack(alignment: .trailing, spacing: 6) {
+                    Button("Continue") {
+                        practice.continueToExpected()
+                    }
+                    .buttonStyle(.glass)
+                    Button("Next") {
+                        practice.nextPosition()
+                    }
+                    .buttonStyle(.glassProminent)
                 }
-                .buttonStyle(.glassProminent)
+                .controlSize(.small)
+            case .solved:
+                if practice.isRandom {
+                    VStack(alignment: .trailing, spacing: 6) {
+                        Button("Restart") {
+                            practice.restart()
+                        }
+                        .buttonStyle(.glass)
+                        Button("Next") {
+                            practice.nextPosition()
+                        }
+                        .buttonStyle(.glassProminent)
+                    }
+                    .controlSize(.small)
+                } else {
+                    Button("Next") {
+                        practice.nextPosition()
+                    }
+                    .buttonStyle(.glassProminent)
+                }
+            case .working where practice.isRandom:
+                EmptyView()
             case .working:
                 Text("\(practice.positionIndex + 1) of \(practice.positionCount)")
                     .font(.caption.weight(.semibold))
@@ -282,6 +403,7 @@ struct PracticeBanner: View {
             switch status {
             case .solved: .success
             case .wrongMove: .error
+            case .otherSolution: .warning
             case .working: nil
             }
         }
@@ -291,6 +413,7 @@ struct PracticeBanner: View {
         switch practice.status {
         case .working: "target"
         case .wrongMove: "xmark.circle.fill"
+        case .otherSolution: "arrow.triangle.branch"
         case .solved: "checkmark.circle.fill"
         }
     }
@@ -299,6 +422,7 @@ struct PracticeBanner: View {
         switch practice.status {
         case .working: .accentColor
         case .wrongMove: .red
+        case .otherSolution: .orange
         case .solved: .green
         }
     }
@@ -307,21 +431,35 @@ struct PracticeBanner: View {
         switch practice.status {
         case .working: Color.accentColor.opacity(0.1)
         case .wrongMove: Color.red.opacity(0.12)
+        case .otherSolution: Color.orange.opacity(0.14)
         case .solved: Color.green.opacity(0.14)
         }
     }
 
     private var title: String {
         let name = practice.technique.title
+        if practice.isRandom {
+            // The technique is named only once it is found.
+            return switch practice.status {
+            case .working: String(localized: "Find the next step")
+            case .wrongMove: String(localized: "That move isn't right.")
+            case .otherSolution: String(localized: "Right, but not the expected step")
+            case .solved: String(localized: "Well done! It was a \(name).")
+            }
+        }
         return switch practice.status {
         case .working: String(localized: "Find the \(name)")
-        case .wrongMove: String(localized: "That move isn't part of this \(name).")
+        case .wrongMove, .otherSolution: String(localized: "That move isn't part of this \(name).")
         case .solved: String(localized: "Well done!")
         }
     }
 
     private var detail: String {
         switch practice.status {
+        case .working where practice.isRandom:
+            return String(localized: "Place a digit or remove candidates, as the position allows.")
+        case .otherSolution:
+            return String(localized: "Go on to the expected step, or try another position.")
         case .working(let done, let total):
             if practice.isPlacement {
                 return String(localized: "Place the digit it gives.")

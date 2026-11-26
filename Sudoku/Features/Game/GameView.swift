@@ -55,7 +55,7 @@ struct GameView: View {
                     .glassEffect(in: .rect(cornerRadius: 20))
             }
         }
-        .navigationTitle(practice.map { Text(verbatim: $0.technique.title) } ?? Text(model.game.puzzle.difficulty.title))
+        .navigationTitle(practice.map { $0.isRandom ? Text("Random Practice") : Text(verbatim: $0.technique.title) } ?? Text(model.game.puzzle.difficulty.title))
         .navigationBarTitleDisplayMode(.inline)
         // Swipes never leave a game (they're easy to trigger on the board); only the back button does.
         .disablesSwipeBack()
@@ -111,7 +111,7 @@ struct GameView: View {
         }
         .overlay(alignment: .top) {
             if isShowingCodeCopied {
-                Label("Puzzle code copied", systemImage: "checkmark.circle.fill")
+                Label(practice == nil ? LocalizedStringKey("Puzzle code copied") : LocalizedStringKey("Training code copied"), systemImage: "checkmark.circle.fill")
                     .font(.subheadline.weight(.semibold))
                     .padding(.horizontal, 16)
                     .padding(.vertical, 10)
@@ -167,6 +167,13 @@ struct GameView: View {
                 .disabled(model.game.isFinished || model.autoSolve != nil)
                 Button("Copy Puzzle Code", systemImage: "doc.on.doc") {
                     UIPasteboard.general.string = PuzzleCode.code(for: model.game.puzzle)
+                    withAnimation(.snappy) { isShowingCodeCopied = true }
+                }
+                Divider()
+            }
+            if let practice {
+                Button("Copy Training Code", systemImage: "doc.on.doc") {
+                    UIPasteboard.general.string = practice.pick.code
                     withAnimation(.snappy) { isShowingCodeCopied = true }
                 }
                 Divider()

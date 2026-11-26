@@ -341,6 +341,23 @@
         }
       }
     },
+    "A position for any technique, without its name. Other right moves count too.": {
+      "comment": "Training: footer of the random practice section.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A position for any technique, without its name. Other right moves count too."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Herhangi bir yöntemden, adı söylenmeden bir pozisyon. Başka doğru hamleler de sayılır."
+          }
+        }
+      }
+    },
     "A proper puzzle has exactly one solution. Four cells in two rows, two columns and two boxes that could all end up as only A or B would allow two solutions, since A and B could be swapped. So the solution must break the pattern, and depending on the other candidates in the corners, that rules out digits in the corners or around them.": {
       "comment": "Technique guide (detailed hint explanation and training)",
       "localizations": {
@@ -473,6 +490,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dönüşümlü çıkarım zinciri her tür bağı birleştirir: birimlerdeki ya da iki adaylı hücrelerin içindeki güçlü bağlar ve ikisi birden doğru olamayan adaylar arasındaki zayıf bağlar. Güçlü bir bağla başlayıp bitmesi iki ucundan birinin doğru olduğunu kanıtlar; bu da iki uçla birden çelişen her şeyi eler."
+          }
+        }
+      }
+    },
+    "Any technique, one after another": {
+      "comment": "Random practice row before any is solved.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Any technique, one after another"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Her yöntemden, art arda"
           }
         }
       }
@@ -749,6 +783,23 @@
         }
       }
     },
+    "Cancel": {
+      "comment": "Cancel button.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vazgeç"
+          }
+        }
+      }
+    },
     "Case %lld of %lld: suppose %lld is in the cell at %@.": {
       "comment": "Visual proof: case assumption, candidate on",
       "localizations": {
@@ -1017,6 +1068,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bulmaca Kodunu Kopyala"
+          }
+        }
+      }
+    },
+    "Copy Training Code": {
+      "comment": "Practice menu: copies the code of this position.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copy Training Code"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eğitim Kodunu Kopyala"
           }
         }
       }
@@ -1599,6 +1667,23 @@
         }
       }
     },
+    "Find the next step": {
+      "comment": "Random practice task.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Find the next step"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sıradaki adımı bul"
+          }
+        }
+      }
+    },
     "Find two identical two-note cells far apart, then a house where one of their digits has only two spots, one near each.": {
       "comment": "Technique guide (detailed hint explanation and training)",
       "localizations": {
@@ -1816,6 +1901,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Otomatik çözümle biten oyunlar puan kazandırmaz ve galibiyet sayılmaz."
+          }
+        }
+      }
+    },
+    "Go on to the expected step, or try another position.": {
+      "comment": "Random practice: after a right move that isn't the expected step.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Go on to the expected step, or try another position."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beklenen adıma devam et ya da başka bir pozisyon dene."
           }
         }
       }
@@ -3367,6 +3469,23 @@
         }
       }
     },
+    "Not a Training Code": {
+      "comment": "Alert when an entered training code is invalid.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not a Training Code"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geçerli Bir Eğitim Kodu Değil"
+          }
+        }
+      }
+    },
     "Notes": {
       "comment": "Toggle for pencil mark mode",
       "localizations": {
@@ -3503,6 +3622,57 @@
         }
       }
     },
+    "Open": {
+      "comment": "Opens the entered training code.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aç"
+          }
+        }
+      }
+    },
+    "Open Code": {
+      "comment": "Training toolbar: opens a training code.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open Code"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kodla Aç"
+          }
+        }
+      }
+    },
+    "Open Training Code": {
+      "comment": "Alert title for entering a training code.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open Training Code"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eğitim Kodunu Aç"
+          }
+        }
+      }
+    },
     "Paste a puzzle code copied from a game.": {
       "comment": "Message of the Start with Code alert.",
       "localizations": {
@@ -3516,6 +3686,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bir oyundan kopyaladığın bulmaca kodunu yapıştır."
+          }
+        }
+      }
+    },
+    "Paste a training code copied from practice.": {
+      "comment": "Message of the training code alert.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paste a training code copied from practice."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alıştırmadan kopyaladığın bir eğitim kodunu yapıştır."
           }
         }
       }
@@ -3635,6 +3822,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "%2$@ hücresine %1$lld gelir."
+          }
+        }
+      }
+    },
+    "Place a digit or remove candidates, as the position allows.": {
+      "comment": "Random practice task detail.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Place a digit or remove candidates, as the position allows."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pozisyonun izin verdiği gibi bir rakam yerleştir ya da aday sil."
           }
         }
       }
@@ -3843,6 +4047,40 @@
         }
       }
     },
+    "Random": {
+      "comment": "Training: section header for random practice.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Random"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rastgele"
+          }
+        }
+      }
+    },
+    "Random Practice": {
+      "comment": "Training: random practice, and its screen title.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Random Practice"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rastgele Alıştırma"
+          }
+        }
+      }
+    },
     "Recent Games": {
       "comment": "Statistics section",
       "localizations": {
@@ -3996,6 +4234,23 @@
         }
       }
     },
+    "Restart": {
+      "comment": "Random practice: the same position again.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restart"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yeniden Başlat"
+          }
+        }
+      }
+    },
     "Resume": {
       "comment": "Auto solve: continue after pausing",
       "localizations": {
@@ -4043,6 +4298,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Açılan hücreler (%lld)"
+          }
+        }
+      }
+    },
+    "Right, but not the expected step": {
+      "comment": "Random practice: a right move that isn't the expected step.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Right, but not the expected step"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Doğru, ama beklenen adım değil"
           }
         }
       }
@@ -4880,6 +5152,23 @@
         }
       }
     },
+    "That move isn't right.": {
+      "comment": "Random practice: a move against the solution.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "That move isn't right."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu hamle doğru değil."
+          }
+        }
+      }
+    },
     "The %lld in the cell at %@ rules %lld out of the cells it sees.": {
       "comment": "Visual proof, Hidden Single: one blocking digit",
       "localizations": {
@@ -5424,6 +5713,23 @@
         }
       }
     },
+    "Today: %lld   Daily average: %@": {
+      "comment": "Random practice: positions solved today, and per day on average.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Today: %1$lld   Daily average: %2$@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bugün: %1$lld   Günlük ortalama: %2$@"
+          }
+        }
+      }
+    },
     "Total Score": {
       "comment": "Statistics tile",
       "localizations": {
@@ -5454,6 +5760,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Eğitim"
+          }
+        }
+      }
+    },
+    "Training code copied": {
+      "comment": "Shown briefly after copying a training code.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Training code copied"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eğitim kodu kopyalandı"
           }
         }
       }
@@ -5709,6 +6032,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Aferin!"
+          }
+        }
+      }
+    },
+    "Well done! It was a %@.": {
+      "comment": "Random practice solved; the argument is the technique.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Well done! It was a %@."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Harika! Bu bir %@ idi."
           }
         }
       }

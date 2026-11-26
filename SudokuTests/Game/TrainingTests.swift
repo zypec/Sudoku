@@ -136,4 +136,75 @@ struct TrainingTests {
         let resumed = try #require(PracticeModel(technique: .pointing, settings: settings, progress: progress))
         #expect(resumed.positionIndex == reached)
     }
+
+    // MARK: Random practice and codes
+
+    @Test func aTrainingCodeNamesItsPosition() throws {
+        let pick = PracticePick(technique: .xyWing, index: 17, seed: 987_654_321)
+        #expect(pick.code.count == 11)
+        #expect(pick.code.hasPrefix("T"))
+        #expect(PracticePick(code: pick.code) == pick)
+        #expect(PracticePick(code: pick.code.lowercased().replacingOccurrences(of: "-", with: "")) == pick)
+        #expect(PracticePick(code: "H7K-2M4-Q9X") == nil)  // a puzzle code, not a training one
+    }
+
+    @Test func aCodeOpensTheSamePosition() throws {
+        let first = try #require(PracticeModel(randomWith: settings, progress: progress))
+        let again = try #require(PracticeModel(code: first.pick.code, settings: settings, progress: progress))
+        #expect(again.pick == first.pick)
+        #expect(again.game.game.values == first.game.game.values)
+        #expect(again.isRandom)
+    }
+
+    /// In random practice a right move that isn't the expected step is offered to keep; the expected
+    /// step still solves the position, and the day's count goes up.
+    @Test func randomPracticeTakesOtherRightMoves() throws {
+        let pick = PracticePick(technique: .xWing, index: 0, seed: 1)
+        let practice = try #require(PracticeModel(code: pick.code, settings: settings, progress: progress))
+        guard case .step(let step, _) = HintFinder.hint(for: practice.game.game) else {
+            Issue.record("Expected the X-Wing step")
+            return
+        }
+        // A right digit somewhere the X-Wing doesn't touch, and not its digit: placing that would
+        // clear its eliminations by itself.
+        let game = practice.game.game
+        let touched = Set(step.eliminations.map(\.cell))
+        let digits = step.eliminations.reduce(CandidateSet.empty) { $0.union($1.digits) }
+        let other = try #require(Geometry.cells.first {
+            game.values[$0] == 0 && !touched.contains($0) && !digits.contains(game.puzzle.solution[$0])
+        })
+        practice.game.select(other)
+        practice.game.input(game.puzzle.solution[other])
+        practice.evaluate()
+        #expect(practice.status == .otherSolution)
+        practice.continueToExpected()
+        #expect(practice.status != .otherSolution)
+
+        practice.game.toggleNotesMode()
+        for elimination in step.eliminations {
+            for digit in elimination.digits where practice.game.game.notes[elimination.cell].contains(digit) {
+                practice.game.select(elimination.cell)
+                practice.game.input(digit)
+            }
+        }
+        practice.evaluate()
+        #expect(practice.status == .solved)
+        #expect(progress.randomSolved() == 1)
+        #expect(progress.randomDailyAverage() == 1)
+
+        practice.restart()
+        #expect(practice.status != .solved)
+        #expect(practice.pick == pick)
+    }
+
+    @Test func aWrongMoveIsWrongInRandomPracticeToo() throws {
+        let practice = try #require(PracticeModel(code: PracticePick(technique: .xWing, index: 0, seed: 1).code, settings: settings, progress: progress))
+        let game = practice.game.game
+        let cell = try #require(Geometry.cells.first { game.values[$0] == 0 })
+        let wrong = try #require(Geometry.digits.first { $0 != game.puzzle.solution[cell] })
+        practice.game.select(cell)
+        practice.game.input(wrong)
+        practice.evaluate()
+        #expect(practice.status == .wrongMove)
+    }
 }
