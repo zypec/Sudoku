@@ -29,19 +29,17 @@ try {
   --accent:#0a66d8;--accent-ink:#0855b5;--accent-soft:#0a66d812;--accent-line:#0a66d840;
   /* The hint colors of the app: one case of a pattern in green, the other in blue, what goes in red. */
   --case-a:#2f9e55;--case-b:#2f7bf0;--struck:#d93a3a;--house:#f6d36b38;--corner:#f39a4a40;--target:#d93a3a1c;
-  /* The one picture the screens' cards share, each card showing its own stretch of it, so cards side by
-     side run into each other the way a store page's screenshots do: a chain of linked 7s runs along the
-     band under the headlines, a node on every card and on every gap, and big digits sit on the gaps, half
-     in one card and half in the next. Drawn for eleven cards (Tools/site-panorama.py). */
-  --strip:url(gallery/panorama-light.jpg);
+  /* The words on the screens' cards are set as the app sets its own, in Helvetica Neue. */
+  --app-face:"Helvetica Neue",Helvetica,Arial,sans-serif;
+  /* Each card is one quiet surface: the page's ground washed with the app's blue, a little deeper at the
+     top behind the headline, so the phone is what stands out. */
+  --card-top:color-mix(in srgb,var(--accent) 13%,var(--bg));--card-foot:color-mix(in srgb,var(--accent) 4%,var(--bg));
   --card:260px;--cardgap:14px}
 @media (prefers-color-scheme:dark){:root:not([data-theme=light]){
   --accent:#5aa7ff;--accent-ink:#7cb9ff;--accent-soft:#5aa7ff17;--accent-line:#5aa7ff45;
-  --house:#f6d36b1f;--corner:#f39a4a2e;--target:#ff5b5b24;--struck:#ff6b6b;
-  --strip:url(gallery/panorama-dark.jpg)}}
+  --house:#f6d36b1f;--corner:#f39a4a2e;--target:#ff5b5b24;--struck:#ff6b6b}}
 :root[data-theme=dark]{--accent:#5aa7ff;--accent-ink:#7cb9ff;--accent-soft:#5aa7ff17;--accent-line:#5aa7ff45;
-  --house:#f6d36b1f;--corner:#f39a4a2e;--target:#ff5b5b24;--struck:#ff6b6b;
-  --strip:url(gallery/panorama-dark.jpg)}
+  --house:#f6d36b1f;--corner:#f39a4a2e;--target:#ff5b5b24;--struck:#ff6b6b}
 
 header .home{font-family:var(--logo);font-weight:800;letter-spacing:-.01em}
 
@@ -96,16 +94,17 @@ header .home{font-family:var(--logo);font-weight:800;letter-spacing:-.01em}
   scrollbar-width:none;overscroll-behavior-x:contain}
 .strip::-webkit-scrollbar{display:none}
 .card{flex:none;margin:0;width:var(--card);aspect-ratio:9/17.5;scroll-snap-align:start;border-radius:24px;overflow:hidden;position:relative;
-  display:flex;flex-direction:column;align-items:center;padding:calc(var(--card) * .575) 0 0;
-  background-image:var(--strip);background-size:calc(var(--n) * (var(--card) + var(--cardgap))) 100%;
-  background-position:calc(var(--i) * (var(--card) + var(--cardgap)) * -1) 0;box-shadow:inset 0 0 0 1px var(--line)}
-/* The headline stays at the top, the phone starts under the band the chain runs along. */
-.card h3{position:absolute;top:calc(var(--card) * .07);left:0;right:0;margin:0 18px;font:800 21px/1.2 var(--logo);letter-spacing:-.01em;
+  display:flex;flex-direction:column;align-items:center;padding:calc(var(--card) * .36) 0 0;
+  background:linear-gradient(180deg,var(--card-top),var(--card-foot) 70%);box-shadow:inset 0 0 0 1px var(--line)}
+/* The headline stays at the top, the phone starts under it. */
+.card h3{position:absolute;top:calc(var(--card) * .09);left:0;right:0;margin:0 20px;font:600 21px/1.22 var(--app-face);letter-spacing:-.012em;
   text-align:center;color:var(--ink);text-wrap:balance}
 /* The phone comes up from the card's foot, cut off by it, as on a store page. */
 .card a{display:block;width:82%;cursor:zoom-in}
+.card [data-live]{cursor:zoom-in}
+.card [data-live]:focus-visible{outline:2px solid var(--accent);outline-offset:8px}
 .card img{display:block;width:100%;height:auto;border-radius:22px;box-shadow:0 0 0 5px #0b0b10,0 18px 30px -12px #0006}
-.card .screen{width:82%;border-radius:22px;background:var(--panel);box-shadow:0 0 0 5px #0b0b10,0 18px 30px -12px #0006;
+.screen{width:82%;border-radius:22px;background:var(--panel);box-shadow:0 0 0 5px #0b0b10,0 18px 30px -12px #0006;
   padding:10px;display:grid;gap:10px}
 
 /* The first card's hint, drawn as the app draws one: a flat, legible board with the pattern on it, and
@@ -129,7 +128,8 @@ header .home{font-family:var(--logo);font-weight:800;letter-spacing:-.01em}
 @keyframes case-b{0%,23%{opacity:1}27%,48%{opacity:.2}52%,100%{opacity:1}}
 @keyframes end{0%,73%{opacity:0}77%,97%{opacity:1}100%{opacity:0}}
 .hint{display:flex;flex-direction:column;gap:2px;padding:12px 12px 10px;border-radius:14px;background:var(--sunk);color:var(--ink)}
-.hint b{font:800 16px/1.2 var(--logo)}
+.hint{font-family:var(--app-face)}
+.hint b{font:600 16px/1.2 var(--app-face)}
 .hint small{font-size:11.5px;color:var(--muted)}
 .hint .says{display:grid;margin-top:8px;min-height:5.4em}
 .hint .says p{grid-area:1/1;margin:0;font-size:12.5px;line-height:1.45;color:var(--ink-2);opacity:0;
@@ -297,18 +297,17 @@ Content.kind('app', block => {
 Content.kind('shots', block => {
   const [demo, technique, meaning] = block.pairs('demo')[0] || [];
   const shots = block.pairs('shot');
-  const n = shots.length + (demo ? 1 : 0);
   const steps = block.all('step');
   const cards = [];
-  if (demo) cards.push(`<h3>${inline(demo)}</h3><div class="screen">${board(`A Sudoku board with an ${technique} on 7, explained by a hint under it`)}`
+  if (demo) cards.push(`<h3>${inline(demo)}</h3><div class="screen" data-live="Open the hint">${board(`A Sudoku board with an ${technique} on 7, explained by a hint under it`)}`
     + `<div class="hint"><b>${inline(technique)}</b>${meaning ? `<small>${inline(meaning)}</small>` : ''}`
     + `<div class="says">${steps.map((step, k) => `<p style="--k:${k}">${inline(step)}</p>`).join('')}</div>`
     + `<div class="pages" aria-hidden="true">${steps.map((step, k) => `<i style="--k:${k}"></i>`).join('')}</div></div></div>`);
   for (const [src, headline] of shots) {
     cards.push(`<h3>${inline(headline || '')}</h3><a href="${escape(src)}"><img src="${escape(src)}" alt="${escape(headline || '')}" loading="lazy" width="700" height="1521"></a>`);
   }
-  return '<div class="strip" id="strip">' + cards.map((card, i) => `<figure class="card" style="--i:${i};--n:${n}">${card}`
-    + `<figcaption hidden>${i === 0 && demo ? '' : escape(shots[i - (demo ? 1 : 0)][1] || '')}</figcaption></figure>`).join('') + '</div>';
+  return '<div class="strip" id="strip">' + cards.map((card, i) => `<figure class="card">${card}`
+    + `<figcaption hidden>${escape(i === 0 && demo ? demo : shots[i - (demo ? 1 : 0)][1] || '')}</figcaption></figure>`).join('') + '</div>';
 });
 
 /** What the app is, cut to its first lines until More opens it. */
@@ -363,7 +362,7 @@ document.addEventListener('contentready', () => {
     update();
   }
 
-  Lightbox.wire('.strip a');
+  Lightbox.wire('.strip a, .strip [data-live]');
 
   /**
    * Arriving from another page at #gallery: the browser looked for the section before the words were drawn
