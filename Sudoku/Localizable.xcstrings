@@ -3843,6 +3843,23 @@
         }
       }
     },
+    "No assists": {
+      "comment": "Score breakdown: bonus for a game played with every assist off",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No assists"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yardımsız"
+          }
+        }
+      }
+    },
     "No games played yet": {
       "comment": "Statistics: under a locked difficulty in the picker.",
       "localizations": {
@@ -4383,6 +4400,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bugünün Bulmacasını Oyna"
+          }
+        }
+      }
+    },
+    "Play a whole game with all of these and Show Mistakes off to earn a no-assists bonus.": {
+      "comment": "Settings: footer of the assists section",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Play a whole game with all of these and Show Mistakes off to earn a no-assists bonus."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bunların hepsi ve Hataları Göster kapalıyken bir oyunu baştan sona oynarsan yardımsız bonusu kazanırsın."
           }
         }
       }

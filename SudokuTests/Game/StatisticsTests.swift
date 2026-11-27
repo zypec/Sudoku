@@ -85,6 +85,28 @@ struct StatisticsTests {
         #expect(score.lines.map(\.kind) == [.base, .speed, .flawless])
     }
 
+    @Test func gamesWithoutAssistsEarnABonus() {
+        var result = GameResult(finishedAt: start, difficulty: .hard, isSolved: true, elapsedSeconds: 1200, estimatedSeconds: 1200)
+        result.withoutAssists = true
+        #expect(result.score.total == 4730)  // 3500 + 700 flawless + 525 no assists, rounded to tens
+        #expect(result.score.lines.map(\.kind) == [.base, .speed, .flawless, .noAssists])
+    }
+
+    @Test func anAssistOnAtAnyPointEndsTheNoAssistsBonus() throws {
+        let puzzle = Puzzle(
+            givens: try TestPuzzles.values(TestPuzzles.easy),
+            solution: try TestPuzzles.values(TestPuzzles.easySolution),
+            difficulty: .easy
+        )
+        var game = SudokuGame(puzzle: puzzle, mistakeLimit: nil)
+        #expect(!game.playedWithoutAssists)  // nothing noted yet
+        game.noteAssists(false)
+        #expect(game.playedWithoutAssists)
+        game.noteAssists(true)
+        game.noteAssists(false)
+        #expect(!game.playedWithoutAssists)
+    }
+
     @Test func harderPuzzlesPayMore() {
         let totals = Difficulty.allCases.map { scored($0).total }
         #expect(totals == totals.sorted())

@@ -91,12 +91,25 @@ struct GameView: View {
         .onChange(of: model.game.notes) { _, _ in
             practice?.evaluate()
         }
+        .onChange(of: model.settings.usesAssists) { _, _ in
+            model.noteAssistSettings()
+        }
         .onChange(of: model.settings.mistakeLimitSetting) { _, _ in
             model.applyMistakeLimitSetting()
         }
         .onChange(of: model.game.isFinished) { _, isFinished in
             guard isFinished, practice == nil else { return }
-            outcome = GameOutcome(game: model.game)
+            let game = model.game
+            guard game.isSolved, !game.usedAutoSolve else {
+                outcome = GameOutcome(game: game)
+                return
+            }
+            // A win lets the wave cross the board before the result comes up.
+            Task {
+                try? await Task.sleep(for: .seconds(1.25))
+                guard model.game.isFinished, outcome == nil else { return }
+                outcome = GameOutcome(game: model.game)
+            }
         }
         // Ticks aren't saved individually, so save the clock when leaving the foreground or the screen.
         .onChange(of: scenePhase) { _, phase in

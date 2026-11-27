@@ -20,6 +20,8 @@ struct GameResult: Hashable, Sendable {
     var estimatedSeconds: Int?
     var requiredTechniques: [TechniqueKind] = []
     var hintedTechniques: [TechniqueKind] = []
+    /// Played with every assist off from start to finish.
+    var withoutAssists = false
 
     /// Solved by the player: auto solve didn't do any of it.
     var isWin: Bool {
@@ -46,6 +48,8 @@ final class GameRecord {
     var isDaily: Bool
     /// The daily puzzle's day (`DailyPuzzle`), for a daily game.
     var dailyDay: Int?
+    /// Played with every assist off. A default, so records saved before it existed still load.
+    var withoutAssists: Bool = false
 
     init(_ result: GameResult, dailyDay: Int? = nil) {
         finishedAt = result.finishedAt
@@ -61,6 +65,7 @@ final class GameRecord {
         hintedTechniquesRaw = result.hintedTechniques.map(\.rawValue)
         isDaily = dailyDay != nil
         self.dailyDay = dailyDay
+        withoutAssists = result.withoutAssists
     }
 
     var result: GameResult {
@@ -75,7 +80,8 @@ final class GameRecord {
             autoSolvedSteps: autoSolvedSteps,
             estimatedSeconds: estimatedSeconds,
             requiredTechniques: requiredTechniquesRaw.compactMap(TechniqueKind.init(rawValue:)),
-            hintedTechniques: hintedTechniquesRaw.compactMap(TechniqueKind.init(rawValue:))
+            hintedTechniques: hintedTechniquesRaw.compactMap(TechniqueKind.init(rawValue:)),
+            withoutAssists: withoutAssists
         )
     }
 }
@@ -94,7 +100,8 @@ extension GameResult {
             autoSolvedSteps: game.autoSolvedSteps ?? 0,
             estimatedSeconds: game.puzzle.estimatedSeconds,
             requiredTechniques: game.puzzle.requiredTechniques ?? [],
-            hintedTechniques: game.hintedTechniques ?? []
+            hintedTechniques: game.hintedTechniques ?? [],
+            withoutAssists: game.playedWithoutAssists
         )
     }
 }

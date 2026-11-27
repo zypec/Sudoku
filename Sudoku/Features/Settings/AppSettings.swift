@@ -107,6 +107,13 @@ final class AppSettings {
         autoSolveSpeed = (defaults.object(forKey: Key.autoSolveSpeed) as? Double).flatMap(AutoSolveSpeed.init(rawValue:)) ?? .normal
     }
 
+    /// Whether any of the assists is on: the helpers in Settings that do some of the player's work
+    /// or point things out. A game played through with all of them off earns a bonus.
+    var usesAssists: Bool {
+        showsMistakes || highlightsSameDigits || highlightsRelatedCells || removesNotesAutomatically
+            || dimsCompletedDigits || showsAutoNotesButton
+    }
+
     /// The mistake limit games use (new ones and the one in progress). Without visible mistakes a
     /// limit would end games without warning, so it only applies while mistakes are shown.
     var mistakeLimitSetting: Int? {

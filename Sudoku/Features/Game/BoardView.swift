@@ -13,6 +13,8 @@ import SwiftUI
 struct BoardView: View {
     let model: GameModel
 
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     var body: some View {
         GeometryReader { proxy in
             let side = min(proxy.size.width, proxy.size.height)
@@ -80,6 +82,19 @@ struct BoardView: View {
         ) {
             model.select(cell)
         }
+        .modifier(WinWave(
+            delay: reduceMotion ? 0 : waveDelay(for: cell),
+            bounces: !reduceMotion,
+            trigger: model.celebrationCount
+        ))
+    }
+
+    /// When the win wave reaches `cell`: it spreads in rings out from the winning move.
+    private func waveDelay(for cell: CellIndex) -> Double {
+        let origin = model.celebrationOrigin
+        let rows = Double(Geometry.row(of: cell) - Geometry.row(of: origin))
+        let columns = Double(Geometry.column(of: cell) - Geometry.column(of: origin))
+        return (rows * rows + columns * columns).squareRoot() * 0.05
     }
 
     /// Selects the cell under `location` (in board coordinates). Points outside the board are
@@ -185,5 +200,37 @@ private struct AutoSolveCursor: View {
             .shadow(color: Color.accentColor.opacity(0.4), radius: 4)
             .allowsHitTesting(false)
             .accessibilityHidden(true)
+    }
+}
+
+/// A cell's part of the wave that crosses the board when the puzzle is solved: it lifts and glows in
+/// the accent color as the wave passes, then settles. With reduced motion it only glows, all at once.
+private struct WinWave: ViewModifier {
+    let delay: Double
+    let bounces: Bool
+    let trigger: Int
+
+    private struct Frame {
+        var scale = 1.0
+        var glow = 0.0
+    }
+
+    func body(content: Content) -> some View {
+        content.keyframeAnimator(initialValue: Frame(), trigger: trigger) { view, frame in
+            view
+                .overlay { Color.accentColor.opacity(frame.glow).allowsHitTesting(false) }
+                .scaleEffect(frame.scale)
+        } keyframes: { _ in
+            KeyframeTrack(\.scale) {
+                LinearKeyframe(1, duration: delay)
+                SpringKeyframe(bounces ? 1.14 : 1, duration: 0.16, spring: .snappy)
+                SpringKeyframe(1, duration: 0.4, spring: .bouncy)
+            }
+            KeyframeTrack(\.glow) {
+                LinearKeyframe(0, duration: delay)
+                LinearKeyframe(0.35, duration: 0.14)
+                LinearKeyframe(0, duration: 0.55)
+            }
+        }
     }
 }

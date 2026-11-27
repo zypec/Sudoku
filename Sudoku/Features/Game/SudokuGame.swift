@@ -40,6 +40,9 @@ struct SudokuGame: Codable, Sendable {
     /// Mistakes taken back after the game was lost, to play on. They still count in the statistics
     /// and the score. Optional so games saved before it existed still load.
     private(set) var takenBackMistakes: Int?
+    /// Whether any assist was on at some point of the game; `nil` until the game first notes the
+    /// settings (and in games saved before it existed).
+    private(set) var usedAssists: Bool?
 
     private var undoStack: [Snapshot] = []
     private var redoStack: [Snapshot] = []
@@ -165,10 +168,30 @@ struct SudokuGame: Codable, Sendable {
         return true
     }
 
+    /// Notes whether the assists are on now. Once on, the game counts as assisted for good.
+    mutating func noteAssists(_ areOn: Bool) {
+        guard !isFinished else { return }
+        if areOn {
+            usedAssists = true
+        } else if usedAssists == nil {
+            usedAssists = false
+        }
+    }
+
+    /// Played from start to finish with every assist off.
+    var playedWithoutAssists: Bool {
+        usedAssists == false
+    }
+
+    /// Whether `cell` holds anything the player can erase: their own digit or notes, never a given.
+    func canErase(at cell: CellIndex) -> Bool {
+        !isFinished && !isGiven(cell) && (values[cell] != 0 || !notes[cell].isEmpty)
+    }
+
     /// Clears the player's entry and notes in `cell`. Returns whether anything changed.
     @discardableResult
     mutating func erase(at cell: CellIndex) -> Bool {
-        guard !isFinished, !isGiven(cell), values[cell] != 0 || !notes[cell].isEmpty else { return false }
+        guard canErase(at: cell) else { return false }
         recordUndo()
         values[cell] = 0
         notes[cell] = .empty

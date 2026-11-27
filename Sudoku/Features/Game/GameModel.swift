@@ -29,6 +29,10 @@ final class GameModel {
     private(set) var elapsedSeconds: Int
     /// The clock is stopped and the board hidden until the player resumes.
     private(set) var isPaused = false
+    /// Counts the player's wins on this screen; each one sends a wave across the board, out from
+    /// `celebrationOrigin`, the cell of the winning move. Never reset, so a new game doesn't replay it.
+    private(set) var celebrationCount = 0
+    private(set) var celebrationOrigin: CellIndex = 40
 
     @ObservationIgnored let settings: AppSettings
     /// `nil` keeps the game in memory only (previews, tests).
@@ -131,6 +135,13 @@ final class GameModel {
         if followsMistakeLimitSetting {
             self.game.setMistakeLimit(settings.mistakeLimitSetting)
         }
+        self.game.noteAssists(settings.usesAssists)
+    }
+
+    /// Notes an assist turned on mid-game, which ends the game's chance at the no-assists bonus.
+    func noteAssistSettings() {
+        guard settings.usesAssists, game.usedAssists != true else { return }
+        update { $0.noteAssists(true) }
     }
 
     /// Applies the current mistake-limit setting to the game in progress.
@@ -187,6 +198,11 @@ final class GameModel {
             let removesNotes = settings.removesNotesAutomatically
             update { $0.enter(digit, at: selectedCell, removingNotesFromPeers: removesNotes) }
         }
+    }
+
+    /// Whether Erase would clear anything in the selected cell.
+    var canEraseSelectedCell: Bool {
+        selectedCell.map(game.canErase(at:)) ?? false
     }
 
     func eraseSelectedCell() {
@@ -640,6 +656,7 @@ final class GameModel {
 
     private func restart(with puzzle: Puzzle) {
         game = SudokuGame(puzzle: puzzle, mistakeLimit: settings.mistakeLimitSetting)
+        game.noteAssists(settings.usesAssists)
         lastRecord = nil
         elapsedSeconds = 0
         hasRecordedResult = false
@@ -653,9 +670,15 @@ final class GameModel {
 
     /// Applies a change to the game and saves it.
     private func update(_ change: (inout SudokuGame) -> some Any) {
+        // Every move is made under the settings of the moment, so an assist on at any move counts.
+        game.noteAssists(settings.usesAssists)
         _ = change(&game)
         save()  // also copies the clock in, before a finished game is recorded
         if game.isFinished, !hasRecordedResult {
+            if game.isSolved, !game.usedAutoSolve, !isPractice {
+                celebrationOrigin = selectedCell ?? 40
+                celebrationCount += 1
+            }
             hasRecordedResult = true
             lastRecord = recorder?.record(game, dailyDay: dailyDay)
             onFinish?(game)

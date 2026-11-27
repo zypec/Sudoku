@@ -369,17 +369,22 @@ struct PracticeBanner: View {
                 .controlSize(.small)
             case .solved:
                 if practice.isRandom {
-                    VStack(alignment: .trailing, spacing: 6) {
-                        Button("Restart") {
+                    // Two round icons side by side, so the banner keeps one line's height.
+                    HStack(spacing: 8) {
+                        Button("Restart", systemImage: "arrow.counterclockwise") {
                             practice.restart()
                         }
+                        .labelStyle(.iconOnly)
                         .glassButton()
-                        Button("Next") {
+                        Button("Next", systemImage: "arrow.right") {
                             practice.nextPosition()
                         }
+                        .labelStyle(.iconOnly)
                         .glassProminentButton()
                     }
-                    .controlSize(.small)
+                    .buttonBorderShape(.circle)
+                    .controlSize(.regular)
+                    .font(.system(size: 15, weight: .semibold))
                 } else {
                     Button("Next") {
                         practice.nextPosition()

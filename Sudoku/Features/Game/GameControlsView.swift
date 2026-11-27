@@ -26,6 +26,7 @@ struct GameControlsView: View {
             ControlButton(title: "Erase", systemImage: "eraser") {
                 model.eraseSelectedCell()
             }
+            .disabled(!model.canEraseSelectedCell)
 
             ControlButton(title: "Notes", systemImage: "pencil", isOn: model.isNotesMode) {
                 model.toggleNotesMode()

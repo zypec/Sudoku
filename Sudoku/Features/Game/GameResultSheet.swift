@@ -204,6 +204,7 @@ struct GameResultSheet: View {
         case .hints: "Hints (\(line.count))"
         case .reveals: "Revealed cells (\(line.count))"
         case .flawless: "Flawless"
+        case .noAssists: "No assists"
         }
     }
 

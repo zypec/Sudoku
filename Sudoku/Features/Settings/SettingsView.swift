@@ -64,7 +64,7 @@ struct SettingsView: View {
                     Text("Smart hints guide you: they check your notes first, then show the next step. Turned off, a hint fills in the selected cell. The hint limit also applies to the game in progress.")
                 }
 
-                Section("Assists") {
+                Section {
                     Toggle(isOn: $settings.highlightsRelatedCells) {
                         Label("Highlight Row, Column and Box", systemImage: "square.grid.3x3.middle.filled")
                     }
@@ -80,6 +80,10 @@ struct SettingsView: View {
                     Toggle(isOn: $settings.showsAutoNotesButton) {
                         Label("Auto Notes Button", systemImage: "square.grid.3x3")
                     }
+                } header: {
+                    Text("Assists")
+                } footer: {
+                    Text("Play a whole game with all of these and Show Mistakes off to earn a no-assists bonus.")
                 }
 
                 Section {

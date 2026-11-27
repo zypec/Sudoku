@@ -7,7 +7,8 @@
 ///
 /// Every difficulty has a base; harder puzzles pay more. Speed against the puzzle's estimated time
 /// adds or takes away up to half of it, each mistake, hint and revealed cell costs a share, and a
-/// game without any of them earns a flawless bonus. A solved game always keeps at least a tenth of
+/// game without any of them earns a flawless bonus, and one played with every assist off a no-assists
+/// bonus. A solved game always keeps at least a tenth of
 /// its base. Lost games and games finished by auto solve earn nothing.
 struct GameScore: Equatable, Sendable {
     enum Kind: Equatable, Sendable {
@@ -17,6 +18,7 @@ struct GameScore: Equatable, Sendable {
         case hints
         case reveals
         case flawless
+        case noAssists
     }
 
     /// One line of the breakdown, in points (negative for penalties).
@@ -61,6 +63,9 @@ struct GameScore: Equatable, Sendable {
         }
         if result.mistakeCount == 0, result.hintCount == 0, result.revealCount == 0 {
             lines.append(Line(kind: .flawless, points: Int((base * 0.2).rounded())))
+        }
+        if result.withoutAssists {
+            lines.append(Line(kind: .noAssists, points: Int((base * 0.15).rounded())))
         }
 
         let sum = lines.reduce(0) { $0 + $1.points }
