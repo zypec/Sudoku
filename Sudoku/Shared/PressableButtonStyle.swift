@@ -11,7 +11,7 @@ struct PressableButtonStyle: ButtonStyle {
         configuration.label
             .scaleEffect(configuration.isPressed ? 0.88 : 1)
             .opacity(configuration.isPressed ? 0.6 : 1)
-            .animation(.spring(duration: 0.2, bounce: 0.4), value: configuration.isPressed)
+            .animation(.spring(duration: 0.16, bounce: 0.25), value: configuration.isPressed)
     }
 }
 

@@ -403,7 +403,7 @@ struct PracticeBanner: View {
         .padding(.horizontal, 14)
         .padding(.vertical, 10)
         .background(background, in: .rect(cornerRadius: 16))
-        .animation(.snappy, value: practice.status)
+        .animation(.panel, value: practice.status)
         .sensoryFeedback(trigger: practice.status) { _, status in
             switch status {
             case .solved: .success

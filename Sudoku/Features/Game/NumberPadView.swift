@@ -41,7 +41,7 @@ struct NumberPadView: View {
         }
         .buttonStyle(.pressable)
         .disabled(isCompleted || model.game.isFinished)
-        .animation(.snappy, value: model.isNotesMode)
+        .animation(.quick, value: model.isNotesMode)
         .accessibilityLabel(Text(verbatim: "\(digit)"))
         .accessibilityValue(Text("\(remaining) remaining"))
     }

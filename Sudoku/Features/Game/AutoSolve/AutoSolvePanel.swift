@@ -98,8 +98,8 @@ struct AutoSolvePanel: View {
         .padding(20)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .glassOrMaterial(in: .rect(cornerRadius: 28))
-        .animation(.snappy, value: state.appliedSteps)
-        .animation(.snappy, value: state.isPaused)
+        .animation(.panel, value: state.appliedSteps)
+        .animation(.panel, value: state.isPaused)
     }
 
     private var header: some View {

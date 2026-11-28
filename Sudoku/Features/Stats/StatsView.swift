@@ -45,7 +45,7 @@ struct StatsView: View {
             .frame(maxWidth: 640)
             .frame(maxWidth: .infinity)
         }
-        .animation(.snappy, value: shown)
+        .animation(.panel, value: shown)
         .navigationTitle("Statistics")
         .toolbar {
             Menu("More", systemImage: "ellipsis") {

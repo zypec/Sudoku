@@ -82,7 +82,7 @@ private struct ControlButton: View {
             .contentShape(.rect)
         }
         .buttonStyle(.pressable)
-        .animation(.snappy, value: isOn)
+        .animation(.quick, value: isOn)
         .accessibilityAddTraits(isOn ? .isSelected : [])
         .accessibilityValue(badge.map { Text("Hints left: \($0)") } ?? Text(verbatim: ""))
     }

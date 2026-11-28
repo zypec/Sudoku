@@ -48,8 +48,8 @@ struct GameView: View {
         // Paused: the game stays in view but blurred, so it can't be studied with the clock stopped.
         .blur(radius: model.isPaused ? 6 : 0)
         .allowsHitTesting(!model.isPaused)
-        .animation(.snappy(duration: 0.25), value: model.activeHint != nil)
-        .animation(.snappy(duration: 0.25), value: model.autoSolve != nil)
+        .animation(.panel, value: model.activeHint != nil)
+        .animation(.panel, value: model.autoSolve != nil)
         .overlay {
             if model.isPreparingNewGame {
                 ProgressView()
@@ -68,7 +68,7 @@ struct GameView: View {
                     .transition(.opacity)
             }
         }
-        .animation(.snappy, value: model.isPaused)
+        .animation(.panel, value: model.isPaused)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 optionsMenu
@@ -135,7 +135,7 @@ struct GameView: View {
                     .transition(.move(edge: .top).combined(with: .opacity))
                     .task {
                         try? await Task.sleep(for: .seconds(1.6))
-                        withAnimation(.snappy) { isShowingCodeCopied = false }
+                        withAnimation(.panel) { isShowingCodeCopied = false }
                     }
             }
         }
@@ -183,7 +183,7 @@ struct GameView: View {
                 .disabled(model.game.isFinished || model.autoSolve != nil)
                 Button("Copy Puzzle Code", systemImage: "doc.on.doc") {
                     UIPasteboard.general.string = PuzzleCode.code(for: model.game.puzzle)
-                    withAnimation(.snappy) { isShowingCodeCopied = true }
+                    withAnimation(.panel) { isShowingCodeCopied = true }
                 }
                 Divider()
             }
@@ -194,7 +194,7 @@ struct GameView: View {
                 .disabled(practice.status == .solved)
                 Button("Copy Training Code", systemImage: "doc.on.doc") {
                     UIPasteboard.general.string = practice.pick.code
-                    withAnimation(.snappy) { isShowingCodeCopied = true }
+                    withAnimation(.panel) { isShowingCodeCopied = true }
                 }
                 Divider()
             }
@@ -304,7 +304,7 @@ struct GameStatusView: View {
         .padding(.horizontal, 12)
         .padding(.vertical, 6)
         .background(.fill.tertiary, in: .capsule)
-        .animation(.snappy, value: game.mistakeCount)
+        .animation(.quick, value: game.mistakeCount)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(Text("Mistakes: \(game.mistakeCount)"))
     }

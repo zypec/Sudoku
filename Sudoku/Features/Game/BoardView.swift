@@ -29,7 +29,7 @@ struct BoardView: View {
                     }
                 }
             }
-            .animation(.snappy, value: hintHighlights)
+            .animation(.panel, value: hintHighlights)
             .contentShape(.rect)
             .gesture(
                 DragGesture(minimumDistance: 0)

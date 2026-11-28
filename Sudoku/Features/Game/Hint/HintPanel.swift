@@ -36,7 +36,7 @@ struct HintPanel: View {
         .padding(20)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .glassOrMaterial(in: .rect(cornerRadius: 28))
-        .animation(.snappy(duration: 0.2), value: activeHint.index)
+        .animation(.quick, value: activeHint.index)
         .sheet(isPresented: $isShowingGuide) {
             HintDetailSheet(model: model, hint: activeHint.hint)
         }
@@ -77,7 +77,7 @@ struct HintPanel: View {
                     }
                 }
                 PanelIconButton(title: "Explain in Detail", systemImage: activeHint.isVisual ? "play.rectangle.fill" : "play.rectangle", isOn: activeHint.isVisual) {
-                    withAnimation(.snappy(duration: 0.25)) {
+                    withAnimation(.panel) {
                         if activeHint.isVisual {
                             model.endVisualExplanation()
                         } else {
@@ -291,7 +291,7 @@ private struct PageIndicator: View {
                     .matchedGeometryEffect(id: "progress", in: namespace)
             }
         }
-        .animation(.snappy, value: index)
+        .animation(.panel, value: index)
         .accessibilityElement()
         .accessibilityLabel(Text("Step \(index + 1) of \(count)"))
     }
